@@ -4,7 +4,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PoYoAPI/poyo-devtools.git"
+    "url": "git+https://github.com/PoyoAPI/poyo-devtools.git"
   },
   "type": "module",
   "packageManager": "pnpm@10.13.1",
@@ -26,7 +26,7 @@
   },
   "description": "Official PoYo CLI, stdio MCP bridge, and Agent Skill. Endpoint schemas are discovered from the hosted PoYo Capability Registry rather than maintained in this repository.",
   "bugs": {
-    "url": "https://github.com/PoYoAPI/poyo-devtools/issues"
+    "url": "https://github.com/PoyoAPI/poyo-devtools/issues"
   },
-  "homepage": "https://github.com/PoYoAPI/poyo-devtools#readme"
+  "homepage": "https://github.com/PoyoAPI/poyo-devtools#readme"
 }

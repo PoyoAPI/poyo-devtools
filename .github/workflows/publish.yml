@@ -46,7 +46,7 @@ jobs:
         run: pnpm run release:check
       - name: Verify committed artifacts match production Catalog
         env:
-          POYO_BASE_URL: https://api.poyo.ai
+          POYO_INTERNAL_BASE_URL: https://api.poyo.ai
         run: |
           pnpm run sync:catalog
           pnpm run generate:skills
@@ -57,12 +57,12 @@ jobs:
       - name: Pack release tarballs
         run: |
           mkdir release
-          pnpm --filter @poyo/core pack --pack-destination "$GITHUB_WORKSPACE/release"
-          pnpm --filter @poyo/mcp pack --pack-destination "$GITHUB_WORKSPACE/release"
-          pnpm --filter @poyo/cli pack --pack-destination "$GITHUB_WORKSPACE/release"
-      - name: Publish @poyo/core
-        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyo-core-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
-      - name: Publish @poyo/mcp
-        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyo-mcp-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
-      - name: Publish @poyo/cli
-        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyo-cli-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
+          pnpm --filter @poyoapi/core pack --pack-destination "$GITHUB_WORKSPACE/release"
+          pnpm --filter @poyoapi/mcp pack --pack-destination "$GITHUB_WORKSPACE/release"
+          pnpm --filter @poyoapi/cli pack --pack-destination "$GITHUB_WORKSPACE/release"
+      - name: Publish @poyoapi/core
+        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-core-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
+      - name: Publish @poyoapi/mcp
+        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-mcp-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
+      - name: Publish @poyoapi/cli
+        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-cli-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance

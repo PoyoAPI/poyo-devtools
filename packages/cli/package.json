@@ -5,12 +5,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PoYoAPI/poyo-devtools.git",
+    "url": "git+https://github.com/PoyoAPI/poyo-devtools.git",
     "directory": "packages/cli"
   },
   "homepage": "https://poyo.ai/",
   "bugs": {
-    "url": "https://github.com/PoYoAPI/poyo-devtools/issues"
+    "url": "https://github.com/PoyoAPI/poyo-devtools/issues"
   },
   "type": "module",
   "main": "./dist/index.js",
