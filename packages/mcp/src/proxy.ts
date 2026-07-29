@@ -10,7 +10,7 @@ export interface ProxyOptions {
 type JsonRpcMessage = {jsonrpc?: string; id?: string | number | null; method?: string; params?: Record<string, unknown>};
 
 export function remoteUrl(options: ProxyOptions): URL {
-  const url = new URL(options.url ?? process.env.POYO_MCP_URL ?? "https://api.poyo.ai/mcp");
+  const url = new URL(options.url ?? process.env.POYO_INTERNAL_MCP_URL ?? "https://api.poyo.ai/mcp");
   const categories = options.categories ?? process.env.POYO_MCP_CATEGORIES;
   const models = options.models ?? process.env.POYO_MCP_MODELS;
   if (categories && models) throw new Error("Configure either categories or models, not both");
@@ -97,8 +97,7 @@ export function parseProxyArgs(argv: string[]): ProxyOptions {
   for (let index = 0; index < argv.length; index += 1) {
     const key = argv[index];
     const value = argv[index + 1];
-    if (key === "--url") options.url = value, index += 1;
-    else if (key === "--api-key") options.apiKey = value, index += 1;
+    if (key === "--api-key") options.apiKey = value, index += 1;
     else if (key === "--categories") options.categories = value, index += 1;
     else if (key === "--models") options.models = value, index += 1;
   }

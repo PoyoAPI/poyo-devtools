@@ -24,7 +24,6 @@ const completed = await client.waitTask(task.task_id);
 const downloaded = await client.downloadFiles(task.task_id, "./poyo-results");
 ```
 
-Set `POYO_BASE_URL` or pass `baseUrl` to target another PoYo environment. The default is `https://api.poyo.ai`.
 
 See the [PoYo website](https://poyo.ai/).
 

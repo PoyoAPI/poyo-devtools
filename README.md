@@ -21,7 +21,7 @@ pnpm test
 Refresh production artifacts before release:
 
 ```bash
-POYO_BASE_URL=https://api.poyo.ai pnpm sync:catalog
+pnpm sync:catalog
 pnpm generate:skills
 pnpm skill:check
 ```

@@ -15,7 +15,7 @@ export class PoyoClient {
   private catalogCache?: {etag?: string; data: CatalogData};
 
   constructor(options: ClientOptions = {}) {
-    this.baseUrl = (options.baseUrl ?? process.env.POYO_BASE_URL ?? "https://api.poyo.ai").replace(/\/$/, "");
+    this.baseUrl = (options.baseUrl ?? process.env.POYO_INTERNAL_BASE_URL ?? "https://api.poyo.ai").replace(/\/$/, "");
     this.apiKey = options.apiKey ?? process.env.POYO_API_KEY;
     this.source = options.source ?? "cli";
     this.fetchImpl = options.fetch ?? globalThis.fetch;

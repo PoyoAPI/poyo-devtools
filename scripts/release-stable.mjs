@@ -34,7 +34,7 @@ for (const {path, source} of packages) {
 
 const releaseEnv = {
   ...process.env,
-  POYO_BASE_URL: "https://api.poyo.ai",
+  POYO_INTERNAL_BASE_URL: "https://api.poyo.ai",
   NPM_DIST_TAG: "latest",
   RELEASE_CONFIRMATION: `publish:${version}:latest`,
 };

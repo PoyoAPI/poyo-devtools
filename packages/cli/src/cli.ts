@@ -19,7 +19,7 @@ export async function runCli(argv: string[]): Promise<number> {
     const config = await loadConfig();
     const stored = await loadStoredCredential(config);
     await runProxy({
-      url: stringOption(parsed, "url") ?? process.env.POYO_MCP_URL,
+      url: process.env.POYO_INTERNAL_MCP_URL,
       apiKey: stringOption(parsed, "api-key") ?? process.env.POYO_API_KEY ?? stored.apiKey,
       categories: stringOption(parsed, "categories"),
       models: stringOption(parsed, "models"),
@@ -30,7 +30,7 @@ export async function runCli(argv: string[]): Promise<number> {
   const publicCommand = command === "models" || command === "describe";
   const stored = publicCommand ? {apiKey: undefined} : await loadStoredCredential(config);
   const client = new PoyoClient({
-    baseUrl: stringOption(parsed, "base-url") ?? process.env.POYO_BASE_URL ?? config.baseUrl,
+    baseUrl: process.env.POYO_INTERNAL_BASE_URL,
     apiKey: stringOption(parsed, "api-key") ?? process.env.POYO_API_KEY ?? stored.apiKey,
     source: requestSource(parsed),
   });
@@ -128,7 +128,7 @@ async function authCommand(action: string | undefined, parsed: ParsedArgs): Prom
     apiKey = (await terminal.question("")).trim(); terminal.close(); stdout.write("\n");
   }
   if (!apiKey) throw new Error("API key cannot be empty");
-  const source = await storeApiKey(apiKey, stringOption(parsed, "base-url") ?? config.baseUrl);
+  const source = await storeApiKey(apiKey);
   process.stdout.write(`Saved ${maskApiKey(apiKey)} using ${source}.\n`);
   return 0;
 }
