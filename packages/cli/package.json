@@ -1,6 +1,6 @@
 {
   "name": "@poyoapi/cli",
-  "version": "0.1.3",
+  "version": "0.1.0",
   "description": "Catalog-driven CLI for PoYo chat and media-generation models",
   "license": "MIT",
   "repository": {
