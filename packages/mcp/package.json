@@ -1,5 +1,5 @@
 {
-  "name": "@poyo/mcp",
+  "name": "@poyoapi/mcp",
   "version": "0.1.3",
   "description": "stdio bridge for the hosted PoYo MCP server",
   "license": "MIT",

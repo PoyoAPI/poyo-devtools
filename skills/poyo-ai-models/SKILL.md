@@ -11,8 +11,8 @@ Use the production Capability Catalog as the source of truth. Never invent model
 
 1. Prefer hosted MCP at `https://api.poyo.ai/mcp`.
 2. Use `?categories=...` or `?models=...` when a small strong-typed tool set is useful; never combine them.
-3. Use `npx @poyo/mcp` for clients that only support stdio.
-4. Use `npx @poyo/cli` for chat SSE or when MCP is unavailable.
+3. Use `npx @poyoapi/mcp` for clients that only support stdio.
+4. Use `npx @poyoapi/cli` for chat SSE or when MCP is unavailable.
 5. Mark Skill executions with `_request_source: "skill"` in MCP or `--request-source skill` in CLI.
 
 Keep `POYO_API_KEY` in the environment or system keyring. Never put it in prompts, query strings, committed files, or retained shell history.

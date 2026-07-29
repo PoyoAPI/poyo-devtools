@@ -1,5 +1,5 @@
 import {readFile} from "node:fs/promises";
-import type {Capability, JsonSchema} from "@poyo/core";
+import type {Capability, JsonSchema} from "@poyoapi/core";
 
 const RESERVED = new Set([
   "api-key", "base-url", "input", "input-file", "format", "output", "wait", "timeout", "result-limit",

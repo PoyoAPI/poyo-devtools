@@ -1,9 +1,9 @@
-# @poyo/mcp
+# @poyoapi/mcp
 
 stdio bridge to `https://api.poyo.ai/mcp`.
 
 ```bash
-POYO_API_KEY=... npx @poyo/mcp
+POYO_API_KEY=... npx @poyoapi/mcp
 ```
 
 Optional filters:

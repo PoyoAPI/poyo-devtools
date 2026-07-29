@@ -4,9 +4,9 @@ Official PoYo CLI, stdio MCP bridge, and Agent Skill. Model schemas and pricing 
 
 ## Workspace
 
-- `@poyo/core`: Catalog, chat, generation-task, account, and credential client.
-- `@poyo/cli`: Catalog-driven `poyo` command with chat SSE support.
-- `@poyo/mcp`: Local stdio bridge to the hosted PoYo MCP server.
+- `@poyoapi/core`: Catalog, chat, generation-task, account, and credential client.
+- `@poyoapi/cli`: Catalog-driven `poyo` command with chat SSE support.
+- `@poyoapi/mcp`: Local stdio bridge to the hosted PoYo MCP server.
 - `poyo-ai-models`: Agent workflow for discovering and safely executing PoYo models.
 
 ## Development

@@ -23,10 +23,10 @@ importers:
 
   packages/cli:
     dependencies:
-      '@poyo/core':
+      '@poyoapi/core':
         specifier: workspace:*
         version: link:../core
-      '@poyo/mcp':
+      '@poyoapi/mcp':
         specifier: workspace:*
         version: link:../mcp
 

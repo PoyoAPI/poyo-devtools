@@ -4,8 +4,8 @@ import {Writable} from "node:stream";
 import {
   clearStoredCredential, loadConfig, loadStoredCredential, maskApiKey, storeApiKey,
   PoyoApiError, PoyoClient, type Capability,
-} from "@poyo/core";
-import {runProxy} from "@poyo/mcp";
+} from "@poyoapi/core";
+import {runProxy} from "@poyoapi/mcp";
 import {parseArgs, numberOption, type ParsedArgs} from "./args.js";
 import {buildInput} from "./input.js";
 import {renderOutput, type OutputFormat} from "./output.js";

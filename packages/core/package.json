@@ -1,5 +1,5 @@
 {
-  "name": "@poyo/core",
+  "name": "@poyoapi/core",
   "version": "0.1.3",
   "description": "Catalog-driven client for the PoYo Agent API",
   "license": "MIT",

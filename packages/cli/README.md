@@ -1,4 +1,4 @@
-# @poyo/cli
+# @poyoapi/cli
 
 Catalog-driven PoYo command line client.
 

@@ -1,11 +1,11 @@
-# @poyo/core
+# @poyoapi/core
 
 Catalog-driven JavaScript client for the PoYo Agent API. Endpoint schemas are loaded from the hosted Capability Registry instead of being duplicated in this package.
 
 ## Install
 
 ```bash
-npm install @poyo/core
+npm install @poyoapi/core
 ```
 
 Node.js 20 or newer is required.
@@ -13,7 +13,7 @@ Node.js 20 or newer is required.
 ## Usage
 
 ```ts
-import {PoyoClient} from "@poyo/core";
+import {PoyoClient} from "@poyoapi/core";
 
 const client = new PoyoClient({apiKey: process.env.POYO_API_KEY});
 const capability = await client.capability("youtube/videos");
