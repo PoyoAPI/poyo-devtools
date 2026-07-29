@@ -25,3 +25,45 @@ pnpm sync:catalog
 pnpm generate:skills
 pnpm skill:check
 ```
+
+## Publishing to npm
+
+The three public packages are published together with the same version:
+
+- `@poyoapi/core`
+- `@poyoapi/mcp`
+- `@poyoapi/cli`
+
+Configure an npm Trusted Publisher for each package with:
+
+- Organization or user: `PoyoAPI`
+- Repository: `poyo-devtools`
+- Workflow: `publish.yml`
+- Environment: `npm`
+
+For a stable release, prepare and push the release commit:
+
+```bash
+pnpm release:stable -- 0.1.0
+git push
+```
+
+Then run the **Publish npm packages** GitHub Actions workflow with:
+
+```text
+dist_tag: latest
+confirmation: publish:0.1.0:latest
+```
+
+For a prerelease, set all package versions to the same prerelease version and
+run the workflow with the `beta` tag, for example:
+
+```text
+dist_tag: beta
+confirmation: publish:0.2.0-beta.1:beta
+```
+
+The workflow validates the version, refreshes the production catalog, builds
+and tests the workspace, packs the packages in dependency order, and publishes
+them with npm provenance. No long-lived `NPM_TOKEN` secret is required when the
+Trusted Publishers are configured.

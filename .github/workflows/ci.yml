@@ -22,7 +22,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm typecheck
-      - run: pnpm test
+      - run: pnpm exec vitest run packages
 
   package:
     needs: test
@@ -38,6 +38,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm --filter @poyo/core publish --dry-run --no-git-checks --tag beta
-      - run: pnpm --filter @poyo/mcp publish --dry-run --no-git-checks --tag beta
-      - run: pnpm --filter @poyo/cli publish --dry-run --no-git-checks --tag beta
+      - run: pnpm --filter @poyoapi/core publish --dry-run --no-git-checks --tag beta
+      - run: pnpm --filter @poyoapi/mcp publish --dry-run --no-git-checks --tag beta
+      - run: pnpm --filter @poyoapi/cli publish --dry-run --no-git-checks --tag beta
