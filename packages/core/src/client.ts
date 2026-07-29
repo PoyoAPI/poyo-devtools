@@ -80,7 +80,7 @@ export class PoyoClient {
   }
 
   async account(): Promise<unknown> {
-    const response = await this.fetchImpl(this.url("/api/user/info"), {headers: this.authHeaders()});
+    const response = await this.fetchImpl(this.url("/api/user/balance"), {headers: this.authHeaders()});
     return this.parse(response);
   }
 

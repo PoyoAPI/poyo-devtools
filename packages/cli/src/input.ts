@@ -3,7 +3,8 @@ import type {Capability, JsonSchema} from "@poyoapi/core";
 
 const RESERVED = new Set([
   "api-key", "base-url", "input", "input-file", "format", "output", "wait", "timeout", "result-limit",
-  "idempotency-key", "cursor", "categories", "models", "request-source",
+  "idempotency-key", "cursor", "categories", "models", "request-source", "protocol", "stream",
+  "callback-url",
 ]);
 
 export async function buildInput(
