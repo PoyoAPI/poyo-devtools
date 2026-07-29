@@ -1,0 +1,28 @@
+{
+  "name": "@poyo/mcp",
+  "version": "0.1.3",
+  "description": "stdio bridge for the hosted PoYo MCP server",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PoYoAPI/poyo-devtools.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://poyo.ai/",
+  "bugs": {
+    "url": "https://github.com/PoYoAPI/poyo-devtools/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": "./dist/index.js",
+  "bin": {"poyo-mcp": "./dist/bin.js"},
+  "files": ["dist", "README.md", "LICENSE"],
+  "publishConfig": {"access": "public"},
+  "engines": {"node": ">=20"},
+  "scripts": {
+    "build": "node ../../scripts/clean-dist.mjs && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  }
+}

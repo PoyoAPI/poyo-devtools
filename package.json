@@ -1,0 +1,32 @@
+{
+  "name": "poyo-devtools",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PoYoAPI/poyo-devtools.git"
+  },
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run packages && node scripts/check-skill-coverage.mjs",
+    "skill:check": "node scripts/check-skill-coverage.mjs",
+    "release:check": "node scripts/check-release.mjs",
+    "release:stable": "node scripts/release-stable.mjs",
+    "sync:catalog": "tsx scripts/sync-catalog.ts",
+    "generate:skills": "tsx scripts/generate-skill-references.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  },
+  "description": "Official PoYo CLI, stdio MCP bridge, and Agent Skill. Endpoint schemas are discovered from the hosted PoYo Capability Registry rather than maintained in this repository.",
+  "bugs": {
+    "url": "https://github.com/PoYoAPI/poyo-devtools/issues"
+  },
+  "homepage": "https://github.com/PoYoAPI/poyo-devtools#readme"
+}

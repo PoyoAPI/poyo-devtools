@@ -1,0 +1,4 @@
+interface:
+  display_name: "PoYo AI Models"
+  short_description: "Discover and run PoYo chat and generation models"
+  default_prompt: "Use PoYo to find the right AI model, inspect its schema and price, execute it safely, and retrieve the result."
