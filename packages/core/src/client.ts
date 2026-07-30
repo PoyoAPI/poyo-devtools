@@ -43,7 +43,7 @@ export class PoyoClient {
       body: JSON.stringify({model, input, ...(callbackUrl ? {callback_url: callbackUrl} : {})}),
     });
     const payload = await this.parse<{data: TaskData}>(response);
-    return payload.data;
+    return normalizeTask(payload.data);
   }
 
   async task(taskId: string): Promise<TaskData> {
