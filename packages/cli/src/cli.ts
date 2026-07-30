@@ -37,7 +37,14 @@ export async function runCli(argv: string[]): Promise<number> {
   const format = outputFormat(parsed), output = stringOption(parsed, "output");
 
   if (command === "models") {
-    const catalog = await client.catalog(subcommand ? {category: subcommand} : {});
+    const catalog = await client.catalog({
+      category: subcommand ?? stringOption(parsed, "category"),
+      service_type: stringOption(parsed, "service-type"),
+      tags: stringOption(parsed, "tags")?.split(",").map((tag) => tag.trim()).filter(Boolean),
+      q: stringOption(parsed, "q"),
+      cursor: stringOption(parsed, "cursor"),
+      limit: numberOption(parsed.options, "limit", 100),
+    });
     await renderOutput(catalog.items, format, output);
     return 0;
   }
@@ -162,7 +169,7 @@ const HELP = `PoYo CLI
 
 Usage:
   poyo auth login|status|clear
-  poyo models [category]
+  poyo models [category] [--q QUERY] [--service-type chat|generate] [--tags TAGS] [--cursor CURSOR] [--limit N]
   poyo describe MODEL
   poyo chat MODEL [--protocol openai-chat|openai-responses|anthropic|gemini] [--stream]
   poyo run MODEL [--input JSON | --input-file FILE]

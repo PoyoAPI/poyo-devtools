@@ -21,7 +21,7 @@ export class PoyoClient {
     this.fetchImpl = options.fetch ?? globalThis.fetch;
   }
 
-  async catalog(params: Record<string, string | number | undefined> = {}): Promise<CatalogData> {
+  async catalog(params: Record<string, string | number | string[] | undefined> = {}): Promise<CatalogData> {
     const headers: Record<string, string> = {};
     if (this.catalogCache?.etag && Object.keys(params).length === 0) headers["If-None-Match"] = this.catalogCache.etag;
     const response = await this.fetchImpl(this.url("/v1/catalog/models", {...params, limit: params.limit ?? 100}), {headers});
@@ -89,9 +89,15 @@ export class PoyoClient {
     return {Authorization: `Bearer ${this.apiKey}`, "X-PoYo-Source": this.source, ...extra};
   }
 
-  private url(path: string, params: Record<string, string | number | undefined> = {}): string {
+  private url(path: string, params: Record<string, string | number | string[] | undefined> = {}): string {
     const url = new URL(path, this.baseUrl);
-    for (const [key, value] of Object.entries(params)) if (value !== undefined && value !== "") url.searchParams.set(key, String(value));
+    for (const [key, value] of Object.entries(params)) {
+      if (Array.isArray(value)) {
+        for (const item of value) if (item !== "") url.searchParams.append(key, item);
+      } else if (value !== undefined && value !== "") {
+        url.searchParams.set(key, String(value));
+      }
+    }
     return url.toString();
   }
 
@@ -109,6 +115,6 @@ export class PoyoClient {
 
 function normalizeTask(task: TaskData): TaskData {
   const raw = String(task.status ?? "").toLowerCase();
-  const status = ({pending: "queued", queued: "queued", processing: "running", running: "running", finished: "succeeded", success: "succeeded", failed: "failed"} as Record<string, string>)[raw] ?? raw;
+  const status = ({not_started: "queued", pending: "queued", queued: "queued", processing: "running", running: "running", finished: "succeeded", success: "succeeded", failed: "failed"} as Record<string, string>)[raw] ?? raw;
   return {...task, raw_status: raw, status};
 }
