@@ -10,7 +10,7 @@ Use the production Capability Catalog as the source of truth. Never invent model
 ## Choose the integration
 
 1. Prefer hosted MCP at `https://api.poyo.ai/mcp`.
-2. Use `?categories=...` or `?models=...` when a small strong-typed tool set is useful; never combine them.
+2. After discovery, prefer `?models=MODEL_A,MODEL_B` when a small strongly typed tool set is useful. Use `?categories=...` only for bounded exploration, and never combine both filters.
 3. Use `npx @poyoapi/mcp` for clients that only support stdio.
 4. Use `npx @poyoapi/cli` for chat SSE or when MCP is unavailable.
 5. Mark Skill executions with `_request_source: "skill"` in MCP or `--request-source skill` in CLI.
