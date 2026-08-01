@@ -12,6 +12,5 @@ Generated from PoYo Catalog `v1-bb589b130d2a`. Always call describe before execu
 | `gpt-image-1.5` | generate |  | GPT Image 1.5 Generation and Editing |
 | `grok-imagine-image` | generate |  | Grok Imagine Image Generation with text-to-image and image-to-image support |
 | `nano-banana` | generate |  | Fast Image Generation powered by Gemini 2.5 Flash |
-| `nano-banana-vip` | generate |  | Fast Image Generation powered by Gemini 2.5 Flash |
 | `seedream-4` | generate |  | Image generation model powered by ByteDance Seedream-4 with support for text-to-image and image editing |
 | `z-image` | generate |  | Z-Image Generation with unified text-to-image and image editing support |

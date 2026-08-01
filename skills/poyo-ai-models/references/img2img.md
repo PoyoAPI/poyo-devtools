@@ -9,15 +9,8 @@ Generated from PoYo Catalog `v1-bb589b130d2a`. Always call describe before execu
 | `gpt-image-1.5-edit` | generate |  | GPT Image 1.5 Generation and Editing |
 | `gpt-image-2` | generate |  | GPT Image 2 generation and multi-image editing |
 | `gpt-image-2-edit` | generate |  | GPT Image 2 generation and multi-image editing |
-| `gpt-image-2-edit-vip` | generate |  | GPT Image 2 generation and multi-image editing |
-| `gpt-image-2-vip` | generate |  | GPT Image 2 generation and multi-image editing |
 | `nano-banana-2` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
 | `nano-banana-2-edit` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
-| `nano-banana-2-edit-vip` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
 | `nano-banana-2-new` | generate |  | Next-generation AI image generation powered by Gemini 3.1 Flash Image Preview |
 | `nano-banana-2-new-edit` | generate |  | Next-generation AI image generation powered by Gemini 3.1 Flash Image Preview |
-| `nano-banana-2-vip` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
 | `nano-banana-edit` | generate |  | Fast Image Generation powered by Gemini 2.5 Flash |
-| `nano-banana-edit-vip` | generate |  | Fast Image Generation powered by Gemini 2.5 Flash |
-| `nano-banana-pro-edit-vip` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
-| `nano-banana-pro-vip` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |

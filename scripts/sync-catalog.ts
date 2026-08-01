@@ -25,7 +25,13 @@ do {
     throw new Error("Catalog schema changed while synchronizing pages");
   }
   schemaVersion = payload.data.schema_version;
-  items.push(...payload.data.items);
+  items.push(...payload.data.items.filter((item) => {
+    if (!item || typeof item !== "object") return true;
+    const capability = item as {model_id?: unknown; title?: unknown};
+    return ![capability.model_id, capability.title].some(
+      (value) => typeof value === "string" && value.toLowerCase().includes("vip"),
+    );
+  }));
   cursor = payload.data.next_cursor ?? null;
 } while (cursor);
 
