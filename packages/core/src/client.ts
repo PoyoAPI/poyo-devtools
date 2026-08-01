@@ -105,9 +105,15 @@ export class PoyoClient {
     const text = await response.text();
     let payload: unknown;
     try { payload = text ? JSON.parse(text) : undefined; } catch { payload = text; }
-    if (!response.ok) {
-      const detail = typeof payload === "object" && payload && "detail" in payload ? (payload as {detail: unknown}).detail : payload;
-      throw new PoyoApiError(`PoYo API request failed (${response.status})`, response.status, detail);
+    const envelope = typeof payload === "object" && payload ? payload as Record<string, unknown> : undefined;
+    const businessCode = Number(envelope?.code);
+    const status = !response.ok ? response.status : Number.isFinite(businessCode) && businessCode >= 400 ? businessCode : 0;
+    if (status) {
+      const detail = envelope?.detail ?? envelope?.error ?? payload;
+      const message = typeof detail === "object" && detail && "message" in detail
+        ? String((detail as {message: unknown}).message)
+        : `PoYo API request failed (${status})`;
+      throw new PoyoApiError(message, status, detail);
     }
     return payload as T;
   }
