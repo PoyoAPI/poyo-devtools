@@ -98,24 +98,40 @@ async function consumeSse(stream: ReadableStream<Uint8Array>, jsonl: boolean): P
     for (const chunk of chunks) {
       const data = chunk.split(/\r?\n/).filter((line) => line.startsWith("data:")).map((line) => line.slice(5).trim()).join("\n");
       if (!data || data === "[DONE]") continue;
+      const event = parseSseData(data);
       if (jsonl) process.stdout.write(`${data}\n`);
-      else process.stdout.write(extractText(data));
+      if (isSseError(event)) {
+        const detail = event.error;
+        const message = typeof detail === "object" && detail && "message" in detail
+          ? String((detail as {message: unknown}).message)
+          : "PoYo chat stream failed";
+        throw new PoyoApiError(message, 502, event);
+      }
+      if (!jsonl) process.stdout.write(extractText(event));
     }
     if (done) break;
   }
   if (!jsonl) process.stdout.write("\n");
 }
 
-function extractText(data: string): string {
+function parseSseData(data: string): Record<string, any> | string {
+  try { return JSON.parse(data); } catch { return data; }
+}
+
+function isSseError(value: Record<string, any> | string): value is Record<string, any> {
+  return typeof value === "object" && value !== null
+    && (value.type === "error" || Boolean(value.error));
+}
+
+function extractText(value: Record<string, any> | string): string {
+  if (typeof value === "string") return value;
   try {
-    const value = JSON.parse(data);
     return value.choices?.[0]?.delta?.content
-      ?? value.delta?.text
+      ?? (typeof value.delta === "string" ? value.delta : value.delta?.text)
       ?? value.delta?.text_delta
       ?? value.candidates?.[0]?.content?.parts?.map((part: {text?: string}) => part.text ?? "").join("")
-      ?? value.response?.output?.flatMap((item: {content?: Array<{text?: string}>}) => item.content ?? []).map((item: {text?: string}) => item.text ?? "").join("")
       ?? "";
-  } catch { return data; }
+  } catch { return ""; }
 }
 
 async function authCommand(action: string | undefined, parsed: ParsedArgs): Promise<number> {
