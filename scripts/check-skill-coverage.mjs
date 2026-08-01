@@ -6,6 +6,7 @@ const ids = new Set();
 for (const model of catalog.items) {
   if (!model.model_id || ids.has(model.model_id)) throw new Error(`Invalid or duplicate model_id: ${model.model_id}`);
   ids.add(model.model_id);
+  if (Object.hasOwn(model, "vendor_code")) throw new Error(`Catalog exposes vendor_code: ${model.model_id}`);
   if (!model.input_schema || !model.output_schema) throw new Error(`Missing schema: ${model.model_id}`);
   if (!model.examples?.length) throw new Error(`Missing examples: ${model.model_id}`);
 }

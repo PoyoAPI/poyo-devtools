@@ -11,7 +11,6 @@ export type RequestSource = "cli" | "skill-cli" | "mcp-stdio" | "mcp-remote";
 export interface Capability {
   model_id: string;
   tool_name: string;
-  vendor_code: string;
   service_type: "chat" | "generate";
   category: string;
   title: string;
