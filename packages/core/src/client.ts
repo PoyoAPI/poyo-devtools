@@ -36,10 +36,10 @@ export class PoyoClient {
     return (await this.parse<{code: number; data: Capability}>(response)).data;
   }
 
-  async submit(model: string, input: Record<string, unknown>, callbackUrl?: string): Promise<TaskData> {
+  async submit(model: string, input: Record<string, unknown>, callbackUrl?: string, idempotencyKey?: string): Promise<TaskData> {
     const response = await this.fetchImpl(this.url("/api/generate/submit"), {
       method: "POST",
-      headers: this.authHeaders({"Content-Type": "application/json"}),
+      headers: this.authHeaders({"Content-Type": "application/json", ...(idempotencyKey ? {"Idempotency-Key": idempotencyKey} : {})}),
       body: JSON.stringify({model, input, ...(callbackUrl ? {callback_url: callbackUrl} : {})}),
     });
     const payload = await this.parse<{data: TaskData}>(response);
@@ -62,7 +62,7 @@ export class PoyoClient {
     }
   }
 
-  async chat(model: string, protocol: string, input: Record<string, unknown>, stream = false): Promise<unknown> {
+  async chat(model: string, protocol: string, input: Record<string, unknown>, stream = false, idempotencyKey?: string): Promise<unknown> {
     const paths: Record<string, string> = {
       "openai-chat": "/v1/chat/completions",
       "openai-responses": "/v1/responses",
@@ -71,7 +71,7 @@ export class PoyoClient {
     };
     const response = await this.fetchImpl(this.url(paths[protocol] ?? paths["openai-chat"]), {
       method: "POST",
-      headers: this.authHeaders({"Content-Type": "application/json", Accept: stream ? "text/event-stream" : "application/json"}),
+      headers: this.authHeaders({"Content-Type": "application/json", Accept: stream ? "text/event-stream" : "application/json", ...(!stream && idempotencyKey ? {"Idempotency-Key": idempotencyKey} : {})}),
       body: JSON.stringify({...input, model, stream}),
     });
     if (!stream) return this.parse<unknown>(response);

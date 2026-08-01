@@ -66,7 +66,7 @@ export async function runCli(argv: string[]): Promise<number> {
     const input = await buildInput(capability, parsed.options);
     const protocol = stringOption(parsed, "protocol") ?? capability.supported_protocols[0] ?? "openai-chat";
     const stream = parsed.options.stream === true;
-    const result = await client.chat(subcommand, protocol, input, stream);
+    const result = await client.chat(subcommand, protocol, input, stream, stringOption(parsed, "idempotency-key"));
     if (stream) await consumeSse(result as ReadableStream<Uint8Array>, format === "jsonl");
     else await renderOutput(result, format, output);
     return 0;
@@ -75,7 +75,12 @@ export async function runCli(argv: string[]): Promise<number> {
     if (!subcommand) throw new Error(`Usage: poyo ${command} MODEL [--input JSON | --input-file FILE]`);
     const capability = await client.capability(subcommand);
     const input = await buildInput(capability, parsed.options);
-    const task = await client.submit(subcommand, input, stringOption(parsed, "callback-url"));
+    const task = await client.submit(
+      subcommand,
+      input,
+      stringOption(parsed, "callback-url"),
+      stringOption(parsed, "idempotency-key"),
+    );
     if (command === "run" || parsed.options.wait === true) {
       const completed = await client.waitTask(task.task_id, numberOption(parsed.options, "timeout", 90));
       await renderOutput(completed, format, output);
