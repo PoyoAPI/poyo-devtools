@@ -1,9 +1,11 @@
 # img2img
 
-Generated from PoYo Catalog `v1-dc9eadaba36e`. Always call describe before execution.
+Generated from PoYo Catalog `v1-1233beeeaff8`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
+| `flux-2-flex-edit` | generate |  | 32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering |
+| `flux-2-pro-edit` | generate |  | 32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering |
 | `gpt-image-1.5-edit` | generate |  | GPT Image 1.5 Generation and Editing |
 | `gpt-image-2` | generate |  | GPT Image 2 generation and multi-image editing |
 | `gpt-image-2-edit` | generate |  | GPT Image 2 generation and multi-image editing |

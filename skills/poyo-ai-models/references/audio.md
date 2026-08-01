@@ -1,6 +1,6 @@
 # audio
 
-Generated from PoYo Catalog `v1-dc9eadaba36e`. Always call describe before execution.
+Generated from PoYo Catalog `v1-1233beeeaff8`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|

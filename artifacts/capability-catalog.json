@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-dc9eadaba36e",
+  "schema_version": "v1-1233beeeaff8",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -13024,7 +13024,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 10,
+        "credits": 5,
         "input_credits": null,
         "output_credits": null
       },
@@ -13208,7 +13208,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 10,
+        "credits": 5,
         "input_credits": null,
         "output_credits": null
       },
@@ -14251,312 +14251,6 @@
       "status": "stable"
     },
     {
-      "model_id": "flux-2-flex-edit",
-      "tool_name": "poyo_flux_2_flex_edit",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "image_tools",
-      "title": "flux-2-flex-edit",
-      "description": "32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering",
-      "tags": [
-        "image_tools"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt",
-          "size",
-          "resolution"
-        ],
-        "properties": {
-          "size": {
-            "enum": [
-              "1:1",
-              "4:3",
-              "3:4",
-              "16:9",
-              "9:16",
-              "3:2",
-              "2:3",
-              "auto"
-            ],
-            "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio. Use 'auto' to automatically detect based on first input image"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A beautiful sunset over the ocean",
-            "maxLength": 5000,
-            "minLength": 3,
-            "description": "Generation prompt describing the desired output. Must be between 3 and 5,000 characters."
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [
-              "https://example.com/1.jpg",
-              "https://example.com/2.jpg"
-            ],
-            "maxItems": 8,
-            "minItems": 1,
-            "description": "Input reference images (1-8 images). Required for edit models (flux-2-pro-edit, flux-2-flex-edit)"
-          },
-          "resolution": {
-            "enum": [
-              "1K",
-              "2K"
-            ],
-            "type": "string",
-            "example": "1K",
-            "description": "Output image resolution"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "size": "1:1",
-          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
-          "resolution": "1K"
-        },
-        {
-          "size": "1:1",
-          "prompt": "Add colorful flowers in the foreground",
-          "image_urls": [
-            "https://example.com/1.jpg",
-            "https://example.com/2.jpg"
-          ],
-          "resolution": "1K"
-        },
-        {
-          "size": "1:1",
-          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
-          "resolution": "1K"
-        },
-        {
-          "size": "1:1",
-          "prompt": "Add colorful flowers in the foreground",
-          "image_urls": [
-            "https://example.com/1.jpg",
-            "https://example.com/2.jpg"
-          ],
-          "resolution": "1K"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 18,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "flux-2-pro-edit",
-      "tool_name": "poyo_flux_2_pro_edit",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "image_tools",
-      "title": "flux-2-pro-edit",
-      "description": "32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering",
-      "tags": [
-        "image_tools"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt",
-          "size",
-          "resolution"
-        ],
-        "properties": {
-          "size": {
-            "enum": [
-              "1:1",
-              "4:3",
-              "3:4",
-              "16:9",
-              "9:16",
-              "3:2",
-              "2:3",
-              "auto"
-            ],
-            "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio. Use 'auto' to automatically detect based on first input image"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A beautiful sunset over the ocean",
-            "maxLength": 5000,
-            "minLength": 3,
-            "description": "Generation prompt describing the desired output. Must be between 3 and 5,000 characters."
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [
-              "https://example.com/1.jpg",
-              "https://example.com/2.jpg"
-            ],
-            "maxItems": 8,
-            "minItems": 1,
-            "description": "Input reference images (1-8 images). Required for edit models (flux-2-pro-edit, flux-2-flex-edit)"
-          },
-          "resolution": {
-            "enum": [
-              "1K",
-              "2K"
-            ],
-            "type": "string",
-            "example": "1K",
-            "description": "Output image resolution"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "size": "1:1",
-          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
-          "resolution": "1K"
-        },
-        {
-          "size": "1:1",
-          "prompt": "Add colorful flowers in the foreground",
-          "image_urls": [
-            "https://example.com/1.jpg",
-            "https://example.com/2.jpg"
-          ],
-          "resolution": "1K"
-        },
-        {
-          "size": "1:1",
-          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
-          "resolution": "1K"
-        },
-        {
-          "size": "1:1",
-          "prompt": "Add colorful flowers in the foreground",
-          "image_urls": [
-            "https://example.com/1.jpg",
-            "https://example.com/2.jpg"
-          ],
-          "resolution": "1K"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 6,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
       "model_id": "flux-kontext-max-edit",
       "tool_name": "poyo_flux_kontext_max_edit",
       "vendor_code": "10000001",
@@ -14844,7 +14538,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 5,
+        "credits": 10,
         "input_credits": null,
         "output_credits": null
       },
@@ -15113,6 +14807,312 @@
           "prompt": "Transform this scene into a polished ecommerce product photo with clean studio lighting",
           "image_urls": [
             "https://example.com/reference1.jpg"
+          ],
+          "resolution": "1K"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 5,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "flux-2-flex-edit",
+      "tool_name": "poyo_flux_2_flex_edit",
+      "vendor_code": "10000001",
+      "service_type": "generate",
+      "category": "img2img",
+      "title": "flux-2-flex-edit",
+      "description": "32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering",
+      "tags": [
+        "img2img"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "size",
+          "resolution"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "3:2",
+              "2:3",
+              "auto"
+            ],
+            "type": "string",
+            "example": "1:1",
+            "description": "Image size ratio. Use 'auto' to automatically detect based on first input image"
+          },
+          "prompt": {
+            "type": "string",
+            "example": "A beautiful sunset over the ocean",
+            "maxLength": 5000,
+            "minLength": 3,
+            "description": "Generation prompt describing the desired output. Must be between 3 and 5,000 characters."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/1.jpg",
+              "https://example.com/2.jpg"
+            ],
+            "maxItems": 8,
+            "minItems": 1,
+            "description": "Input reference images (1-8 images). Required for edit models (flux-2-pro-edit, flux-2-flex-edit)"
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "example": "1K",
+            "description": "Output image resolution"
+          }
+        },
+        "description": "Input parameters for generation"
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "1:1",
+          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
+          "resolution": "1K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "Add colorful flowers in the foreground",
+          "image_urls": [
+            "https://example.com/1.jpg",
+            "https://example.com/2.jpg"
+          ],
+          "resolution": "1K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
+          "resolution": "1K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "Add colorful flowers in the foreground",
+          "image_urls": [
+            "https://example.com/1.jpg",
+            "https://example.com/2.jpg"
+          ],
+          "resolution": "1K"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 18,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "flux-2-pro-edit",
+      "tool_name": "poyo_flux_2_pro_edit",
+      "vendor_code": "10000001",
+      "service_type": "generate",
+      "category": "img2img",
+      "title": "flux-2-pro-edit",
+      "description": "32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering",
+      "tags": [
+        "img2img"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "size",
+          "resolution"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "3:2",
+              "2:3",
+              "auto"
+            ],
+            "type": "string",
+            "example": "1:1",
+            "description": "Image size ratio. Use 'auto' to automatically detect based on first input image"
+          },
+          "prompt": {
+            "type": "string",
+            "example": "A beautiful sunset over the ocean",
+            "maxLength": 5000,
+            "minLength": 3,
+            "description": "Generation prompt describing the desired output. Must be between 3 and 5,000 characters."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/1.jpg",
+              "https://example.com/2.jpg"
+            ],
+            "maxItems": 8,
+            "minItems": 1,
+            "description": "Input reference images (1-8 images). Required for edit models (flux-2-pro-edit, flux-2-flex-edit)"
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "example": "1K",
+            "description": "Output image resolution"
+          }
+        },
+        "description": "Input parameters for generation"
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "1:1",
+          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
+          "resolution": "1K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "Add colorful flowers in the foreground",
+          "image_urls": [
+            "https://example.com/1.jpg",
+            "https://example.com/2.jpg"
+          ],
+          "resolution": "1K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "The jar in image 1 is filled with capsules exactly same as image 2 with the exact logo",
+          "resolution": "1K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "Add colorful flowers in the foreground",
+          "image_urls": [
+            "https://example.com/1.jpg",
+            "https://example.com/2.jpg"
           ],
           "resolution": "1K"
         }
@@ -16060,7 +16060,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 5,
+        "credits": 8,
         "input_credits": null,
         "output_credits": null
       },
@@ -16239,7 +16239,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 5,
+        "credits": 8,
         "input_credits": null,
         "output_credits": null
       },
@@ -16418,7 +16418,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 3,
+        "credits": 4,
         "input_credits": null,
         "output_credits": null
       },
@@ -16961,7 +16961,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 3,
+        "credits": 4,
         "input_credits": null,
         "output_credits": null
       },
@@ -17382,7 +17382,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 6,
+        "credits": 7,
         "input_credits": null,
         "output_credits": null
       },
@@ -17561,7 +17561,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 6,
+        "credits": 7,
         "input_credits": null,
         "output_credits": null
       },
@@ -18166,6 +18166,460 @@
       "status": "stable"
     },
     {
+      "model_id": "kling-3.0/pro",
+      "tool_name": "poyo_kling_3_0_pro",
+      "vendor_code": "10000001",
+      "service_type": "generate",
+      "category": "img2vid",
+      "title": "kling-3.0/pro",
+      "description": "Next-generation Video Generation with Kling 3.0",
+      "tags": [
+        "img2vid"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "duration",
+          "multi_shots",
+          "sound"
+        ],
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "Whether to enable sound effects. true enables sound effects, false disables them. When multi_shots is true, this field must be true."
+          },
+          "prompt": {
+            "type": "string",
+            "example": "A street musician playing violin on a rainy evening, reflections shimmering on wet cobblestones",
+            "maxLength": 2500,
+            "description": "Video generation prompt. Required when multi_shots is false. You can reference elements using @element_name syntax (e.g., @element_dog)"
+          },
+          "duration": {
+            "type": "integer",
+            "example": 5,
+            "maximum": 15,
+            "minimum": 3,
+            "description": "Video duration in seconds. For single shot mode, duration can be 3-15 seconds. For multi-shot mode, duration is the total duration of all shots"
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/start-frame.png"
+            ],
+            "description": "Array of image URLs. For single shot mode (multi_shots: false), provide start and end frame URLs. For multi-shot mode (multi_shots: true), provide only the start frame URL. **Required** when `kling_elements` is provided"
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "Enable multi-shot mode. When true, use multi_prompt array instead of prompt. When false, use prompt string. Default is false"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "example": "1:1",
+            "description": "Video aspect ratio. When the input does not contain reference images (image_urls), the default is 1:1 if the aspect_ratio parameter is not passed; when the input contains the first frame image, the aspect_ratio parameter will be ignored, and the output will use the aspect ratio of the first frame image"
+          },
+          "multi_prompt": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "prompt",
+                "duration"
+              ],
+              "properties": {
+                "prompt": {
+                  "type": "string",
+                  "maxLength": 2500,
+                  "description": "Prompt text for this shot"
+                },
+                "duration": {
+                  "type": "integer",
+                  "maximum": 12,
+                  "minimum": 1,
+                  "description": "Duration in seconds for this shot (1-12)"
+                }
+              }
+            },
+            "example": [
+              {
+                "prompt": "A surfer paddling out into the ocean as waves build on the horizon",
+                "duration": 4
+              },
+              {
+                "prompt": "The surfer catches a massive wave and rides it toward the shore at sunset",
+                "duration": 5
+              }
+            ],
+            "description": "Array of prompt objects for multi-shot mode. Required when multi_shots is true. Each object contains a prompt and duration. Total duration of all shots cannot exceed 15 seconds"
+          },
+          "kling_elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Element name used in @element_name references"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Element description"
+                },
+                "element_input_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "description": "Array of 2-4 image URLs (JPG/PNG, max 10MB each)"
+                },
+                "element_input_video_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "description": "Array with 1 video URL (MP4/MOV, max 50MB)"
+                }
+              }
+            },
+            "example": [
+              {
+                "name": "element_robot",
+                "description": "robot character",
+                "element_input_urls": [
+                  "https://example.com/robot-front.jpeg",
+                  "https://example.com/robot-side.png"
+                ]
+              },
+              {
+                "name": "element_dancer",
+                "description": "dancer reference motion",
+                "element_input_video_urls": [
+                  "https://example.com/dancer-motion.mp4"
+                ]
+              }
+            ],
+            "description": "Array of element objects that can be referenced in prompts using @element_name syntax. Elements can be defined using images (2-4 images) or a single video. When provided, `image_urls` is required"
+          }
+        },
+        "description": "Input parameters for generation"
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "sound": true,
+          "prompt": "A chef carefully plating a gourmet dish in a modern kitchen, steam rising from the food under warm lighting",
+          "duration": 5,
+          "multi_shots": false,
+          "aspect_ratio": "16:9"
+        },
+        {
+          "sound": true,
+          "prompt": "A vintage train traveling through a misty valley at dawn, golden light breaking through the clouds above rolling green hills",
+          "duration": 10,
+          "multi_shots": false,
+          "aspect_ratio": "16:9"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 39,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "kling-3.0/standard",
+      "tool_name": "poyo_kling_3_0_standard",
+      "vendor_code": "10000001",
+      "service_type": "generate",
+      "category": "img2vid",
+      "title": "kling-3.0/standard",
+      "description": "Next-generation Video Generation with Kling 3.0",
+      "tags": [
+        "img2vid"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "duration",
+          "multi_shots",
+          "sound"
+        ],
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "Whether to enable sound effects. true enables sound effects, false disables them. When multi_shots is true, this field must be true."
+          },
+          "prompt": {
+            "type": "string",
+            "example": "A street musician playing violin on a rainy evening, reflections shimmering on wet cobblestones",
+            "maxLength": 2500,
+            "description": "Video generation prompt. Required when multi_shots is false. You can reference elements using @element_name syntax (e.g., @element_dog)"
+          },
+          "duration": {
+            "type": "integer",
+            "example": 5,
+            "maximum": 15,
+            "minimum": 3,
+            "description": "Video duration in seconds. For single shot mode, duration can be 3-15 seconds. For multi-shot mode, duration is the total duration of all shots"
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/start-frame.png"
+            ],
+            "description": "Array of image URLs. For single shot mode (multi_shots: false), provide start and end frame URLs. For multi-shot mode (multi_shots: true), provide only the start frame URL. **Required** when `kling_elements` is provided"
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "Enable multi-shot mode. When true, use multi_prompt array instead of prompt. When false, use prompt string. Default is false"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "example": "1:1",
+            "description": "Video aspect ratio. When the input does not contain reference images (image_urls), the default is 1:1 if the aspect_ratio parameter is not passed; when the input contains the first frame image, the aspect_ratio parameter will be ignored, and the output will use the aspect ratio of the first frame image"
+          },
+          "multi_prompt": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "prompt",
+                "duration"
+              ],
+              "properties": {
+                "prompt": {
+                  "type": "string",
+                  "maxLength": 2500,
+                  "description": "Prompt text for this shot"
+                },
+                "duration": {
+                  "type": "integer",
+                  "maximum": 12,
+                  "minimum": 1,
+                  "description": "Duration in seconds for this shot (1-12)"
+                }
+              }
+            },
+            "example": [
+              {
+                "prompt": "A surfer paddling out into the ocean as waves build on the horizon",
+                "duration": 4
+              },
+              {
+                "prompt": "The surfer catches a massive wave and rides it toward the shore at sunset",
+                "duration": 5
+              }
+            ],
+            "description": "Array of prompt objects for multi-shot mode. Required when multi_shots is true. Each object contains a prompt and duration. Total duration of all shots cannot exceed 15 seconds"
+          },
+          "kling_elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Element name used in @element_name references"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Element description"
+                },
+                "element_input_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "description": "Array of 2-4 image URLs (JPG/PNG, max 10MB each)"
+                },
+                "element_input_video_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "description": "Array with 1 video URL (MP4/MOV, max 50MB)"
+                }
+              }
+            },
+            "example": [
+              {
+                "name": "element_robot",
+                "description": "robot character",
+                "element_input_urls": [
+                  "https://example.com/robot-front.jpeg",
+                  "https://example.com/robot-side.png"
+                ]
+              },
+              {
+                "name": "element_dancer",
+                "description": "dancer reference motion",
+                "element_input_video_urls": [
+                  "https://example.com/dancer-motion.mp4"
+                ]
+              }
+            ],
+            "description": "Array of element objects that can be referenced in prompts using @element_name syntax. Elements can be defined using images (2-4 images) or a single video. When provided, `image_urls` is required"
+          }
+        },
+        "description": "Input parameters for generation"
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "sound": true,
+          "prompt": "A chef carefully plating a gourmet dish in a modern kitchen, steam rising from the food under warm lighting",
+          "duration": 5,
+          "multi_shots": false,
+          "aspect_ratio": "16:9"
+        },
+        {
+          "sound": true,
+          "prompt": "A vintage train traveling through a misty valley at dawn, golden light breaking through the clouds above rolling green hills",
+          "duration": 10,
+          "multi_shots": false,
+          "aspect_ratio": "16:9"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 27,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "seedance-1.0-pro",
       "tool_name": "poyo_seedance_1_0_pro",
       "vendor_code": "10000001",
@@ -18455,145 +18909,6 @@
       "status": "stable"
     },
     {
-      "model_id": "sora-2",
-      "tool_name": "poyo_sora_2",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2",
-      "description": "Sora 2 Standard Quality Video Generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "style": {
-            "enum": [
-              "thanksgiving",
-              "comic",
-              "news",
-              "selfie",
-              "nostalgic",
-              "anime"
-            ],
-            "type": "string",
-            "example": "anime",
-            "description": "Video style"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired output"
-          },
-          "duration": {
-            "enum": [
-              10,
-              15
-            ],
-            "type": "integer",
-            "example": 15,
-            "description": "Video duration in seconds (10 or 15)"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [],
-            "maxItems": 1,
-            "description": "Reference image URL (for image-to-video). Only one image is supported. Maximum file size: 10MB. Supported formats: .jpeg, .jpg, .png, .webp"
-          },
-          "storyboard": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether to use storyboard for finer control over video generation details. true: Enable storyboard feature, false: Do not use storyboard"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A time-lapse of a bustling city street transitioning from day to night",
-          "duration": 15,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "A peaceful sunset over a calm ocean with gentle waves",
-          "duration": 15,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 10,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
       "model_id": "sora-2-beta",
       "tool_name": "poyo_sora_2_beta",
       "vendor_code": "10000001",
@@ -18719,840 +19034,6 @@
         "type": "fixed",
         "unit": "request",
         "credits": 40,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-private",
-      "tool_name": "poyo_sora_2_private",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2-private",
-      "description": "Sora 2 Standard Quality Video Generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "style": {
-            "enum": [
-              "thanksgiving",
-              "comic",
-              "news",
-              "selfie",
-              "nostalgic",
-              "anime"
-            ],
-            "type": "string",
-            "example": "anime",
-            "description": "Video style"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired output"
-          },
-          "duration": {
-            "enum": [
-              10,
-              15
-            ],
-            "type": "integer",
-            "example": 15,
-            "description": "Video duration in seconds (10 or 15)"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [],
-            "maxItems": 1,
-            "description": "Reference image URL (for image-to-video). Only one image is supported. Maximum file size: 10MB. Supported formats: .jpeg, .jpg, .png, .webp"
-          },
-          "storyboard": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether to use storyboard for finer control over video generation details. true: Enable storyboard feature, false: Do not use storyboard"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A time-lapse of a bustling city street transitioning from day to night",
-          "duration": 15,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "A peaceful sunset over a calm ocean with gentle waves",
-          "duration": 15,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 10,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-pro",
-      "tool_name": "poyo_sora_2_pro",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2-pro",
-      "description": "Sora 2 Pro Premium Quality Video Generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "style": {
-            "enum": [
-              "thanksgiving",
-              "comic",
-              "news",
-              "selfie",
-              "nostalgic",
-              "anime"
-            ],
-            "type": "string",
-            "example": "anime",
-            "description": "Video style"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired output"
-          },
-          "duration": {
-            "enum": [
-              15,
-              25
-            ],
-            "type": "integer",
-            "example": 25,
-            "description": "Video duration in seconds (15 or 25)"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [],
-            "maxItems": 1,
-            "description": "Reference image URL (for image-to-video). Only one image is supported. Maximum file size: 10MB. Supported formats: .jpeg, .jpg, .png, .webp"
-          },
-          "storyboard": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether to use storyboard for finer control over video generation details. true: Enable storyboard feature, false: Do not use storyboard"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A cinematic drone shot flying through a misty forest at dawn",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "A dramatic aerial view of mountains with storm clouds rolling in",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 100,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-pro-private",
-      "tool_name": "poyo_sora_2_pro_private",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2-pro-private",
-      "description": "Sora 2 Pro Premium Quality Video Generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "style": {
-            "enum": [
-              "thanksgiving",
-              "comic",
-              "news",
-              "selfie",
-              "nostalgic",
-              "anime"
-            ],
-            "type": "string",
-            "example": "anime",
-            "description": "Video style"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired output"
-          },
-          "duration": {
-            "enum": [
-              15,
-              25
-            ],
-            "type": "integer",
-            "example": 25,
-            "description": "Video duration in seconds (15 or 25)"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [],
-            "maxItems": 1,
-            "description": "Reference image URL (for image-to-video). Only one image is supported. Maximum file size: 10MB. Supported formats: .jpeg, .jpg, .png, .webp"
-          },
-          "storyboard": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether to use storyboard for finer control over video generation details. true: Enable storyboard feature, false: Do not use storyboard"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A cinematic drone shot flying through a misty forest at dawn",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "A dramatic aerial view of mountains with storm clouds rolling in",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 100,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-stable",
-      "tool_name": "poyo_sora_2_stable",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2-stable",
-      "description": "Sora 2 Standard Quality Video Generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "style": {
-            "enum": [
-              "thanksgiving",
-              "comic",
-              "news",
-              "selfie",
-              "nostalgic",
-              "anime"
-            ],
-            "type": "string",
-            "example": "anime",
-            "description": "Video style"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired output"
-          },
-          "duration": {
-            "enum": [
-              10,
-              15
-            ],
-            "type": "integer",
-            "example": 15,
-            "description": "Video duration in seconds (10 or 15)"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [],
-            "maxItems": 1,
-            "description": "Reference image URL (for image-to-video). Only one image is supported. Maximum file size: 10MB. Supported formats: .jpeg, .jpg, .png, .webp"
-          },
-          "storyboard": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether to use storyboard for finer control over video generation details. true: Enable storyboard feature, false: Do not use storyboard"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A time-lapse of a bustling city street transitioning from day to night",
-          "duration": 15,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "A peaceful sunset over a calm ocean with gentle waves",
-          "duration": 15,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 50,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-svip",
-      "tool_name": "poyo_sora_2_svip",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2-svip",
-      "description": "Sora 2 Pro Premium Quality Video Generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "style": {
-            "enum": [
-              "thanksgiving",
-              "comic",
-              "news",
-              "selfie",
-              "nostalgic",
-              "anime"
-            ],
-            "type": "string",
-            "example": "anime",
-            "description": "Video style"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired output"
-          },
-          "duration": {
-            "enum": [
-              15,
-              25
-            ],
-            "type": "integer",
-            "example": 25,
-            "description": "Video duration in seconds (15 or 25)"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [],
-            "maxItems": 1,
-            "description": "Reference image URL (for image-to-video). Only one image is supported. Maximum file size: 10MB. Supported formats: .jpeg, .jpg, .png, .webp"
-          },
-          "storyboard": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether to use storyboard for finer control over video generation details. true: Enable storyboard feature, false: Do not use storyboard"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A cinematic drone shot flying through a misty forest at dawn",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "A dramatic aerial view of mountains with storm clouds rolling in",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 8,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-svip-stable",
-      "tool_name": "poyo_sora_2_svip_stable",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2-svip-stable",
-      "description": "Sora 2 Pro Premium Quality Video Generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "style": {
-            "enum": [
-              "thanksgiving",
-              "comic",
-              "news",
-              "selfie",
-              "nostalgic",
-              "anime"
-            ],
-            "type": "string",
-            "example": "anime",
-            "description": "Video style"
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired output"
-          },
-          "duration": {
-            "enum": [
-              15,
-              25
-            ],
-            "type": "integer",
-            "example": 25,
-            "description": "Video duration in seconds (15 or 25)"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [],
-            "maxItems": 1,
-            "description": "Reference image URL (for image-to-video). Only one image is supported. Maximum file size: 10MB. Supported formats: .jpeg, .jpg, .png, .webp"
-          },
-          "storyboard": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether to use storyboard for finer control over video generation details. true: Enable storyboard feature, false: Do not use storyboard"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A cinematic drone shot flying through a misty forest at dawn",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "A dramatic aerial view of mountains with storm clouds rolling in",
-          "duration": 25,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 18,
         "input_credits": null,
         "output_credits": null
       },
@@ -19701,7 +19182,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 50,
+        "credits": 36,
         "input_credits": null,
         "output_credits": null
       },
@@ -19850,7 +19331,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 10,
+        "credits": 20,
         "input_credits": null,
         "output_credits": null
       },
@@ -19999,7 +19480,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 50,
+        "credits": 200,
         "input_credits": null,
         "output_credits": null
       },
@@ -22307,7 +21788,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 5,
+        "credits": 10,
         "input_credits": null,
         "output_credits": null
       },
@@ -23081,7 +22562,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 6,
+        "credits": 5,
         "input_credits": null,
         "output_credits": null
       },
@@ -25764,460 +25245,6 @@
       "status": "stable"
     },
     {
-      "model_id": "kling-3.0/pro",
-      "tool_name": "poyo_kling_3_0_pro",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "video",
-      "title": "kling-3.0/pro",
-      "description": "Next-generation Video Generation with Kling 3.0",
-      "tags": [
-        "video"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "duration",
-          "multi_shots",
-          "sound"
-        ],
-        "properties": {
-          "sound": {
-            "type": "boolean",
-            "default": true,
-            "example": true,
-            "description": "Whether to enable sound effects. true enables sound effects, false disables them. When multi_shots is true, this field must be true."
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A street musician playing violin on a rainy evening, reflections shimmering on wet cobblestones",
-            "maxLength": 2500,
-            "description": "Video generation prompt. Required when multi_shots is false. You can reference elements using @element_name syntax (e.g., @element_dog)"
-          },
-          "duration": {
-            "type": "integer",
-            "example": 5,
-            "maximum": 15,
-            "minimum": 3,
-            "description": "Video duration in seconds. For single shot mode, duration can be 3-15 seconds. For multi-shot mode, duration is the total duration of all shots"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [
-              "https://example.com/start-frame.png"
-            ],
-            "description": "Array of image URLs. For single shot mode (multi_shots: false), provide start and end frame URLs. For multi-shot mode (multi_shots: true), provide only the start frame URL. **Required** when `kling_elements` is provided"
-          },
-          "multi_shots": {
-            "type": "boolean",
-            "default": false,
-            "example": false,
-            "description": "Enable multi-shot mode. When true, use multi_prompt array instead of prompt. When false, use prompt string. Default is false"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "1:1",
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "1:1",
-            "description": "Video aspect ratio. When the input does not contain reference images (image_urls), the default is 1:1 if the aspect_ratio parameter is not passed; when the input contains the first frame image, the aspect_ratio parameter will be ignored, and the output will use the aspect ratio of the first frame image"
-          },
-          "multi_prompt": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "prompt",
-                "duration"
-              ],
-              "properties": {
-                "prompt": {
-                  "type": "string",
-                  "maxLength": 2500,
-                  "description": "Prompt text for this shot"
-                },
-                "duration": {
-                  "type": "integer",
-                  "maximum": 12,
-                  "minimum": 1,
-                  "description": "Duration in seconds for this shot (1-12)"
-                }
-              }
-            },
-            "example": [
-              {
-                "prompt": "A surfer paddling out into the ocean as waves build on the horizon",
-                "duration": 4
-              },
-              {
-                "prompt": "The surfer catches a massive wave and rides it toward the shore at sunset",
-                "duration": 5
-              }
-            ],
-            "description": "Array of prompt objects for multi-shot mode. Required when multi_shots is true. Each object contains a prompt and duration. Total duration of all shots cannot exceed 15 seconds"
-          },
-          "kling_elements": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "name"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Element name used in @element_name references"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Element description"
-                },
-                "element_input_urls": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "description": "Array of 2-4 image URLs (JPG/PNG, max 10MB each)"
-                },
-                "element_input_video_urls": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "description": "Array with 1 video URL (MP4/MOV, max 50MB)"
-                }
-              }
-            },
-            "example": [
-              {
-                "name": "element_robot",
-                "description": "robot character",
-                "element_input_urls": [
-                  "https://example.com/robot-front.jpeg",
-                  "https://example.com/robot-side.png"
-                ]
-              },
-              {
-                "name": "element_dancer",
-                "description": "dancer reference motion",
-                "element_input_video_urls": [
-                  "https://example.com/dancer-motion.mp4"
-                ]
-              }
-            ],
-            "description": "Array of element objects that can be referenced in prompts using @element_name syntax. Elements can be defined using images (2-4 images) or a single video. When provided, `image_urls` is required"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "sound": true,
-          "prompt": "A chef carefully plating a gourmet dish in a modern kitchen, steam rising from the food under warm lighting",
-          "duration": 5,
-          "multi_shots": false,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "sound": true,
-          "prompt": "A vintage train traveling through a misty valley at dawn, golden light breaking through the clouds above rolling green hills",
-          "duration": 10,
-          "multi_shots": false,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 39,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "kling-3.0/standard",
-      "tool_name": "poyo_kling_3_0_standard",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "video",
-      "title": "kling-3.0/standard",
-      "description": "Next-generation Video Generation with Kling 3.0",
-      "tags": [
-        "video"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "duration",
-          "multi_shots",
-          "sound"
-        ],
-        "properties": {
-          "sound": {
-            "type": "boolean",
-            "default": true,
-            "example": true,
-            "description": "Whether to enable sound effects. true enables sound effects, false disables them. When multi_shots is true, this field must be true."
-          },
-          "prompt": {
-            "type": "string",
-            "example": "A street musician playing violin on a rainy evening, reflections shimmering on wet cobblestones",
-            "maxLength": 2500,
-            "description": "Video generation prompt. Required when multi_shots is false. You can reference elements using @element_name syntax (e.g., @element_dog)"
-          },
-          "duration": {
-            "type": "integer",
-            "example": 5,
-            "maximum": 15,
-            "minimum": 3,
-            "description": "Video duration in seconds. For single shot mode, duration can be 3-15 seconds. For multi-shot mode, duration is the total duration of all shots"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [
-              "https://example.com/start-frame.png"
-            ],
-            "description": "Array of image URLs. For single shot mode (multi_shots: false), provide start and end frame URLs. For multi-shot mode (multi_shots: true), provide only the start frame URL. **Required** when `kling_elements` is provided"
-          },
-          "multi_shots": {
-            "type": "boolean",
-            "default": false,
-            "example": false,
-            "description": "Enable multi-shot mode. When true, use multi_prompt array instead of prompt. When false, use prompt string. Default is false"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "1:1",
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "example": "1:1",
-            "description": "Video aspect ratio. When the input does not contain reference images (image_urls), the default is 1:1 if the aspect_ratio parameter is not passed; when the input contains the first frame image, the aspect_ratio parameter will be ignored, and the output will use the aspect ratio of the first frame image"
-          },
-          "multi_prompt": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "prompt",
-                "duration"
-              ],
-              "properties": {
-                "prompt": {
-                  "type": "string",
-                  "maxLength": 2500,
-                  "description": "Prompt text for this shot"
-                },
-                "duration": {
-                  "type": "integer",
-                  "maximum": 12,
-                  "minimum": 1,
-                  "description": "Duration in seconds for this shot (1-12)"
-                }
-              }
-            },
-            "example": [
-              {
-                "prompt": "A surfer paddling out into the ocean as waves build on the horizon",
-                "duration": 4
-              },
-              {
-                "prompt": "The surfer catches a massive wave and rides it toward the shore at sunset",
-                "duration": 5
-              }
-            ],
-            "description": "Array of prompt objects for multi-shot mode. Required when multi_shots is true. Each object contains a prompt and duration. Total duration of all shots cannot exceed 15 seconds"
-          },
-          "kling_elements": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "name"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Element name used in @element_name references"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Element description"
-                },
-                "element_input_urls": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "description": "Array of 2-4 image URLs (JPG/PNG, max 10MB each)"
-                },
-                "element_input_video_urls": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "description": "Array with 1 video URL (MP4/MOV, max 50MB)"
-                }
-              }
-            },
-            "example": [
-              {
-                "name": "element_robot",
-                "description": "robot character",
-                "element_input_urls": [
-                  "https://example.com/robot-front.jpeg",
-                  "https://example.com/robot-side.png"
-                ]
-              },
-              {
-                "name": "element_dancer",
-                "description": "dancer reference motion",
-                "element_input_video_urls": [
-                  "https://example.com/dancer-motion.mp4"
-                ]
-              }
-            ],
-            "description": "Array of element objects that can be referenced in prompts using @element_name syntax. Elements can be defined using images (2-4 images) or a single video. When provided, `image_urls` is required"
-          }
-        },
-        "description": "Input parameters for generation"
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200,
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started",
-                "description": "Initial task status"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d",
-                "description": "Unique task identifier for status tracking"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00",
-                "description": "ISO 8601 timestamp when the task was created"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "sound": true,
-          "prompt": "A chef carefully plating a gourmet dish in a modern kitchen, steam rising from the food under warm lighting",
-          "duration": 5,
-          "multi_shots": false,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "sound": true,
-          "prompt": "A vintage train traveling through a misty valley at dawn, golden light breaking through the clouds above rolling green hills",
-          "duration": 10,
-          "multi_shots": false,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 27,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
       "model_id": "kling-avatar-2.0/pro",
       "tool_name": "poyo_kling_avatar_2_0_pro",
       "vendor_code": "10000001",
@@ -28276,60 +27303,6 @@
       "status": "stable"
     },
     {
-      "model_id": "sora-2-characters",
-      "tool_name": "poyo_sora_2_characters",
-      "vendor_code": "10000001",
-      "service_type": "generate",
-      "category": "video",
-      "title": "sora-2-characters",
-      "description": "Create a reusable Sora character from a source video.",
-      "tags": [
-        "video"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "video_url",
-          "name"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 80,
-            "minLength": 1
-          },
-          "video_url": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "additionalProperties": true
-      },
-      "output_schema": {
-        "type": "object",
-        "additionalProperties": true
-      },
-      "examples": [
-        {
-          "name": "hero",
-          "video_url": "https://example.com/character.mp4"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "dynamic",
-        "unit": "request",
-        "credits": null,
-        "display": "Calculated from request parameters or generated output",
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
       "model_id": "sora-2-official",
       "tool_name": "poyo_sora_2_official",
       "vendor_code": "10000001",
@@ -30055,7 +29028,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 12,
+        "credits": 90,
         "input_credits": null,
         "output_credits": null
       },
@@ -30425,7 +29398,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 12,
+        "credits": 90,
         "input_credits": null,
         "output_credits": null
       },
