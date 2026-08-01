@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-1233beeeaff8",
+  "schema_version": "v1-bb589b130d2a",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -10637,13 +10637,14 @@
           },
           "size": {
             "enum": [
-              "1:1",
-              "2:3",
-              "3:2"
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
             ],
             "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio"
+            "default": "1024x1024",
+            "example": "1024x1024",
+            "description": "Output image dimensions"
           },
           "prompt": {
             "type": "string",
@@ -10715,11 +10716,11 @@
       "examples": [
         {
           "n": 1,
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "A serene mountain landscape at sunset with vibrant colors"
         },
         {
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "Replace the sky with a starry night sky",
           "mask_url": "https://example.com/mask.png",
           "image_urls": [
@@ -10770,13 +10771,14 @@
           },
           "size": {
             "enum": [
-              "1:1",
-              "2:3",
-              "3:2"
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
             ],
             "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio"
+            "default": "1024x1024",
+            "example": "1024x1024",
+            "description": "Output image dimensions"
           },
           "prompt": {
             "type": "string",
@@ -10848,11 +10850,11 @@
       "examples": [
         {
           "n": 1,
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "A serene mountain landscape at sunset with vibrant colors"
         },
         {
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "Replace the sky with a starry night sky",
           "mask_url": "https://example.com/mask.png",
           "image_urls": [
@@ -10903,13 +10905,14 @@
           },
           "size": {
             "enum": [
-              "1:1",
-              "2:3",
-              "3:2"
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
             ],
             "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio"
+            "default": "1024x1024",
+            "example": "1024x1024",
+            "description": "Output image dimensions"
           },
           "prompt": {
             "type": "string",
@@ -10981,11 +10984,11 @@
       "examples": [
         {
           "n": 1,
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "A serene mountain landscape at sunset with vibrant colors"
         },
         {
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "Replace the sky with a starry night sky",
           "mask_url": "https://example.com/mask.png",
           "image_urls": [
@@ -11036,13 +11039,14 @@
           },
           "size": {
             "enum": [
-              "1:1",
-              "2:3",
-              "3:2"
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
             ],
             "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio"
+            "default": "1024x1024",
+            "example": "1024x1024",
+            "description": "Output image dimensions"
           },
           "prompt": {
             "type": "string",
@@ -11114,11 +11118,11 @@
       "examples": [
         {
           "n": 1,
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "A serene mountain landscape at sunset with vibrant colors"
         },
         {
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "Replace the sky with a starry night sky",
           "mask_url": "https://example.com/mask.png",
           "image_urls": [
@@ -15160,13 +15164,14 @@
           },
           "size": {
             "enum": [
-              "1:1",
-              "2:3",
-              "3:2"
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
             ],
             "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio"
+            "default": "1024x1024",
+            "example": "1024x1024",
+            "description": "Output image dimensions"
           },
           "prompt": {
             "type": "string",
@@ -15238,11 +15243,11 @@
       "examples": [
         {
           "n": 1,
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "A serene mountain landscape at sunset with vibrant colors"
         },
         {
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "Replace the sky with a starry night sky",
           "mask_url": "https://example.com/mask.png",
           "image_urls": [
@@ -21957,13 +21962,14 @@
           },
           "size": {
             "enum": [
-              "1:1",
-              "2:3",
-              "3:2"
+              "1024x1024",
+              "1024x1536",
+              "1536x1024"
             ],
             "type": "string",
-            "example": "1:1",
-            "description": "Image size ratio"
+            "default": "1024x1024",
+            "example": "1024x1024",
+            "description": "Output image dimensions"
           },
           "prompt": {
             "type": "string",
@@ -22035,11 +22041,11 @@
       "examples": [
         {
           "n": 1,
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "A serene mountain landscape at sunset with vibrant colors"
         },
         {
-          "size": "1:1",
+          "size": "1024x1024",
           "prompt": "Replace the sky with a starry night sky",
           "mask_url": "https://example.com/mask.png",
           "image_urls": [
