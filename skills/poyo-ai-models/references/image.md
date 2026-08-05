@@ -20,6 +20,8 @@ Generated from PoYo Catalog `v1-bb589b130d2a`. Always call describe before execu
 | `nano-banana-2-official-edit` | generate |  | Next-generation AI image generation powered by Gemini 3.1 Flash Image Preview |
 | `nano-banana-pro` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
 | `nano-banana-pro-edit` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
+| `qwen-image-3` | generate |  | Unified text-to-image and reference-image generation with Qwen Image 3. |
+| `qwen-image-3-pro` | generate |  | Unified high-quality text-to-image and reference-image generation with Qwen Image 3 Pro. |
 | `seedream-4.5` | generate |  | Advanced image generation model with support for text-to-image, image-to-image, and multi-image reference capabilities |
 | `seedream-4.5-edit` | generate |  | Advanced image generation model with support for text-to-image, image-to-image, and multi-image reference capabilities |
 | `seedream-5.0-lite` | generate |  | Advanced image generation model with support for text-to-image, image-to-image, and multi-image reference capabilities |
