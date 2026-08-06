@@ -1,78 +1,6 @@
 {
-  "schema_version": "v1-ce33c746eb81",
+  "schema_version": "v1-17a4b5d42c77",
   "items": [
-    {
-      "model_id": "qwen-image-3",
-      "tool_name": "poyo_qwen_image_3",
-      "service_type": "generate",
-      "category": "image",
-      "title": "Qwen Image 3",
-      "description": "Unified text-to-image and reference-image generation with Qwen Image 3.",
-      "tags": ["image", "text-to-image", "image-to-image"],
-      "input_schema": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["prompt"],
-        "properties": {
-          "prompt": {"type": "string", "maxLength": 5000},
-          "image_urls": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"type": "string", "format": "uri"}},
-          "size": {"type": "string", "enum": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16", "21:9"]},
-          "resolution": {"type": "string", "enum": ["1K", "2K"]},
-          "output_format": {"type": "string", "enum": ["png", "jpeg"]},
-          "prompt_extend": {"type": "boolean"},
-          "negative_prompt": {"type": "string", "maxLength": 5000},
-          "seed": {"type": "integer", "minimum": 0, "maximum": 2147483647},
-          "enable_safety_checker": {"type": "boolean"}
-        }
-      },
-      "output_schema": {"type": "object", "additionalProperties": true},
-      "examples": [
-        {"prompt": "Create a clean product poster", "size": "1:1"},
-        {"prompt": "Keep the subject and change the background", "image_urls": ["https://example.com/reference.png"]}
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {"type": "tiered", "unit": "image", "credits": null, "formula": "resolution_credits[resolution] + reference_image_count * input_image_credits", "resolution_credits": {"1K": 4.8, "2K": 4.8}, "input_image_credits": 0.5, "input_credits": null, "output_credits": null},
-      "status": "stable"
-    },
-    {
-      "model_id": "qwen-image-3-pro",
-      "tool_name": "poyo_qwen_image_3_pro",
-      "service_type": "generate",
-      "category": "image",
-      "title": "Qwen Image 3 Pro",
-      "description": "Unified high-quality text-to-image and reference-image generation with Qwen Image 3 Pro.",
-      "tags": ["image", "text-to-image", "image-to-image"],
-      "input_schema": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["prompt"],
-        "properties": {
-          "prompt": {"type": "string", "maxLength": 5000},
-          "image_urls": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"type": "string", "format": "uri"}},
-          "size": {"type": "string", "enum": ["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16", "21:9"]},
-          "resolution": {"type": "string", "enum": ["1K", "2K"]},
-          "output_format": {"type": "string", "enum": ["png", "jpeg"]},
-          "prompt_extend": {"type": "boolean"},
-          "negative_prompt": {"type": "string", "maxLength": 5000},
-          "seed": {"type": "integer", "minimum": 0, "maximum": 2147483647},
-          "enable_safety_checker": {"type": "boolean"}
-        }
-      },
-      "output_schema": {"type": "object", "additionalProperties": true},
-      "examples": [
-        {"prompt": "Create a detailed cinematic landscape", "resolution": "2K", "size": "16:9"},
-        {"prompt": "Replace the background with a clean studio", "image_urls": ["https://example.com/reference.png"]}
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {"type": "tiered", "unit": "image", "resolution_credits": {"1K": 6.4, "2K": 12}, "input_image_credits": 0.5},
-      "status": "stable"
-    },
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
       "tool_name": "poyo_hunyuan_3d_v3_1_pro_image_to_3d",
@@ -234,7 +162,11 @@
         "credits": null,
         "formula": "60 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
         "base_credits": 60,
-        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
+        "addon_credits": {
+          "pbr": 24,
+          "multiview": 24,
+          "custom_face_count": 24
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -401,7 +333,11 @@
         "credits": null,
         "formula": "60 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
         "base_credits": 60,
-        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
+        "addon_credits": {
+          "pbr": 24,
+          "multiview": 24,
+          "custom_face_count": 24
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -568,7 +504,11 @@
         "credits": null,
         "formula": "36 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
         "base_credits": 36,
-        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
+        "addon_credits": {
+          "pbr": 24,
+          "multiview": 24,
+          "custom_face_count": 24
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -735,7 +675,11 @@
         "credits": null,
         "formula": "36 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
         "base_credits": 36,
-        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
+        "addon_credits": {
+          "pbr": 24,
+          "multiview": 24,
+          "custom_face_count": 24
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -1518,10 +1462,17 @@
         "unit": "request",
         "credits": null,
         "formula": "texture_credits[texture_mode] + (geometry_quality == 'detailed' ? 30 : 0) + (quad ? 7.5 : 0)",
-        "texture_credits": {"none": 30, "standard": 45, "detailed": 60},
-        "addon_credits": {"detailed_geometry": 30, "quad_mesh": 7.5},
+        "addon_credits": {
+          "quad_mesh": 7.5,
+          "detailed_geometry": 30
+        },
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "texture_credits": {
+          "none": 30,
+          "detailed": 60,
+          "standard": 45
+        }
       },
       "status": "stable"
     },
@@ -1678,10 +1629,17 @@
         "unit": "request",
         "credits": null,
         "formula": "texture_credits[texture_mode] + (geometry_quality == 'detailed' ? 30 : 0) + (quad ? 7.5 : 0)",
-        "texture_credits": {"none": 15, "standard": 30, "detailed": 45},
-        "addon_credits": {"detailed_geometry": 30, "quad_mesh": 7.5},
+        "addon_credits": {
+          "quad_mesh": 7.5,
+          "detailed_geometry": 30
+        },
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "texture_credits": {
+          "none": 15,
+          "detailed": 45,
+          "standard": 30
+        }
       },
       "status": "stable"
     },
@@ -1838,10 +1796,17 @@
         "unit": "request",
         "credits": null,
         "formula": "texture_credits[texture_mode] + (geometry_quality == 'detailed' ? 30 : 0) + (quad ? 7.5 : 0)",
-        "texture_credits": {"none": 15, "standard": 30, "detailed": 45},
-        "addon_credits": {"detailed_geometry": 30, "quad_mesh": 7.5},
+        "addon_credits": {
+          "quad_mesh": 7.5,
+          "detailed_geometry": 30
+        },
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "texture_credits": {
+          "none": 15,
+          "detailed": 45,
+          "standard": 30
+        }
       },
       "status": "stable"
     },
@@ -1951,9 +1916,12 @@
         "unit": "request",
         "credits": null,
         "formula": "texture ? 70 : 56",
-        "texture_credits": {"false": 56, "true": 70},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "texture_credits": {
+          "true": 70,
+          "false": 56
+        }
       },
       "status": "stable"
     },
@@ -2063,9 +2031,12 @@
         "unit": "request",
         "credits": null,
         "formula": "texture ? 70 : 56",
-        "texture_credits": {"false": 56, "true": 70},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "texture_credits": {
+          "true": 70,
+          "false": 56
+        }
       },
       "status": "stable"
     },
@@ -2368,9 +2339,9 @@
         "unit": "started_minute",
         "credits": null,
         "formula": "ceil(duration / 60) * 128",
-        "credits_per_unit": 128,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 128
       },
       "status": "stable"
     },
@@ -2562,11 +2533,11 @@
         "type": "dynamic",
         "unit": "1000_characters",
         "credits": null,
-        "formula": "text_characters / 1000 * 8",
-        "credits_per_unit": 8,
         "display": "8 credits per 1,000 input characters",
+        "formula": "text_characters / 1000 * 8",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 8
       },
       "status": "stable"
     },
@@ -3021,11 +2992,11 @@
         "type": "dynamic",
         "unit": "1000_characters",
         "credits": null,
-        "formula": "text_characters / 1000 * 24",
-        "credits_per_unit": 24,
         "display": "24 credits per 1,000 input characters",
+        "formula": "text_characters / 1000 * 24",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 24
       },
       "status": "stable"
     },
@@ -3386,11 +3357,11 @@
         "type": "dynamic",
         "unit": "1000_characters",
         "credits": null,
-        "formula": "text_characters / 1000 * 2.4",
-        "credits_per_unit": 2.4,
         "display": "2.4 credits per 1,000 input characters",
+        "formula": "text_characters / 1000 * 2.4",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 2.4
       },
       "status": "stable"
     },
@@ -5811,6 +5782,242 @@
         "credits": null,
         "input_credits": 800,
         "output_credits": 4000
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "claude-opus-5",
+      "tool_name": "poyo_claude_opus_5",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "claude-opus-5",
+      "description": "Run the PoYo Claude Opus 5 model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "anthropic"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "anthropic"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 400,
+        "output_credits": 2000
       },
       "status": "stable"
     },
@@ -10394,11 +10601,11 @@
         "type": "dynamic",
         "unit": "output_megapixel",
         "credits": null,
-        "formula": "output_megapixels * number_of_images * 4",
-        "credits_per_unit": 4,
         "display": "4 credits per output megapixel per image",
+        "formula": "output_megapixels * number_of_images * 4",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 4
       },
       "status": "stable"
     },
@@ -10655,11 +10862,17 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "tiered",
         "unit": "request",
-        "credits": 1.9,
+        "credits": null,
+        "formula": "quality_credits[quality]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "quality_credits": {
+          "low": 1.9,
+          "high": 30,
+          "medium": 7.2
+        }
       },
       "status": "stable"
     },
@@ -10788,11 +11001,17 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "tiered",
         "unit": "request",
-        "credits": 1.9,
+        "credits": null,
+        "formula": "quality_credits[quality]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "quality_credits": {
+          "low": 1.9,
+          "high": 30,
+          "medium": 7.2
+        }
       },
       "status": "stable"
     },
@@ -10921,11 +11140,17 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "tiered",
         "unit": "request",
-        "credits": 1.6,
+        "credits": null,
+        "formula": "quality_credits[quality]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "quality_credits": {
+          "low": 1.6,
+          "high": 24,
+          "medium": 5
+        }
       },
       "status": "stable"
     },
@@ -11054,11 +11279,17 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "tiered",
         "unit": "request",
-        "credits": 1.6,
+        "credits": null,
+        "formula": "quality_credits[quality]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "quality_credits": {
+          "low": 1.6,
+          "high": 24,
+          "medium": 5
+        }
       },
       "status": "stable"
     },
@@ -11216,10 +11447,13 @@
         "unit": "image",
         "credits": null,
         "formula": "number_of_images * resolution_credits[resolution] + reference_image_count * 2",
-        "resolution_credits": {"1K": 8, "2K": 11},
-        "input_image_credits": 2,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 8,
+          "2K": 11
+        },
+        "input_image_credits": 2
       },
       "status": "stable"
     },
@@ -11407,11 +11641,16 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "tiered",
         "unit": "request",
-        "credits": 3.5,
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 3.5,
+          "2K": 3.5
+        }
       },
       "status": "stable"
     },
@@ -11599,12 +11838,16 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "image",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 3.5, "2K": 3.5, "4K": 7},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 3.5,
+          "2K": 3.5,
+          "4K": 7
+        }
       },
       "status": "stable"
     },
@@ -11792,12 +12035,16 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "image",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 3.5, "2K": 3.5, "4K": 7},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 3.5,
+          "2K": 3.5,
+          "4K": 7
+        }
       },
       "status": "stable"
     },
@@ -12221,12 +12468,17 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "image",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"0.5K": 7, "1K": 10, "2K": 15, "4K": 20},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 10,
+          "2K": 15,
+          "4K": 20,
+          "0.5K": 7
+        }
       },
       "status": "stable"
     },
@@ -12404,12 +12656,17 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "image",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"0.5K": 7, "1K": 10, "2K": 15, "4K": 20},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 10,
+          "2K": 15,
+          "4K": 20,
+          "0.5K": 7
+        }
       },
       "status": "stable"
     },
@@ -12584,12 +12841,16 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "image",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 8, "2K": 8, "4K": 14},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 18,
+          "2K": 18,
+          "4K": 35
+        }
       },
       "status": "stable"
     },
@@ -12764,12 +13025,238 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "image",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 8, "2K": 8, "4K": 14},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 18,
+          "2K": 18,
+          "4K": 35
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "qwen-image-3",
+      "tool_name": "poyo_qwen_image_3",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Qwen Image 3",
+      "description": "Unified text-to-image and reference-image generation with Qwen Image 3.",
+      "tags": [
+        "image",
+        "text-to-image",
+        "image-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "size": {
+            "enum": [
+              "1:1",
+              "3:2",
+              "2:3",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "21:9"
+            ],
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 3,
+            "minItems": 1
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string"
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg"
+            ],
+            "type": "string"
+          },
+          "prompt_extend": {
+            "type": "boolean"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "enable_safety_checker": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "size": "1:1",
+          "prompt": "Create a clean product poster"
+        },
+        {
+          "prompt": "Keep the subject and change the background",
+          "image_urls": [
+            "https://example.com/reference.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "request",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 4.8,
+          "2K": 4.8
+        },
+        "input_image_credits": 0.5
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "qwen-image-3-pro",
+      "tool_name": "poyo_qwen_image_3_pro",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Qwen Image 3 Pro",
+      "description": "Unified text-to-image and reference-image generation with Qwen Image 3.",
+      "tags": [
+        "image",
+        "text-to-image",
+        "image-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "size": {
+            "enum": [
+              "1:1",
+              "3:2",
+              "2:3",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "21:9"
+            ],
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 3,
+            "minItems": 1
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string"
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg"
+            ],
+            "type": "string"
+          },
+          "prompt_extend": {
+            "type": "boolean"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "maxLength": 5000
+          },
+          "enable_safety_checker": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "size": "1:1",
+          "prompt": "Create a clean product poster"
+        },
+        {
+          "prompt": "Keep the subject and change the background",
+          "image_urls": [
+            "https://example.com/reference.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "request",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 6.4,
+          "2K": 12
+        },
+        "input_image_credits": 0.5
       },
       "status": "stable"
     },
@@ -14887,9 +15374,12 @@
         "unit": "image",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 18, "2K": 27},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 18,
+          "2K": 27
+        }
       },
       "status": "stable"
     },
@@ -15041,9 +15531,12 @@
         "unit": "image",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 6, "2K": 9},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 6,
+          "2K": 9
+        }
       },
       "status": "stable"
     },
@@ -15332,9 +15825,21 @@
         "credits": null,
         "formula": "price_table[quality][billable_resolution]",
         "price_table": {
-          "low": {"1K": 2, "2K": 4, "4K": 8},
-          "medium": {"1K": 8.48, "2K": 8.96, "4K": 16.16},
-          "high": {"1K": 33.76, "2K": 35.52, "4K": 64.16}
+          "low": {
+            "1K": 2,
+            "2K": 4,
+            "4K": 8
+          },
+          "high": {
+            "1K": 33.76,
+            "2K": 35.52,
+            "4K": 64.16
+          },
+          "medium": {
+            "1K": 8.48,
+            "2K": 8.96,
+            "4K": 16.16
+          }
         },
         "input_credits": null,
         "output_credits": null
@@ -15493,9 +15998,21 @@
         "credits": null,
         "formula": "price_table[quality][billable_resolution]",
         "price_table": {
-          "low": {"1K": 2, "2K": 4, "4K": 8},
-          "medium": {"1K": 8.48, "2K": 8.96, "4K": 16.16},
-          "high": {"1K": 33.76, "2K": 35.52, "4K": 64.16}
+          "low": {
+            "1K": 2,
+            "2K": 4,
+            "4K": 8
+          },
+          "high": {
+            "1K": 33.76,
+            "2K": 35.52,
+            "4K": 64.16
+          },
+          "medium": {
+            "1K": 8.48,
+            "2K": 8.96,
+            "4K": 16.16
+          }
         },
         "input_credits": null,
         "output_credits": null
@@ -16035,9 +16552,13 @@
         "unit": "image",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 5, "2K": 8, "4K": 12},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 5,
+          "2K": 8,
+          "4K": 12
+        }
       },
       "status": "stable"
     },
@@ -16218,9 +16739,13 @@
         "unit": "image",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 5, "2K": 8, "4K": 12},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 5,
+          "2K": 8,
+          "4K": 12
+        }
       },
       "status": "stable"
     },
@@ -16476,9 +17001,12 @@
         "unit": "video",
         "credits": null,
         "formula": "duration_credits[duration]",
-        "duration_credits": {"6": 30, "10": 40},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "duration_credits": {
+          "6": 30,
+          "10": 40
+        }
       },
       "status": "stable"
     },
@@ -16627,11 +17155,6 @@
         "unit": "request",
         "credits": null,
         "formula": "price_table[mode][resolution][duration]",
-        "parameters": {
-          "default_mode": "text_to_video",
-          "default_duration": 6,
-          "default_resolution": "768P"
-        },
         "price_table": {
           "text_to_video": {
             "512P": {
@@ -16655,9 +17178,7 @@
           }
         },
         "input_credits": null,
-        "output_credits": null,
-        "credits_per_second": {"768P": 7},
-        "default_credits": 42
+        "output_credits": null
       },
       "status": "stable"
     },
@@ -16937,8 +17458,11 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * sound_credits[sound]",
-        "sound_credits": {"false": 13, "true": 24},
         "input_credits": null,
+        "sound_credits": {
+          "true": 24,
+          "false": 13
+        },
         "output_credits": null
       },
       "status": "stable"
@@ -17165,8 +17689,11 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * sound_credits[sound]",
-        "sound_credits": {"false": 39, "true": 49},
         "input_credits": null,
+        "sound_credits": {
+          "true": 49,
+          "false": 39
+        },
         "output_credits": null
       },
       "status": "stable"
@@ -17393,8 +17920,11 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * sound_credits[sound]",
-        "sound_credits": {"false": 27, "true": 39},
         "input_credits": null,
+        "sound_credits": {
+          "true": 39,
+          "false": 27
+        },
         "output_credits": null
       },
       "status": "stable"
@@ -17518,10 +18048,19 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "price_table[resolution][duration]",
-        "price_table": {"720p": {"5": 21, "10": 42}, "1080p": {"5": 43, "10": 86}},
+        "price_table": {
+          "720p": {
+            "5": 21,
+            "10": 42
+          },
+          "1080p": {
+            "5": 43,
+            "10": 86
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -17685,15 +18224,39 @@
         "credits": null,
         "formula": "price_table[generate_audio][resolution][duration]",
         "price_table": {
-          "false": {
-            "480p": {"4": 9, "8": 18, "12": 21},
-            "720p": {"4": 16, "8": 32, "12": 42},
-            "1080p": {"4": 40, "8": 70, "12": 100}
-          },
           "true": {
-            "480p": {"4": 18, "8": 36, "12": 42},
-            "720p": {"4": 32, "8": 64, "12": 84},
-            "1080p": {"4": 40, "8": 70, "12": 100}
+            "480p": {
+              "4": 18,
+              "8": 36,
+              "12": 42
+            },
+            "720p": {
+              "4": 32,
+              "8": 64,
+              "12": 84
+            },
+            "1080p": {
+              "4": 40,
+              "8": 70,
+              "12": 100
+            }
+          },
+          "false": {
+            "480p": {
+              "4": 9,
+              "8": 18,
+              "12": 21
+            },
+            "720p": {
+              "4": 16,
+              "8": 32,
+              "12": 42
+            },
+            "1080p": {
+              "4": 40,
+              "8": 70,
+              "12": 100
+            }
           }
         },
         "input_credits": null,
@@ -17975,9 +18538,13 @@
         "unit": "video",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"720p": 36, "1080p": 36, "4k": 60},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "4k": 60,
+          "720p": 36,
+          "1080p": 36
+        }
       },
       "status": "stable"
     },
@@ -18125,9 +18692,13 @@
         "unit": "video",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"720p": 20, "1080p": 20, "4k": 30},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "4k": 30,
+          "720p": 20,
+          "1080p": 20
+        }
       },
       "status": "stable"
     },
@@ -18275,9 +18846,13 @@
         "unit": "video",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"720p": 200, "1080p": 200, "4k": 400},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "4k": 400,
+          "720p": 200,
+          "1080p": 200
+        }
       },
       "status": "stable"
     },
@@ -18431,10 +19006,21 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "price_table[resolution][duration]",
-        "price_table": {"720p": {"5": 80, "10": 160, "15": 240}, "1080p": {"5": 120, "10": 240, "15": 360}},
+        "price_table": {
+          "720p": {
+            "5": 80,
+            "10": 160,
+            "15": 240
+          },
+          "1080p": {
+            "5": 120,
+            "10": 240,
+            "15": 360
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -20126,9 +20712,12 @@
         "unit": "image",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 18, "2K": 27},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 18,
+          "2K": 27
+        }
       },
       "status": "stable"
     },
@@ -20280,9 +20869,12 @@
         "unit": "image",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"1K": 6, "2K": 9},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 6,
+          "2K": 9
+        }
       },
       "status": "stable"
     },
@@ -21503,10 +22095,21 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "price_table[resolution][duration]",
-        "price_table": {"720p": {"5": 80, "10": 160, "15": 240}, "1080p": {"5": 120, "10": 240, "15": 360}},
+        "price_table": {
+          "720p": {
+            "5": 80,
+            "10": 160,
+            "15": 240
+          },
+          "1080p": {
+            "5": 120,
+            "10": 240,
+            "15": 360
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -21681,6 +22284,459 @@
       "status": "stable"
     },
     {
+      "model_id": "flux-3/extend-video",
+      "tool_name": "poyo_flux_3_extend_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Flux 3 Extend Video",
+      "description": "Continue an input video from its final frames.",
+      "tags": [
+        "video",
+        "extend-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "video_url"
+        ],
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "default": true
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 20,
+            "minimum": 5
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "resolution": {
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "21:9",
+              "2:1",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "auto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "prompt": "Continue the camera movement",
+          "video_url": "https://example.com/source.mp4"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "unit": "second",
+        "resolution_credit_rates": {
+          "720p": 82,
+          "1080p": 106
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "flux-3/first-last-frame-to-video",
+      "tool_name": "poyo_flux_3_first_last_frame_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Flux 3 First Last Frame to Video",
+      "description": "Generate a video constrained by first and last frame images.",
+      "tags": [
+        "video",
+        "first-last-frame-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "image_urls"
+        ],
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "default": true
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 20,
+            "minimum": 5
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 2,
+            "minItems": 2
+          },
+          "resolution": {
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "21:9",
+              "2:1",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "auto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "prompt": "Transition between the frames",
+          "duration": 5,
+          "image_urls": [
+            "https://example.com/start.png",
+            "https://example.com/end.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "unit": "second",
+        "resolution_credit_rates": {
+          "720p": 34,
+          "1080p": 58
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "flux-3/image-to-video",
+      "tool_name": "poyo_flux_3_image_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Flux 3 Image to Video",
+      "description": "Animate one input image into a video.",
+      "tags": [
+        "video",
+        "image-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "image_urls"
+        ],
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "default": true
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 20,
+            "minimum": 5
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 1,
+            "minItems": 1
+          },
+          "resolution": {
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "21:9",
+              "2:1",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "auto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "prompt": "Add gentle camera motion",
+          "image_urls": [
+            "https://example.com/start.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "unit": "second",
+        "resolution_credit_rates": {
+          "720p": 34,
+          "1080p": 58
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "flux-3/keyframes-to-video",
+      "tool_name": "poyo_flux_3_keyframes_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Flux 3 Keyframes to Video",
+      "description": "Generate a video guided by positioned keyframe images.",
+      "tags": [
+        "video",
+        "keyframes-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "keyframes"
+        ],
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "default": true
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 20,
+            "minimum": 5
+          },
+          "keyframes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "image_url",
+                "frame_index"
+              ],
+              "properties": {
+                "image_url": {
+                  "type": "string"
+                },
+                "frame_index": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 10,
+            "minItems": 1
+          },
+          "resolution": {
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "21:9",
+              "2:1",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "auto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "prompt": "Move between keyframes",
+          "duration": 5,
+          "keyframes": [
+            {
+              "image_url": "https://example.com/frame.png",
+              "frame_index": 0
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "unit": "second",
+        "resolution_credit_rates": {
+          "720p": 34,
+          "1080p": 58
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "flux-3/text-to-video",
+      "tool_name": "poyo_flux_3_text_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Flux 3 Text to Video",
+      "description": "Generate a video from a text prompt with optional audio.",
+      "tags": [
+        "video",
+        "text-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "default": true
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 20,
+            "minimum": 5
+          },
+          "resolution": {
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "21:9",
+              "2:1",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "auto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "prompt": "A cinematic forest scene",
+          "duration": 5
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "unit": "second",
+        "resolution_credit_rates": {
+          "720p": 34,
+          "1080p": 58
+        }
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "grok-imagine-video-1.5",
       "tool_name": "poyo_grok_imagine_video_1_5",
       "service_type": "generate",
@@ -21692,22 +22748,29 @@
       ],
       "input_schema": {
         "type": "object",
-        "required": ["prompt"],
-        "description": "Omit image fields for text mode; use image_urls for one first frame or reference_image_urls for 1-7 references. Image fields are mutually exclusive.",
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "image_urls",
+                "reference_image_urls"
+              ]
+            }
+          }
+        ],
+        "required": [
+          "prompt"
+        ],
         "properties": {
           "prompt": {
             "type": "string",
-            "example": "A cinematic product shot with a slow camera push-in and soft studio lighting",
             "maxLength": 4096,
-            "description": "Text prompt for video generation. Maximum length is 4,096 characters."
+            "description": "Use <IMAGE_0>, <IMAGE_1>, etc. in reference mode."
           },
           "duration": {
             "type": "integer",
-            "default": 6,
-            "example": 6,
             "maximum": 15,
-            "minimum": 1,
-            "description": "Output duration in seconds"
+            "minimum": 1
           },
           "image_urls": {
             "type": "array",
@@ -21715,19 +22778,8 @@
               "type": "string",
               "format": "uri"
             },
-            "example": [
-              "https://example.com/source-image.png"
-            ],
             "maxItems": 1,
-            "minItems": 1,
-            "description": "Source image URL array. Provide exactly one image."
-          },
-          "reference_image_urls": {
-            "type": "array",
-            "items": { "type": "string", "format": "uri" },
-            "maxItems": 7,
-            "minItems": 1,
-            "description": "Reference image URLs. Use <IMAGE_0>, <IMAGE_1>, etc. in the prompt."
+            "minItems": 1
           },
           "resolution": {
             "enum": [
@@ -21736,18 +22788,32 @@
               "1080p"
             ],
             "type": "string",
-            "default": "720p",
-            "example": "720p",
-            "description": "Output resolution. Reference mode supports up to 720p."
+            "default": "720p"
           },
           "aspect_ratio": {
+            "enum": [
+              "16:9",
+              "4:3",
+              "3:2",
+              "1:1",
+              "2:3",
+              "3:4",
+              "9:16"
+            ],
             "type": "string",
-            "enum": ["16:9", "4:3", "3:2", "1:1", "2:3", "3:4", "9:16"],
-            "default": "16:9",
-            "description": "Aspect ratio for text and reference modes."
+            "default": "16:9"
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 7,
+            "minItems": 1
           }
         },
-        "allOf": [{ "not": { "required": ["image_urls", "reference_image_urls"] } }]
+        "description": "Omit image fields for text mode; use image_urls for one first frame or reference_image_urls for 1-7 references. Image fields are mutually exclusive."
       },
       "output_schema": {
         "type": "object",
@@ -21796,19 +22862,22 @@
           "aspect_ratio": "16:9"
         },
         {
-          "prompt": "A cinematic product shot with a slow camera push-in and soft studio lighting",
+          "prompt": "Slow camera push-in",
           "duration": 6,
           "image_urls": [
-            "https://example.com/source-image.png"
+            "https://example.com/first-frame.png"
           ],
           "resolution": "1080p"
         },
         {
           "prompt": "<IMAGE_0> meets <IMAGE_1> in a neon street",
-          "reference_image_urls": ["https://example.com/character.png", "https://example.com/style.png"],
           "duration": 8,
           "resolution": "720p",
-          "aspect_ratio": "16:9"
+          "aspect_ratio": "16:9",
+          "reference_image_urls": [
+            "https://example.com/character.png",
+            "https://example.com/style.png"
+          ]
         }
       ],
       "supported_protocols": [],
@@ -21818,7 +22887,11 @@
       "billing": {
         "type": "tiered",
         "unit": "second",
-        "resolution_credits": {"480p": 14.5, "720p": 25, "1080p": 45},
+        "resolution_credits": {
+          "480p": 14.5,
+          "720p": 25,
+          "1080p": 45
+        },
         "input_image_credits": 2
       },
       "status": "stable"
@@ -22112,10 +23185,18 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "price_table[resolution][duration]",
-        "price_table": {"768p": {"6": 35, "10": 70}, "1080p": {"6": 60}},
+        "price_table": {
+          "768p": {
+            "6": 35,
+            "10": 70
+          },
+          "1080p": {
+            "6": 60
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -22308,9 +23389,17 @@
         "type": "parameterized",
         "unit": "second",
         "credits": null,
-        "formula": "duration * price_table[has_video_input][resolution]",
-        "parameters": {"has_video_input": "true when video_url is provided"},
-        "price_table": {"false": {"720p": 16, "1080p": 32}, "true": {"720p": 32, "1080p": 64}},
+        "formula": "duration * price_table[mode][resolution]",
+        "price_table": {
+          "generate": {
+            "720p": 16,
+            "1080p": 32
+          },
+          "video_edit": {
+            "720p": 32,
+            "1080p": 64
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -22485,9 +23574,12 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 22, "1080p": 28},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 22,
+          "1080p": 28
+        }
       },
       "status": "stable"
     },
@@ -22679,9 +23771,9 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * 15",
-        "credits_per_unit": 15,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 15
       },
       "status": "stable"
     },
@@ -22873,9 +23965,9 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * 9",
-        "credits_per_unit": 9,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 9
       },
       "status": "stable"
     },
@@ -22988,12 +24080,15 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "duration_credits[duration]",
-        "duration_credits": {"5": 55, "10": 110},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "duration_credits": {
+          "5": 55,
+          "10": 110
+        }
       },
       "status": "stable"
     },
@@ -23106,12 +24201,15 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "duration_credits[duration]",
-        "duration_credits": {"5": 30, "10": 60},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "duration_credits": {
+          "5": 30,
+          "10": 60
+        }
       },
       "status": "stable"
     },
@@ -23224,12 +24322,15 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "duration_credits[duration]",
-        "duration_credits": {"5": 42, "10": 84},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "duration_credits": {
+          "5": 42,
+          "10": 84
+        }
       },
       "status": "stable"
     },
@@ -23411,12 +24512,15 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "second",
+        "unit": "request",
         "credits": null,
-        "formula": "input_video_seconds * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 9, "1080p": 15},
+        "formula": "resolution_credits[resolution]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 9,
+          "1080p": 15
+        }
       },
       "status": "stable"
     },
@@ -23579,9 +24683,9 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * 22",
-        "credits_per_unit": 22,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 22
       },
       "status": "stable"
     },
@@ -23744,9 +24848,9 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * 17",
-        "credits_per_unit": 17,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 17
       },
       "status": "stable"
     },
@@ -23928,9 +25032,9 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * 50",
-        "credits_per_unit": 50,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 50
       },
       "status": "stable"
     },
@@ -24410,9 +25514,9 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * 50",
-        "credits_per_unit": 50,
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "credits_per_unit": 50
       },
       "status": "stable"
     },
@@ -24670,8 +25774,11 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * sound_credits[sound]",
-        "sound_credits": {"false": 13, "true": 16},
         "input_credits": null,
+        "sound_credits": {
+          "true": 16,
+          "false": 13
+        },
         "output_credits": null
       },
       "status": "stable"
@@ -24930,8 +26037,11 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * sound_credits[sound]",
-        "sound_credits": {"false": 10, "true": 13},
         "input_credits": null,
+        "sound_credits": {
+          "true": 13,
+          "false": 10
+        },
         "output_credits": null
       },
       "status": "stable"
@@ -25112,13 +26222,23 @@
           "resolution_group": "4k for 4K output; standard for 720p or 1080p"
         },
         "price_table": {
-          "false": {
-            "standard": {"4": 120, "6": 150, "8": 200, "10": 220},
-            "4k": {"4": 250, "6": 300, "8": 350, "10": 450}
-          },
           "true": {
-            "standard": 300,
-            "4k": 400
+            "4k": 400,
+            "standard": 300
+          },
+          "false": {
+            "4k": {
+              "4": 250,
+              "6": 300,
+              "8": 350,
+              "10": 450
+            },
+            "standard": {
+              "4": 120,
+              "6": 150,
+              "8": 200,
+              "10": 220
+            }
           }
         },
         "input_credits": null,
@@ -25378,9 +26498,12 @@
         "unit": "video",
         "credits": null,
         "formula": "duration_credits[duration]",
-        "duration_credits": {"5": 75, "10": 150},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "duration_credits": {
+          "5": 75,
+          "10": 150
+        }
       },
       "status": "stable"
     },
@@ -25590,14 +26713,28 @@
         "type": "parameterized",
         "unit": "second",
         "credits": null,
-        "formula": "(duration + reference_video_seconds) * price_table[has_video_input][resolution]",
+        "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
         "parameters": {
-          "billed_seconds": "Output duration plus the combined duration of reference_video_urls",
-          "has_video_input": "true when reference_video_urls is non-empty"
+          "billed_seconds": "output duration plus reference video duration when applicable",
+          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video"
         },
-        "price_table": {
-          "false": {"480p": 20, "720p": 40, "1080p": 90, "4k": 200},
-          "true": {"480p": 11.5, "720p": 25, "1080p": 62, "4k": 128}
+        "credit_rules": {
+          "4k": {
+            "with_video": 128,
+            "without_video": 200
+          },
+          "480p": {
+            "with_video": 11.5,
+            "without_video": 20
+          },
+          "720p": {
+            "with_video": 25,
+            "without_video": 40
+          },
+          "1080p": {
+            "with_video": 62,
+            "without_video": 90
+          }
         },
         "input_credits": null,
         "output_credits": null
@@ -25810,14 +26947,20 @@
         "type": "parameterized",
         "unit": "second",
         "credits": null,
-        "formula": "(duration + reference_video_seconds) * price_table[has_video_input][resolution]",
+        "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
         "parameters": {
-          "billed_seconds": "Output duration plus the combined duration of reference_video_urls",
-          "has_video_input": "true when reference_video_urls is non-empty"
+          "billed_seconds": "output duration plus reference video duration when applicable",
+          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video"
         },
-        "price_table": {
-          "false": {"480p": 14, "720p": 28},
-          "true": {"480p": 9, "720p": 20}
+        "credit_rules": {
+          "480p": {
+            "with_video": 9,
+            "without_video": 14
+          },
+          "720p": {
+            "with_video": 20,
+            "without_video": 28
+          }
         },
         "input_credits": null,
         "output_credits": null
@@ -26014,13 +27157,20 @@
         "type": "parameterized",
         "unit": "second",
         "credits": null,
-        "formula": "duration * price_table[has_video_input][resolution]",
+        "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
         "parameters": {
-          "has_video_input": "true when reference_video_urls is non-empty"
+          "billed_seconds": "output duration plus reference video duration when applicable",
+          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video"
         },
-        "price_table": {
-          "false": {"480p": 10, "720p": 24},
-          "true": {"480p": 6, "720p": 12.5}
+        "credit_rules": {
+          "480p": {
+            "with_video": 6,
+            "without_video": 10
+          },
+          "720p": {
+            "with_video": 12.5,
+            "without_video": 24
+          }
         },
         "input_credits": null,
         "output_credits": null
@@ -26138,12 +27288,18 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "duration_credits[duration]",
-        "duration_credits": {"4": 48, "8": 96, "12": 144, "16": 192, "20": 240},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "duration_credits": {
+          "4": 48,
+          "8": 96,
+          "12": 144,
+          "16": 192,
+          "20": 240
+        }
       },
       "status": "stable"
     },
@@ -26282,9 +27438,13 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 48, "1024p": 80, "1080p": 112},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 48,
+          "1024p": 80,
+          "1080p": 112
+        }
       },
       "status": "stable"
     },
@@ -26534,7 +27694,16 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * price_table[resolution_group][sound]",
-        "price_table": {"standard": {"false": 10, "true": 15}, "4k": {"false": 30, "true": 35}},
+        "price_table": {
+          "4k": {
+            "true": 35,
+            "false": 30
+          },
+          "standard": {
+            "true": 15,
+            "false": 10
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -26707,7 +27876,16 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * price_table[resolution][sound]",
-        "price_table": {"720p": {"false": 3.6, "true": 6}, "1080p": {"false": 6, "true": 9.6}},
+        "price_table": {
+          "720p": {
+            "true": 6,
+            "false": 3.6
+          },
+          "1080p": {
+            "true": 9.6,
+            "false": 6
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -26880,7 +28058,16 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * price_table[resolution_group][sound]",
-        "price_table": {"standard": {"false": 24, "true": 48}, "4k": {"false": 48, "true": 72}},
+        "price_table": {
+          "4k": {
+            "true": 72,
+            "false": 48
+          },
+          "standard": {
+            "true": 48,
+            "false": 24
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -26999,12 +28186,15 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"480p": 6, "720p": 12},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "480p": 6,
+          "720p": 12
+        }
       },
       "status": "stable"
     },
@@ -27115,12 +28305,15 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
         "formula": "resolution_credits[resolution]",
-        "resolution_credits": {"480p": 6, "720p": 12},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "480p": 6,
+          "720p": 12
+        }
       },
       "status": "stable"
     },
@@ -27259,10 +28452,23 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
-        "formula": "duration / 5 * resolution_5s_credits[resolution]",
-        "resolution_5s_credits": {"480p": 30, "720p": 60, "1080p": 90},
+        "formula": "price_table[resolution][duration]",
+        "price_table": {
+          "480p": {
+            "5": 30,
+            "10": 60
+          },
+          "720p": {
+            "5": 60,
+            "10": 120
+          },
+          "1080p": {
+            "5": 90,
+            "10": 180
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -27388,10 +28594,35 @@
       "supports_callback": true,
       "billing": {
         "type": "parameterized",
-        "unit": "video",
+        "unit": "request",
         "credits": null,
-        "formula": "duration / 5 * resolution_5s_credits[resolution]",
-        "resolution_5s_credits": {"480p": 30, "720p": 60, "1080p": 90},
+        "formula": "price_table[size][duration]",
+        "price_table": {
+          "480*832": {
+            "5": 30,
+            "10": 60
+          },
+          "832*480": {
+            "5": 30,
+            "10": 60
+          },
+          "1280*720": {
+            "5": 60,
+            "10": 120
+          },
+          "720*1280": {
+            "5": 60,
+            "10": 120
+          },
+          "1080*1920": {
+            "5": 90,
+            "10": 180
+          },
+          "1920*1080": {
+            "5": 90,
+            "10": 180
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -27576,10 +28807,13 @@
         "type": "tiered",
         "unit": "second",
         "credits": null,
-        "formula": "billable_duration * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 12, "1080p": 18},
+        "formula": "duration * resolution_credits[resolution]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 12,
+          "1080p": 18
+        }
       },
       "status": "stable"
     },
@@ -27763,9 +28997,12 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 12, "1080p": 18},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 12,
+          "1080p": 18
+        }
       },
       "status": "stable"
     },
@@ -27949,9 +29186,12 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 12, "1080p": 18},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 12,
+          "1080p": 18
+        }
       },
       "status": "stable"
     },
@@ -28135,9 +29375,12 @@
         "unit": "second",
         "credits": null,
         "formula": "duration * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 12, "1080p": 18},
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 12,
+          "1080p": 18
+        }
       },
       "status": "stable"
     },
@@ -28275,12 +29518,15 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "second",
+        "unit": "request",
         "credits": null,
-        "formula": "input_video_seconds * resolution_credits[resolution]",
-        "resolution_credits": {"720p": 8, "1080p": 12},
+        "formula": "resolution_credits[resolution]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "720p": 8,
+          "1080p": 12
+        }
       },
       "status": "stable"
     },
@@ -28399,12 +29645,16 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "second",
+        "unit": "request",
         "credits": null,
-        "formula": "input_video_seconds * resolution_credits[resolution]",
-        "resolution_credits": {"480p": 7, "580p": 12, "720p": 15},
+        "formula": "resolution_credits[resolution]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "480p": 7,
+          "580p": 12,
+          "720p": 15
+        }
       },
       "status": "stable"
     },
@@ -28523,12 +29773,16 @@
       "supports_callback": true,
       "billing": {
         "type": "tiered",
-        "unit": "second",
+        "unit": "request",
         "credits": null,
-        "formula": "input_video_seconds * resolution_credits[resolution]",
-        "resolution_credits": {"480p": 7, "580p": 12, "720p": 15},
+        "formula": "resolution_credits[resolution]",
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "resolution_credits": {
+          "480p": 7,
+          "580p": 12,
+          "720p": 15
+        }
       },
       "status": "stable"
     },
@@ -28685,65 +29939,22 @@
         "unit": "video",
         "credits": null,
         "formula": "price_table[resolution][duration]",
-        "price_table": {"720p": {"5": 80, "10": 160, "15": 240}, "1080p": {"5": 120, "10": 240, "15": 360}},
+        "price_table": {
+          "720p": {
+            "5": 80,
+            "10": 160,
+            "15": 240
+          },
+          "1080p": {
+            "5": 120,
+            "10": 240,
+            "15": 360
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
       "status": "stable"
-    },
-    {
-      "model_id": "flux-3/text-to-video",
-      "tool_name": "poyo_flux_3_text_to_video",
-      "service_type": "generate",
-      "category": "video",
-      "title": "Flux 3 Text to Video",
-      "description": "Generate a video from a text prompt with optional audio.",
-      "tags": ["video", "text-to-video"],
-      "input_schema": {"type":"object","additionalProperties":false,"required":["prompt"],"properties":{"prompt":{"type":"string","minLength":1},"duration":{"type":"integer","minimum":5,"maximum":20,"default":5},"resolution":{"type":"string","enum":["720p","1080p"],"default":"720p"},"aspect_ratio":{"type":"string","enum":["auto","21:9","2:1","16:9","4:3","1:1","3:4","9:16"],"default":"auto"},"sound":{"type":"boolean","default":true}}},
-      "output_schema": {"type":"object","additionalProperties":true},
-      "examples": [{"prompt":"A cinematic forest scene","duration":5}],
-      "supported_protocols": [], "execution_mode": "async", "supports_streaming": false, "supports_callback": true,
-      "billing": {"unit":"second","resolution_credit_rates":{"720p":34,"1080p":58}}, "status": "stable"
-    },
-    {
-      "model_id": "flux-3/image-to-video",
-      "tool_name": "poyo_flux_3_image_to_video",
-      "service_type": "generate", "category": "video", "title": "Flux 3 Image to Video",
-      "description": "Animate one input image into a video.", "tags": ["video", "image-to-video"],
-      "input_schema": {"type":"object","additionalProperties":false,"required":["prompt","image_urls"],"properties":{"prompt":{"type":"string","minLength":1},"image_urls":{"type":"array","minItems":1,"maxItems":1,"items":{"type":"string"}},"duration":{"type":"integer","minimum":5,"maximum":20,"default":5},"resolution":{"type":"string","enum":["720p","1080p"],"default":"720p"},"aspect_ratio":{"type":"string","enum":["auto","21:9","2:1","16:9","4:3","1:1","3:4","9:16"],"default":"auto"},"sound":{"type":"boolean","default":true}}},
-      "output_schema": {"type":"object","additionalProperties":true}, "examples": [{"prompt":"Add gentle camera motion","image_urls":["https://example.com/start.png"]}],
-      "supported_protocols": [], "execution_mode": "async", "supports_streaming": false, "supports_callback": true,
-      "billing": {"unit":"second","resolution_credit_rates":{"720p":34,"1080p":58}}, "status": "stable"
-    },
-    {
-      "model_id": "flux-3/first-last-frame-to-video",
-      "tool_name": "poyo_flux_3_first_last_frame_to_video",
-      "service_type": "generate", "category": "video", "title": "Flux 3 First Last Frame to Video",
-      "description": "Generate a video constrained by first and last frame images.", "tags": ["video", "first-last-frame-to-video"],
-      "input_schema": {"type":"object","additionalProperties":false,"required":["prompt","image_urls"],"properties":{"prompt":{"type":"string","minLength":1},"image_urls":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"string"}},"duration":{"type":"integer","minimum":5,"maximum":20,"default":5},"resolution":{"type":"string","enum":["720p","1080p"],"default":"720p"},"aspect_ratio":{"type":"string","enum":["auto","21:9","2:1","16:9","4:3","1:1","3:4","9:16"],"default":"auto"},"sound":{"type":"boolean","default":true}}},
-      "output_schema": {"type":"object","additionalProperties":true}, "examples": [{"prompt":"Transition between frames","duration":5,"image_urls":["https://example.com/start.png","https://example.com/end.png"]}],
-      "supported_protocols": [], "execution_mode": "async", "supports_streaming": false, "supports_callback": true,
-      "billing": {"unit":"second","resolution_credit_rates":{"720p":34,"1080p":58}}, "status": "stable"
-    },
-    {
-      "model_id": "flux-3/extend-video",
-      "tool_name": "poyo_flux_3_extend_video",
-      "service_type": "generate", "category": "video", "title": "Flux 3 Extend Video",
-      "description": "Continue an input video from its final frames.", "tags": ["video", "extend-video"],
-      "input_schema": {"type":"object","additionalProperties":false,"required":["prompt","video_url"],"properties":{"prompt":{"type":"string","minLength":1},"video_url":{"type":"string","format":"uri"},"duration":{"type":"integer","minimum":5,"maximum":20,"default":5},"resolution":{"type":"string","enum":["720p","1080p"],"default":"720p"},"aspect_ratio":{"type":"string","enum":["auto","21:9","2:1","16:9","4:3","1:1","3:4","9:16"],"default":"auto"},"sound":{"type":"boolean","default":true}}},
-      "output_schema": {"type":"object","additionalProperties":true}, "examples": [{"prompt":"Continue the camera movement","video_url":"https://example.com/source.mp4"}],
-      "supported_protocols": [], "execution_mode": "async", "supports_streaming": false, "supports_callback": true,
-      "billing": {"unit":"second","resolution_credit_rates":{"720p":82,"1080p":106}}, "status": "stable"
-    },
-    {
-      "model_id": "flux-3/keyframes-to-video",
-      "tool_name": "poyo_flux_3_keyframes_to_video",
-      "service_type": "generate", "category": "video", "title": "Flux 3 Keyframes to Video",
-      "description": "Generate a video guided by positioned keyframe images.", "tags": ["video", "keyframes-to-video"],
-      "input_schema": {"type":"object","additionalProperties":false,"required":["prompt","keyframes"],"properties":{"prompt":{"type":"string","minLength":1},"keyframes":{"type":"array","minItems":1,"maxItems":10,"items":{"type":"object","additionalProperties":false,"required":["image_url","frame_index"],"properties":{"image_url":{"type":"string"},"frame_index":{"type":"integer","minimum":0}}}},"duration":{"type":"integer","minimum":5,"maximum":20,"default":5},"resolution":{"type":"string","enum":["720p","1080p"],"default":"720p"},"aspect_ratio":{"type":"string","enum":["auto","21:9","2:1","16:9","4:3","1:1","3:4","9:16"],"default":"auto"},"sound":{"type":"boolean","default":true}}},
-      "output_schema": {"type":"object","additionalProperties":true}, "examples": [{"prompt":"Move through the keyframes","duration":5,"keyframes":[{"image_url":"https://example.com/frame.png","frame_index":0}]}],
-      "supported_protocols": [], "execution_mode": "async", "supports_streaming": false, "supports_callback": true,
-      "billing": {"unit":"second","resolution_credit_rates":{"720p":34,"1080p":58}}, "status": "stable"
     }
   ],
   "next_cursor": null,

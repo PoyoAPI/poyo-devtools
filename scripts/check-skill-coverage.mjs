@@ -1,5 +1,18 @@
 import {readFile} from "node:fs/promises";
 
+const stable = (value) => {
+  if (Array.isArray(value)) return value.map(stable);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).sort(([left], [right]) => left.localeCompare(right)).map(
+        ([key, item]) => [key, stable(item)],
+      ),
+    );
+  }
+  return value;
+};
+const equal = (left, right) => JSON.stringify(stable(left)) === JSON.stringify(stable(right));
+
 const catalog = JSON.parse(await readFile("artifacts/capability-catalog.json", "utf8"));
 if (!catalog.items?.length) throw new Error("Capability Catalog contains no models");
 const ids = new Set();
@@ -19,21 +32,23 @@ for (const model of catalog.items) {
 
 const expectedSeedanceRates = {
   "seedance-2": {
-    false: {"480p": 20, "720p": 40, "1080p": 90, "4k": 200},
-    true: {"480p": 11.5, "720p": 25, "1080p": 62, "4k": 128},
+    "480p": {with_video: 11.5, without_video: 20},
+    "720p": {with_video: 25, without_video: 40},
+    "1080p": {with_video: 62, without_video: 90},
+    "4k": {with_video: 128, without_video: 200},
   },
   "seedance-2-fast": {
-    false: {"480p": 14, "720p": 28},
-    true: {"480p": 9, "720p": 20},
+    "480p": {with_video: 9, without_video: 14},
+    "720p": {with_video: 20, without_video: 28},
   },
   "seedance-2-mini": {
-    false: {"480p": 10, "720p": 24},
-    true: {"480p": 6, "720p": 12.5},
+    "480p": {with_video: 6, without_video: 10},
+    "720p": {with_video: 12.5, without_video: 24},
   },
 };
 for (const [modelId, expected] of Object.entries(expectedSeedanceRates)) {
   const model = catalog.items.find((item) => item.model_id === modelId);
-  if (JSON.stringify(model?.billing?.price_table) !== JSON.stringify(expected)) {
+  if (!equal(model?.billing?.credit_rules, expected)) {
     throw new Error(`Seedance pricing table is out of sync: ${modelId}`);
   }
 }
@@ -45,7 +60,7 @@ const expectedQwenImageRates = {
 for (const [modelId, expected] of Object.entries(expectedQwenImageRates)) {
   const billing = catalog.items.find((item) => item.model_id === modelId)?.billing;
   if (
-    JSON.stringify(billing?.resolution_credits) !== JSON.stringify(expected.resolution_credits)
+    !equal(billing?.resolution_credits, expected.resolution_credits)
     || billing?.input_image_credits !== expected.input_image_credits
   ) {
     throw new Error(`Qwen Image 3 pricing is out of sync: ${modelId}`);

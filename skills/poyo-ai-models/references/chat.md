@@ -1,6 +1,6 @@
 # chat
 
-Generated from PoYo Catalog `v1-ce33c746eb81`. Always call describe before execution.
+Generated from PoYo Catalog `v1-17a4b5d42c77`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -11,6 +11,7 @@ Generated from PoYo Catalog `v1-ce33c746eb81`. Always call describe before execu
 | `claude-opus-4-7` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-7 model. |
 | `claude-opus-4-7-thinking` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-7-thinking model. |
 | `claude-opus-4-8` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-8 model. |
+| `claude-opus-5` | chat | openai-chat, anthropic | Run the PoYo Claude Opus 5 model. |
 | `claude-sonnet-4-5-20250929` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-4-5-20250929 model. |
 | `claude-sonnet-4-6` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-4-6 model. |
 | `claude-sonnet-5` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-5 model. |
