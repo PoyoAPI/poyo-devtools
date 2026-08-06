@@ -1,9 +1,14 @@
 # video
 
-Generated from PoYo Catalog `v1-bb589b130d2a`. Always call describe before execution.
+Generated from PoYo Catalog `v1-2c252a3e4ef8`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
+| `flux-3/extend-video` | generate |  | Continue an input video from its final frames. |
+| `flux-3/first-last-frame-to-video` | generate |  | Generate a video constrained by first and last frame images. |
+| `flux-3/image-to-video` | generate |  | Animate one input image into a video. |
+| `flux-3/keyframes-to-video` | generate |  | Generate a video guided by positioned keyframe images. |
+| `flux-3/text-to-video` | generate |  | Generate a video from a text prompt with optional audio. |
 | `grok-imagine-video-1.5` | generate |  | Image-to-video generation with Grok Imagine Video 1.5 |
 | `hailuo-03` | generate |  | Generate 2K videos from text, keyframes, or multimodal references |
 | `hailuo-2.3` | generate |  | Text-to-video and optional first-frame guided generation |
