@@ -37,4 +37,18 @@ for (const [modelId, expected] of Object.entries(expectedSeedanceRates)) {
     throw new Error(`Seedance pricing table is out of sync: ${modelId}`);
   }
 }
+
+const expectedQwenImageRates = {
+  "qwen-image-3": {resolution_credits: {"1K": 4.8, "2K": 4.8}, input_image_credits: 0.5},
+  "qwen-image-3-pro": {resolution_credits: {"1K": 6.4, "2K": 12}, input_image_credits: 0.5},
+};
+for (const [modelId, expected] of Object.entries(expectedQwenImageRates)) {
+  const billing = catalog.items.find((item) => item.model_id === modelId)?.billing;
+  if (
+    JSON.stringify(billing?.resolution_credits) !== JSON.stringify(expected.resolution_credits)
+    || billing?.input_image_credits !== expected.input_image_credits
+  ) {
+    throw new Error(`Qwen Image 3 pricing is out of sync: ${modelId}`);
+  }
+}
 process.stdout.write(`Validated ${ids.size} PoYo model capabilities.\n`);

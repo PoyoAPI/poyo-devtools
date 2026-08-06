@@ -34,7 +34,7 @@
       "execution_mode": "async",
       "supports_streaming": false,
       "supports_callback": true,
-      "billing": {"type": "fixed", "unit": "image", "credits": 12, "input_credits": null, "output_credits": null},
+      "billing": {"type": "tiered", "unit": "image", "credits": null, "formula": "resolution_credits[resolution] + reference_image_count * input_image_credits", "resolution_credits": {"1K": 4.8, "2K": 4.8}, "input_image_credits": 0.5, "input_credits": null, "output_credits": null},
       "status": "stable"
     },
     {
