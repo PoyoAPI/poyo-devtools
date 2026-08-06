@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-2c252a3e4ef8`. Always call describe before execution.
+Generated from PoYo Catalog `v1-ce33c746eb81`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -9,7 +9,7 @@ Generated from PoYo Catalog `v1-2c252a3e4ef8`. Always call describe before execu
 | `flux-3/image-to-video` | generate |  | Animate one input image into a video. |
 | `flux-3/keyframes-to-video` | generate |  | Generate a video guided by positioned keyframe images. |
 | `flux-3/text-to-video` | generate |  | Generate a video from a text prompt with optional audio. |
-| `grok-imagine-video-1.5` | generate |  | Image-to-video generation with Grok Imagine Video 1.5 |
+| `grok-imagine-video-1.5` | generate |  | Text, image, and reference-to-video generation with Grok Imagine Video 1.5 |
 | `hailuo-03` | generate |  | Generate 2K videos from text, keyframes, or multimodal references |
 | `hailuo-2.3` | generate |  | Text-to-video and optional first-frame guided generation |
 | `happy-horse` | generate |  | Alibaba Happy Horse text-to-video, image-to-video, reference-to-video, and video-edit workflows |

@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-2c252a3e4ef8",
+  "schema_version": "v1-ce33c746eb81",
   "items": [
     {
       "model_id": "qwen-image-3",
@@ -21583,16 +21583,14 @@
       "service_type": "generate",
       "category": "video",
       "title": "Grok Imagine Video 1.5",
-      "description": "Image-to-video generation with Grok Imagine Video 1.5",
+      "description": "Text, image, and reference-to-video generation with Grok Imagine Video 1.5",
       "tags": [
         "video"
       ],
       "input_schema": {
         "type": "object",
-        "required": [
-          "prompt",
-          "image_urls"
-        ],
+        "required": ["prompt"],
+        "description": "Omit image fields for text mode; use image_urls for one first frame or reference_image_urls for 1-7 references. Image fields are mutually exclusive.",
         "properties": {
           "prompt": {
             "type": "string",
@@ -21621,17 +21619,32 @@
             "minItems": 1,
             "description": "Source image URL array. Provide exactly one image."
           },
+          "reference_image_urls": {
+            "type": "array",
+            "items": { "type": "string", "format": "uri" },
+            "maxItems": 7,
+            "minItems": 1,
+            "description": "Reference image URLs. Use <IMAGE_0>, <IMAGE_1>, etc. in the prompt."
+          },
           "resolution": {
             "enum": [
               "480p",
-              "720p"
+              "720p",
+              "1080p"
             ],
             "type": "string",
             "default": "720p",
             "example": "720p",
-            "description": "Output resolution"
+            "description": "Output resolution. Reference mode supports up to 720p."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": ["16:9", "4:3", "3:2", "1:1", "2:3", "3:4", "9:16"],
+            "default": "16:9",
+            "description": "Aspect ratio for text and reference modes."
           }
-        }
+        },
+        "allOf": [{ "not": { "required": ["image_urls", "reference_image_urls"] } }]
       },
       "output_schema": {
         "type": "object",
@@ -21674,12 +21687,25 @@
       },
       "examples": [
         {
+          "prompt": "A cinematic city at sunrise",
+          "duration": 6,
+          "resolution": "1080p",
+          "aspect_ratio": "16:9"
+        },
+        {
           "prompt": "A cinematic product shot with a slow camera push-in and soft studio lighting",
           "duration": 6,
           "image_urls": [
             "https://example.com/source-image.png"
           ],
-          "resolution": "720p"
+          "resolution": "1080p"
+        },
+        {
+          "prompt": "<IMAGE_0> meets <IMAGE_1> in a neon street",
+          "reference_image_urls": ["https://example.com/character.png", "https://example.com/style.png"],
+          "duration": 8,
+          "resolution": "720p",
+          "aspect_ratio": "16:9"
         }
       ],
       "supported_protocols": [],
@@ -21687,12 +21713,10 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
-        "unit": "request",
-        "credits": null,
-        "display": "Calculated from request parameters or generated output",
-        "input_credits": null,
-        "output_credits": null
+        "type": "tiered",
+        "unit": "second",
+        "resolution_credits": {"480p": 14.5, "720p": 25, "1080p": 45},
+        "input_image_credits": 2
       },
       "status": "stable"
     },
