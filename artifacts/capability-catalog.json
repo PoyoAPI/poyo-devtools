@@ -34,7 +34,7 @@
       "execution_mode": "async",
       "supports_streaming": false,
       "supports_callback": true,
-      "billing": {"type": "tiered", "unit": "image", "resolution_credits": {"1K": 4.8, "2K": 4.8}, "input_image_credits": 0.5},
+      "billing": {"type": "fixed", "unit": "image", "credits": 12, "input_credits": null, "output_credits": null},
       "status": "stable"
     },
     {
@@ -229,10 +229,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
+        "type": "parameterized",
         "unit": "request",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "60 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
+        "base_credits": 60,
+        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
         "input_credits": null,
         "output_credits": null
       },
@@ -394,10 +396,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
+        "type": "parameterized",
         "unit": "request",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "60 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
+        "base_credits": 60,
+        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
         "input_credits": null,
         "output_credits": null
       },
@@ -559,10 +563,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
+        "type": "parameterized",
         "unit": "request",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "36 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
+        "base_credits": 36,
+        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
         "input_credits": null,
         "output_credits": null
       },
@@ -724,10 +730,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
+        "type": "parameterized",
         "unit": "request",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "36 + (enable_pbr ? 24 : 0) + (is_multiview ? 24 : 0) + (has_custom_face_count ? 24 : 0)",
+        "base_credits": 36,
+        "addon_credits": {"pbr": 24, "multiview": 24, "custom_face_count": 24},
         "input_credits": null,
         "output_credits": null
       },
@@ -1506,9 +1514,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "parameterized",
         "unit": "request",
-        "credits": 45,
+        "credits": null,
+        "formula": "texture_credits[texture_mode] + (geometry_quality == 'detailed' ? 30 : 0) + (quad ? 7.5 : 0)",
+        "texture_credits": {"none": 30, "standard": 45, "detailed": 60},
+        "addon_credits": {"detailed_geometry": 30, "quad_mesh": 7.5},
         "input_credits": null,
         "output_credits": null
       },
@@ -1663,9 +1674,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "parameterized",
         "unit": "request",
-        "credits": 30,
+        "credits": null,
+        "formula": "texture_credits[texture_mode] + (geometry_quality == 'detailed' ? 30 : 0) + (quad ? 7.5 : 0)",
+        "texture_credits": {"none": 15, "standard": 30, "detailed": 45},
+        "addon_credits": {"detailed_geometry": 30, "quad_mesh": 7.5},
         "input_credits": null,
         "output_credits": null
       },
@@ -1820,9 +1834,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "parameterized",
         "unit": "request",
-        "credits": 30,
+        "credits": null,
+        "formula": "texture_credits[texture_mode] + (geometry_quality == 'detailed' ? 30 : 0) + (quad ? 7.5 : 0)",
+        "texture_credits": {"none": 15, "standard": 30, "detailed": 45},
+        "addon_credits": {"detailed_geometry": 30, "quad_mesh": 7.5},
         "input_credits": null,
         "output_credits": null
       },
@@ -1930,9 +1947,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "parameterized",
         "unit": "request",
-        "credits": 70,
+        "credits": null,
+        "formula": "texture ? 70 : 56",
+        "texture_credits": {"false": 56, "true": 70},
         "input_credits": null,
         "output_credits": null
       },
@@ -2040,9 +2059,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
+        "type": "parameterized",
         "unit": "request",
-        "credits": 70,
+        "credits": null,
+        "formula": "texture ? 70 : 56",
+        "texture_credits": {"false": 56, "true": 70},
         "input_credits": null,
         "output_credits": null
       },
@@ -2343,9 +2364,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 128,
+        "type": "dynamic",
+        "unit": "started_minute",
+        "credits": null,
+        "formula": "ceil(duration / 60) * 128",
+        "credits_per_unit": 128,
         "input_credits": null,
         "output_credits": null
       },
@@ -2537,9 +2560,11 @@
       "supports_callback": true,
       "billing": {
         "type": "dynamic",
-        "unit": "request",
+        "unit": "1000_characters",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "text_characters / 1000 * 8",
+        "credits_per_unit": 8,
+        "display": "8 credits per 1,000 input characters",
         "input_credits": null,
         "output_credits": null
       },
@@ -2994,9 +3019,11 @@
       "supports_callback": true,
       "billing": {
         "type": "dynamic",
-        "unit": "request",
+        "unit": "1000_characters",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "text_characters / 1000 * 24",
+        "credits_per_unit": 24,
+        "display": "24 credits per 1,000 input characters",
         "input_credits": null,
         "output_credits": null
       },
@@ -3357,9 +3384,11 @@
       "supports_callback": true,
       "billing": {
         "type": "dynamic",
-        "unit": "request",
+        "unit": "1000_characters",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "text_characters / 1000 * 2.4",
+        "credits_per_unit": 2.4,
+        "display": "2.4 credits per 1,000 input characters",
         "input_credits": null,
         "output_credits": null
       },
@@ -10363,9 +10392,11 @@
       "supports_callback": true,
       "billing": {
         "type": "dynamic",
-        "unit": "request",
+        "unit": "output_megapixel",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "output_megapixels * number_of_images * 4",
+        "credits_per_unit": 4,
+        "display": "4 credits per output megapixel per image",
         "input_credits": null,
         "output_credits": null
       },
@@ -11181,10 +11212,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
-        "unit": "request",
+        "type": "parameterized",
+        "unit": "image",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "number_of_images * resolution_credits[resolution] + reference_image_count * 2",
+        "resolution_credits": {"1K": 8, "2K": 11},
+        "input_image_credits": 2,
         "input_credits": null,
         "output_credits": null
       },
@@ -11565,9 +11598,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 3.5,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 3.5, "2K": 3.5, "4K": 7},
         "input_credits": null,
         "output_credits": null
       },
@@ -11756,9 +11791,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 3.5,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 3.5, "2K": 3.5, "4K": 7},
         "input_credits": null,
         "output_credits": null
       },
@@ -12183,9 +12220,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 10,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"0.5K": 7, "1K": 10, "2K": 15, "4K": 20},
         "input_credits": null,
         "output_credits": null
       },
@@ -12364,9 +12403,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 10,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"0.5K": 7, "1K": 10, "2K": 15, "4K": 20},
         "input_credits": null,
         "output_credits": null
       },
@@ -12542,9 +12583,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 18,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 8, "2K": 8, "4K": 14},
         "input_credits": null,
         "output_credits": null
       },
@@ -12720,9 +12763,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 18,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 8, "2K": 8, "4K": 14},
         "input_credits": null,
         "output_credits": null
       },
@@ -14264,7 +14309,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 10,
+        "credits": 16,
         "input_credits": null,
         "output_credits": null
       },
@@ -14410,7 +14455,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 10,
+        "credits": 8,
         "input_credits": null,
         "output_credits": null
       },
@@ -14838,9 +14883,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 18,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 18, "2K": 27},
         "input_credits": null,
         "output_credits": null
       },
@@ -14990,9 +15037,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 6,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 6, "2K": 9},
         "input_credits": null,
         "output_credits": null
       },
@@ -15278,9 +15327,15 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 2,
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "price_table[quality][billable_resolution]",
+        "price_table": {
+          "low": {"1K": 2, "2K": 4, "4K": 8},
+          "medium": {"1K": 8.48, "2K": 8.96, "4K": 16.16},
+          "high": {"1K": 33.76, "2K": 35.52, "4K": 64.16}
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -15433,9 +15488,15 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 2,
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "price_table[quality][billable_resolution]",
+        "price_table": {
+          "low": {"1K": 2, "2K": 4, "4K": 8},
+          "medium": {"1K": 8.48, "2K": 8.96, "4K": 16.16},
+          "high": {"1K": 33.76, "2K": 35.52, "4K": 64.16}
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -15970,9 +16031,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 5,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 5, "2K": 8, "4K": 12},
         "input_credits": null,
         "output_credits": null
       },
@@ -16151,9 +16214,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 5,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 5, "2K": 8, "4K": 12},
         "input_credits": null,
         "output_credits": null
       },
@@ -16407,9 +16472,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 30,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration_credits[duration]",
+        "duration_credits": {"6": 30, "10": 40},
         "input_credits": null,
         "output_credits": null
       },
@@ -16589,6 +16656,7 @@
         },
         "input_credits": null,
         "output_credits": null,
+        "credits_per_second": {"768P": 7},
         "default_credits": 42
       },
       "status": "stable"
@@ -16865,9 +16933,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 13,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * sound_credits[sound]",
+        "sound_credits": {"false": 13, "true": 24},
         "input_credits": null,
         "output_credits": null
       },
@@ -17091,9 +17161,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 39,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * sound_credits[sound]",
+        "sound_credits": {"false": 39, "true": 49},
         "input_credits": null,
         "output_credits": null
       },
@@ -17317,9 +17389,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 27,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * sound_credits[sound]",
+        "sound_credits": {"false": 27, "true": 39},
         "input_credits": null,
         "output_credits": null
       },
@@ -17443,9 +17517,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 21,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "price_table[resolution][duration]",
+        "price_table": {"720p": {"5": 21, "10": 42}, "1080p": {"5": 43, "10": 86}},
         "input_credits": null,
         "output_credits": null
       },
@@ -17604,9 +17680,22 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 9,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "price_table[generate_audio][resolution][duration]",
+        "price_table": {
+          "false": {
+            "480p": {"4": 9, "8": 18, "12": 21},
+            "720p": {"4": 16, "8": 32, "12": 42},
+            "1080p": {"4": 40, "8": 70, "12": 100}
+          },
+          "true": {
+            "480p": {"4": 18, "8": 36, "12": 42},
+            "720p": {"4": 32, "8": 64, "12": 84},
+            "1080p": {"4": 40, "8": 70, "12": 100}
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -17882,9 +17971,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 36,
+        "type": "tiered",
+        "unit": "video",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"720p": 36, "1080p": 36, "4k": 60},
         "input_credits": null,
         "output_credits": null
       },
@@ -18030,9 +18121,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 20,
+        "type": "tiered",
+        "unit": "video",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"720p": 20, "1080p": 20, "4k": 30},
         "input_credits": null,
         "output_credits": null
       },
@@ -18178,9 +18271,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 200,
+        "type": "tiered",
+        "unit": "video",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"720p": 200, "1080p": 200, "4k": 400},
         "input_credits": null,
         "output_credits": null
       },
@@ -18335,9 +18430,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 80,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "price_table[resolution][duration]",
+        "price_table": {"720p": {"5": 80, "10": 160, "15": 240}, "1080p": {"5": 120, "10": 240, "15": 360}},
         "input_credits": null,
         "output_credits": null
       },
@@ -20025,9 +20122,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 18,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 18, "2K": 27},
         "input_credits": null,
         "output_credits": null
       },
@@ -20177,9 +20276,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 6,
+        "type": "tiered",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"1K": 6, "2K": 9},
         "input_credits": null,
         "output_credits": null
       },
@@ -20325,7 +20426,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 10,
+        "credits": 16,
         "input_credits": null,
         "output_credits": null
       },
@@ -20471,7 +20572,7 @@
       "billing": {
         "type": "fixed",
         "unit": "request",
-        "credits": 10,
+        "credits": 8,
         "input_credits": null,
         "output_credits": null
       },
@@ -21401,9 +21502,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 80,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "price_table[resolution][duration]",
+        "price_table": {"720p": {"5": 80, "10": 160, "15": 240}, "1080p": {"5": 120, "10": 240, "15": 360}},
         "input_credits": null,
         "output_credits": null
       },
@@ -22008,9 +22111,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 35,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "price_table[resolution][duration]",
+        "price_table": {"768p": {"6": 35, "10": 70}, "1080p": {"6": 60}},
         "input_credits": null,
         "output_credits": null
       },
@@ -22200,9 +22305,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 16,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * price_table[has_video_input][resolution]",
+        "parameters": {"has_video_input": "true when video_url is provided"},
+        "price_table": {"false": {"720p": 16, "1080p": 32}, "true": {"720p": 32, "1080p": 64}},
         "input_credits": null,
         "output_credits": null
       },
@@ -22373,10 +22481,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
-        "unit": "request",
+        "type": "tiered",
+        "unit": "second",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 22, "1080p": 28},
         "input_credits": null,
         "output_credits": null
       },
@@ -22566,9 +22675,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 75,
+        "type": "dynamic",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * 15",
+        "credits_per_unit": 15,
         "input_credits": null,
         "output_credits": null
       },
@@ -22758,9 +22869,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 45,
+        "type": "dynamic",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * 9",
+        "credits_per_unit": 9,
         "input_credits": null,
         "output_credits": null
       },
@@ -22874,9 +22987,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 55,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration_credits[duration]",
+        "duration_credits": {"5": 55, "10": 110},
         "input_credits": null,
         "output_credits": null
       },
@@ -22990,9 +23105,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 30,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration_credits[duration]",
+        "duration_credits": {"5": 30, "10": 60},
         "input_credits": null,
         "output_credits": null
       },
@@ -23106,9 +23223,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 42,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration_credits[duration]",
+        "duration_credits": {"5": 42, "10": 84},
         "input_credits": null,
         "output_credits": null
       },
@@ -23291,10 +23410,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
-        "unit": "request",
+        "type": "tiered",
+        "unit": "second",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "input_video_seconds * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 9, "1080p": 15},
         "input_credits": null,
         "output_credits": null
       },
@@ -23455,9 +23575,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 110,
+        "type": "dynamic",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * 22",
+        "credits_per_unit": 22,
         "input_credits": null,
         "output_credits": null
       },
@@ -23618,9 +23740,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 85,
+        "type": "dynamic",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * 17",
+        "credits_per_unit": 17,
         "input_credits": null,
         "output_credits": null
       },
@@ -23800,9 +23924,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 150,
+        "type": "dynamic",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * 50",
+        "credits_per_unit": 50,
         "input_credits": null,
         "output_credits": null
       },
@@ -24280,9 +24406,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 150,
+        "type": "dynamic",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * 50",
+        "credits_per_unit": 50,
         "input_credits": null,
         "output_credits": null
       },
@@ -24538,9 +24666,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 39,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * sound_credits[sound]",
+        "sound_credits": {"false": 13, "true": 16},
         "input_credits": null,
         "output_credits": null
       },
@@ -24796,9 +24926,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 30,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * sound_credits[sound]",
+        "sound_credits": {"false": 10, "true": 13},
         "input_credits": null,
         "output_credits": null
       },
@@ -24971,10 +25103,24 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
+        "type": "parameterized",
         "unit": "request",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "price_table[has_video_input][resolution_group][duration]",
+        "parameters": {
+          "has_video_input": "true when video_urls is non-empty",
+          "resolution_group": "4k for 4K output; standard for 720p or 1080p"
+        },
+        "price_table": {
+          "false": {
+            "standard": {"4": 120, "6": 150, "8": 200, "10": 220},
+            "4k": {"4": 250, "6": 300, "8": 350, "10": 450}
+          },
+          "true": {
+            "standard": 300,
+            "4k": 400
+          }
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -25228,9 +25374,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 75,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration_credits[duration]",
+        "duration_credits": {"5": 75, "10": 150},
         "input_credits": null,
         "output_credits": null
       },
@@ -25439,9 +25587,18 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 20,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "(duration + reference_video_seconds) * price_table[has_video_input][resolution]",
+        "parameters": {
+          "billed_seconds": "Output duration plus the combined duration of reference_video_urls",
+          "has_video_input": "true when reference_video_urls is non-empty"
+        },
+        "price_table": {
+          "false": {"480p": 20, "720p": 40, "1080p": 90, "4k": 200},
+          "true": {"480p": 11.5, "720p": 25, "1080p": 62, "4k": 128}
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -25650,9 +25807,18 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 14,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "(duration + reference_video_seconds) * price_table[has_video_input][resolution]",
+        "parameters": {
+          "billed_seconds": "Output duration plus the combined duration of reference_video_urls",
+          "has_video_input": "true when reference_video_urls is non-empty"
+        },
+        "price_table": {
+          "false": {"480p": 14, "720p": 28},
+          "true": {"480p": 9, "720p": 20}
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -25845,10 +26011,17 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "dynamic",
-        "unit": "request",
+        "type": "parameterized",
+        "unit": "second",
         "credits": null,
-        "display": "Calculated from request parameters or generated output",
+        "formula": "duration * price_table[has_video_input][resolution]",
+        "parameters": {
+          "has_video_input": "true when reference_video_urls is non-empty"
+        },
+        "price_table": {
+          "false": {"480p": 10, "720p": 24},
+          "true": {"480p": 6, "720p": 12.5}
+        },
         "input_credits": null,
         "output_credits": null
       },
@@ -25964,9 +26137,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 48,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration_credits[duration]",
+        "duration_credits": {"4": 48, "8": 96, "12": 144, "16": 192, "20": 240},
         "input_credits": null,
         "output_credits": null
       },
@@ -26103,9 +26278,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 320,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 48, "1024p": 80, "1080p": 112},
         "input_credits": null,
         "output_credits": null
       },
@@ -26353,9 +26530,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 120,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * price_table[resolution_group][sound]",
+        "price_table": {"standard": {"false": 10, "true": 15}, "4k": {"false": 30, "true": 35}},
         "input_credits": null,
         "output_credits": null
       },
@@ -26524,9 +26703,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 48,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * price_table[resolution][sound]",
+        "price_table": {"720p": {"false": 3.6, "true": 6}, "1080p": {"false": 6, "true": 9.6}},
         "input_credits": null,
         "output_credits": null
       },
@@ -26695,9 +26876,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 384,
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * price_table[resolution_group][sound]",
+        "price_table": {"standard": {"false": 24, "true": 48}, "4k": {"false": 48, "true": 72}},
         "input_credits": null,
         "output_credits": null
       },
@@ -26815,9 +26998,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 6,
+        "type": "tiered",
+        "unit": "video",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"480p": 6, "720p": 12},
         "input_credits": null,
         "output_credits": null
       },
@@ -26929,9 +27114,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 6,
+        "type": "tiered",
+        "unit": "video",
+        "credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {"480p": 6, "720p": 12},
         "input_credits": null,
         "output_credits": null
       },
@@ -27071,9 +27258,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 30,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration / 5 * resolution_5s_credits[resolution]",
+        "resolution_5s_credits": {"480p": 30, "720p": 60, "1080p": 90},
         "input_credits": null,
         "output_credits": null
       },
@@ -27198,9 +27387,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 30,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "duration / 5 * resolution_5s_credits[resolution]",
+        "resolution_5s_credits": {"480p": 30, "720p": 60, "1080p": 90},
         "input_credits": null,
         "output_credits": null
       },
@@ -27382,9 +27573,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 12,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "billable_duration * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 12, "1080p": 18},
         "input_credits": null,
         "output_credits": null
       },
@@ -27566,9 +27759,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 90,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 12, "1080p": 18},
         "input_credits": null,
         "output_credits": null
       },
@@ -27750,9 +27945,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 12,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 12, "1080p": 18},
         "input_credits": null,
         "output_credits": null
       },
@@ -27934,9 +28131,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 90,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 12, "1080p": 18},
         "input_credits": null,
         "output_credits": null
       },
@@ -28075,9 +28274,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 8,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "input_video_seconds * resolution_credits[resolution]",
+        "resolution_credits": {"720p": 8, "1080p": 12},
         "input_credits": null,
         "output_credits": null
       },
@@ -28197,9 +28398,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 7,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "input_video_seconds * resolution_credits[resolution]",
+        "resolution_credits": {"480p": 7, "580p": 12, "720p": 15},
         "input_credits": null,
         "output_credits": null
       },
@@ -28319,9 +28522,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 7,
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "input_video_seconds * resolution_credits[resolution]",
+        "resolution_credits": {"480p": 7, "580p": 12, "720p": 15},
         "input_credits": null,
         "output_credits": null
       },
@@ -28476,9 +28681,11 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 80,
+        "type": "parameterized",
+        "unit": "video",
+        "credits": null,
+        "formula": "price_table[resolution][duration]",
+        "price_table": {"720p": {"5": 80, "10": 160, "15": 240}, "1080p": {"5": 120, "10": 240, "15": 360}},
         "input_credits": null,
         "output_credits": null
       },
