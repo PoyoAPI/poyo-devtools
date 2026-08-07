@@ -1,6 +1,6 @@
 # chat
 
-Generated from PoYo Catalog `v1-17a4b5d42c77`. Always call describe before execution.
+Generated from PoYo Catalog `v1-a437888866ef`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
