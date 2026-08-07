@@ -26742,6 +26742,55 @@
       "status": "stable"
     },
     {
+      "model_id": "seedance-2.5",
+      "tool_name": "poyo_seedance_2_5",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Seedance 2.5",
+      "description": "Video generation with Seedance 2.5 using text, first/last frames, or multimodal references.",
+      "tags": ["video", "text-to-video", "image-to-video", "reference-to-video"],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["prompt", "duration", "resolution"],
+        "properties": {
+          "prompt": {"type": "string", "minLength": 1},
+          "image_urls": {"type": "array", "maxItems": 2, "items": {"type": "string", "format": "uri"}},
+          "reference_image_urls": {"type": "array", "maxItems": 30, "items": {"type": "string", "format": "uri"}},
+          "reference_video_urls": {"type": "array", "maxItems": 10, "items": {"type": "string", "format": "uri"}},
+          "reference_audio_urls": {"type": "array", "maxItems": 10, "items": {"type": "string", "format": "uri"}},
+          "resolution": {"type": "string", "enum": ["480p", "720p"], "default": "720p"},
+          "duration": {"type": "integer", "minimum": 4, "maximum": 30},
+          "aspect_ratio": {"type": "string", "enum": ["auto", "21:9", "16:9", "4:3", "1:1", "3:4", "9:16"]},
+          "generate_audio": {"type": "boolean"},
+          "seed": {"type": "integer"}
+        }
+      },
+      "output_schema": {"type": "object", "additionalProperties": true},
+      "examples": [
+        {"prompt": "A cinematic aerial view of a city at night", "duration": 5, "resolution": "720p"},
+        {"prompt": "Transition smoothly between the two frames", "image_urls": ["https://example.com/first.jpg", "https://example.com/last.jpg"], "duration": 5, "resolution": "720p"},
+        {"prompt": "Use @Video1 for motion and @Audio1 for rhythm", "reference_video_urls": ["https://example.com/reference.mp4"], "reference_audio_urls": ["https://example.com/reference.wav"], "duration": 5, "resolution": "480p"}
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "dynamic",
+        "unit": "second",
+        "credits": null,
+        "formula": "Without video input: output duration * rate. With video input: (input video billing duration + output duration) * with_video rate.",
+        "credit_rules": {
+          "480p": {"with_video": 11.2, "without_video": 19},
+          "720p": {"with_video": 25.2, "without_video": 42}
+        },
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "seedance-2-fast",
       "tool_name": "poyo_seedance_2_fast",
       "service_type": "generate",

@@ -37,6 +37,10 @@ const expectedSeedanceRates = {
     "1080p": {with_video: 62, without_video: 90},
     "4k": {with_video: 128, without_video: 200},
   },
+  "seedance-2.5": {
+    "480p": {with_video: 11.2, without_video: 19},
+    "720p": {with_video: 25.2, without_video: 42},
+  },
   "seedance-2-fast": {
     "480p": {with_video: 9, without_video: 14},
     "720p": {with_video: 20, without_video: 28},

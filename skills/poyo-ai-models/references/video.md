@@ -33,6 +33,7 @@ Generated from PoYo Catalog `v1-17a4b5d42c77`. Always call describe before execu
 | `poyo-ai/video-upscaler` | generate |  | Upscale a video by a configurable scale factor. |
 | `runway-gen-4.5` | generate |  | Text-to-video generation with optional reference image, 5s and 10s durations |
 | `seedance-2` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
+| `seedance-2.5` | generate |  | Video generation with Seedance 2.5 using text, first/last frames, or multimodal references. |
 | `seedance-2-fast` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
 | `seedance-2-mini` | generate |  | Fast video generation with Seedance 2 Mini |
 | `sora-2-official` | generate |  | Text-to-video and optional image-guided video generation |
