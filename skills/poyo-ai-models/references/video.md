@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-f83b624415c6`. Always call describe before execution.
+Generated from PoYo Catalog `v1-3a10b6eee366`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
