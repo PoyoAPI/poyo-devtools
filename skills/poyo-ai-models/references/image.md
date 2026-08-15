@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-a437888866ef`. Always call describe before execution.
+Generated from PoYo Catalog `v1-f83b624415c6`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -10,6 +10,7 @@ Generated from PoYo Catalog `v1-a437888866ef`. Always call describe before execu
 | `gpt-image-1-official` | generate |  | GPT Image 1.5 Generation and Editing |
 | `gpt-image-1.5-edit-official` | generate |  | GPT Image 1.5 Generation and Editing |
 | `gpt-image-1.5-official` | generate |  | GPT Image 1.5 Generation and Editing |
+| `grok-imagine-image-2.0` | generate |  | Grok Imagine Image 2.0 generation and editing with selectable quality and resolution. |
 | `grok-imagine-image-quality` | generate |  | High-quality Grok Imagine Image generation with text-to-image and image editing support |
 | `kling-o1-image-edit` | generate |  | A high-consistency image generation model optimized for precise reference alignment and fine detail control, ideal for character and product-focused use cases |
 | `kling-o3-image` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |

@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-a437888866ef",
+  "schema_version": "v1-f83b624415c6",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -11290,6 +11290,150 @@
           "high": 24,
           "medium": 5
         }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "grok-imagine-image-2.0",
+      "tool_name": "poyo_grok_imagine_image_2_0",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Grok Imagine Image 2.0",
+      "description": "Grok Imagine Image 2.0 generation and editing with selectable quality and resolution.",
+      "tags": [
+        "image",
+        "image-to-image",
+        "text-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000,
+            "description": "Generation or editing prompt."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Optional input images. When provided, the request edits these images."
+          },
+          "n": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "default": 1,
+            "description": "Number of output images."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "2:1",
+              "20:9",
+              "19.5:9",
+              "16:9",
+              "4:3",
+              "3:2",
+              "1:1",
+              "2:3",
+              "3:4",
+              "9:16",
+              "9:19.5",
+              "9:20",
+              "1:2"
+            ],
+            "description": "Output aspect ratio. auto is available only when image_urls is provided."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "default": "1K",
+            "description": "Output image resolution tier."
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium"
+            ],
+            "default": "medium",
+            "description": "Output quality level."
+          },
+          "output_format": {
+            "type": "string",
+            "enum": [
+              "jpeg",
+              "png",
+              "webp"
+            ],
+            "default": "jpeg",
+            "description": "Output image format."
+          },
+          "sync_mode": {
+            "type": "boolean",
+            "default": false,
+            "description": "Return generated media inline when supported."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "prompt": "A cinematic product photo on a clean studio background",
+          "aspect_ratio": "16:9",
+          "resolution": "2K",
+          "quality": "medium",
+          "n": 1
+        },
+        {
+          "prompt": "Keep the subject and replace the background with a modern studio",
+          "image_urls": [
+            "https://example.com/source-image.png"
+          ],
+          "aspect_ratio": "auto",
+          "resolution": "1K",
+          "quality": "low"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "number_of_images * price_table[resolution][quality] + reference_image_count * input_image_credits",
+        "price_table": {
+          "1K": {
+            "low": 8,
+            "medium": 12
+          },
+          "2K": {
+            "low": 12,
+            "medium": 16
+          }
+        },
+        "input_image_credits": 2
       },
       "status": "stable"
     },
