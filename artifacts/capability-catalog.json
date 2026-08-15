@@ -11333,11 +11333,6 @@
             "default": "medium",
             "description": "Output quality level."
           },
-          "sync_mode": {
-            "type": "boolean",
-            "default": false,
-            "description": "Return generated media inline when supported."
-          },
           "image_urls": {
             "type": "array",
             "items": {
@@ -11359,33 +11354,15 @@
           },
           "aspect_ratio": {
             "enum": [
-              "auto",
-              "2:1",
-              "20:9",
-              "19.5:9",
-              "16:9",
-              "4:3",
-              "3:2",
               "1:1",
               "2:3",
-              "3:4",
+              "3:2",
               "9:16",
-              "9:19.5",
-              "9:20",
-              "1:2"
+              "16:9"
             ],
             "type": "string",
-            "description": "Output aspect ratio. auto is available only when image_urls is provided."
-          },
-          "output_format": {
-            "enum": [
-              "jpeg",
-              "png",
-              "webp"
-            ],
-            "type": "string",
-            "default": "jpeg",
-            "description": "Output image format."
+            "default": "1:1",
+            "description": "Output aspect ratio."
           }
         },
         "additionalProperties": false
@@ -11409,7 +11386,7 @@
             "https://example.com/source-image.png"
           ],
           "resolution": "1K",
-          "aspect_ratio": "auto"
+          "aspect_ratio": "1:1"
         }
       ],
       "supported_protocols": [],
@@ -11465,11 +11442,6 @@
             "example": "A cinematic product photo on a clean studio background",
             "description": "Generation or editing prompt"
           },
-          "sync_mode": {
-            "type": "boolean",
-            "example": false,
-            "description": "Optional upstream sync mode flag"
-          },
           "image_urls": {
             "type": "array",
             "items": {
@@ -11504,18 +11476,6 @@
             "default": "1:1",
             "example": "1:1",
             "description": "Output aspect ratio"
-          },
-          "output_format": {
-            "enum": [
-              "png",
-              "jpeg",
-              "jpg",
-              "webp"
-            ],
-            "type": "string",
-            "default": "png",
-            "example": "png",
-            "description": "Output image format"
           }
         },
         "description": "Input parameters. If image_urls is provided, PoYo uses those images as references for editing; otherwise it creates images from the prompt."
@@ -11568,8 +11528,7 @@
           "n": 1,
           "prompt": "A premium product photo of a matte black smart speaker on a marble table, soft studio lighting",
           "resolution": "1K",
-          "aspect_ratio": "1:1",
-          "output_format": "png"
+          "aspect_ratio": "1:1"
         },
         {
           "n": 1,
@@ -11578,8 +11537,7 @@
             "https://example.com/source-image.png"
           ],
           "resolution": "2K",
-          "aspect_ratio": "1:1",
-          "output_format": "webp"
+          "aspect_ratio": "1:1"
         }
       ],
       "supported_protocols": [],
