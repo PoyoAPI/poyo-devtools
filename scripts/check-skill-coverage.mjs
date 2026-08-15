@@ -70,4 +70,23 @@ for (const [modelId, expected] of Object.entries(expectedQwenImageRates)) {
     throw new Error(`Qwen Image 3 pricing is out of sync: ${modelId}`);
   }
 }
+
+const grokImage20 = catalog.items.find((item) => item.model_id === "grok-imagine-image-2.0");
+const grokImage20Properties = grokImage20?.input_schema?.properties ?? {};
+const expectedGrokImage20Prices = {
+  "1K": {low: 8, medium: 12},
+  "2K": {low: 12, medium: 16},
+};
+if (
+  !grokImage20
+  || !equal(grokImage20Properties.quality?.enum, ["low", "medium"])
+  || grokImage20Properties.n?.maximum !== 4
+  || grokImage20Properties.image_urls?.maxItems !== 3
+  || !grokImage20Properties.aspect_ratio?.enum?.includes("auto")
+  || !grokImage20Properties.aspect_ratio?.enum?.includes("19.5:9")
+  || !equal(grokImage20.billing?.price_table, expectedGrokImage20Prices)
+  || grokImage20.billing?.input_image_credits !== 2
+) {
+  throw new Error("Grok Imagine Image 2.0 capability is out of sync");
+}
 process.stdout.write(`Validated ${ids.size} PoYo model capabilities.\n`);
