@@ -22,7 +22,7 @@ describe("buildInput", () => {
       duration: "5",
       sound: "true",
       "image-urls": "https://example.com/a.png,https://example.com/b.png",
-      "idempotency-key": "request-1",
+      "callback-url": "https://example.com/callback",
     })).resolves.toEqual({
       prompt: "hello",
       duration: 5,
