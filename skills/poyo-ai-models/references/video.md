@@ -1,14 +1,14 @@
 # video
 
-Generated from PoYo Catalog `v1-afbebee37604`. Always call describe before execution.
+Generated from PoYo Catalog `v1-8d68e776d96d`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
-| `flux-3/extend-video` | generate |  | Continue an input video from its final frames. |
-| `flux-3/first-last-frame-to-video` | generate |  | Generate a video constrained by first and last frame images. |
-| `flux-3/image-to-video` | generate |  | Animate one input image into a video. |
-| `flux-3/keyframes-to-video` | generate |  | Generate a video guided by positioned keyframe images. |
-| `flux-3/text-to-video` | generate |  | Generate a video from a text prompt with optional audio. |
+| `flux-3/extend-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
+| `flux-3/first-last-frame-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
+| `flux-3/image-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
+| `flux-3/keyframes-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
+| `flux-3/text-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `grok-imagine-video-1.5` | generate |  | Text, image, and reference-to-video generation with Grok Imagine Video 1.5 |
 | `hailuo-03` | generate |  | Generate 2K videos from text, keyframes, or multimodal references |
 | `hailuo-2.3` | generate |  | Text-to-video and optional first-frame guided generation |
@@ -35,7 +35,7 @@ Generated from PoYo Catalog `v1-afbebee37604`. Always call describe before execu
 | `seedance-2` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
 | `seedance-2-fast` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
 | `seedance-2-mini` | generate |  | Fast video generation with Seedance 2 Mini |
-| `seedance-2.5` | generate |  | Video generation with Seedance 2.5 using text, first/last frames, or multimodal references. |
+| `seedance-2.5` | generate |  | Generate videos with Seedance 2.5 from text, frames, or multimodal references |
 | `sora-2-official` | generate |  | Text-to-video and optional image-guided video generation |
 | `sora-2-pro-official` | generate |  | Official Sora 2 Pro text-to-video and image-to-video generation |
 | `veo3.1-extend` | generate |  | Extend an existing video with Veo 3.1. |

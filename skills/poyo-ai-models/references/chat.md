@@ -1,6 +1,6 @@
 # chat
 
-Generated from PoYo Catalog `v1-afbebee37604`. Always call describe before execution.
+Generated from PoYo Catalog `v1-8d68e776d96d`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -11,7 +11,7 @@ Generated from PoYo Catalog `v1-afbebee37604`. Always call describe before execu
 | `claude-opus-4-7` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-7 model. |
 | `claude-opus-4-7-thinking` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-7-thinking model. |
 | `claude-opus-4-8` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-8 model. |
-| `claude-opus-5` | chat | openai-chat, anthropic | Run the PoYo Claude Opus 5 model. |
+| `claude-opus-5` | chat | openai-chat, anthropic | Run the PoYo claude-opus-5 model. |
 | `claude-sonnet-4-5-20250929` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-4-5-20250929 model. |
 | `claude-sonnet-4-6` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-4-6 model. |
 | `claude-sonnet-5` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-5 model. |
@@ -21,6 +21,7 @@ Generated from PoYo Catalog `v1-afbebee37604`. Always call describe before execu
 | `gemini-3-pro-preview` | chat | openai-chat, gemini | Run the PoYo gemini-3-pro-preview model. |
 | `gemini-3.1-pro-preview` | chat | openai-chat, gemini | Run the PoYo gemini-3.1-pro-preview model. |
 | `gemini-3.5-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.5-flash model. |
+| `gemini-3.7-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.7-flash model. |
 | `gpt-5` | chat | openai-chat, openai-responses | Run the PoYo gpt-5 model. |
 | `gpt-5-6-luna` | chat | openai-responses | Run the PoYo gpt-5-6-luna model. |
 | `gpt-5-6-sol` | chat | openai-responses | Run the PoYo gpt-5-6-sol model. |
@@ -28,4 +29,5 @@ Generated from PoYo Catalog `v1-afbebee37604`. Always call describe before execu
 | `gpt-5.2` | chat | openai-chat, openai-responses | Run the PoYo gpt-5.2 model. |
 | `gpt-5.4` | chat | openai-chat, openai-responses | Run the PoYo gpt-5.4 model. |
 | `gpt-5.5` | chat | openai-chat, openai-responses | Run the PoYo gpt-5.5 model. |
+| `grok-4.6` | chat | openai-chat, openai-responses | Run the PoYo grok-4.6 model. |
 | `kimi-k3` | chat | openai-chat | Run the PoYo kimi-k3 model. |
