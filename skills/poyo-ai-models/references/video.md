@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-cbb73f9deb6f`. Always call describe before execution.
+Generated from PoYo Catalog `v1-afbebee37604`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -50,3 +50,9 @@ Generated from PoYo Catalog `v1-cbb73f9deb6f`. Always call describe before execu
 | `wan2.7-image-to-video` | generate |  | Wan 2.7 Video API |
 | `wan2.7-reference-to-video` | generate |  | Wan 2.7 Video API |
 | `wan2.7-text-to-video` | generate |  | Wan 2.7 Video API |
+| `wan3.0-image-to-video` | generate |  | Wan 3.0 text, image, and multimodal reference video generation. |
+| `wan3.0-prime-image-to-video` | generate |  | Wan 3.0 Prime text, image, and multimodal reference video generation. |
+| `wan3.0-prime-reference-to-video` | generate |  | Wan 3.0 Prime text, image, and multimodal reference video generation. |
+| `wan3.0-prime-text-to-video` | generate |  | Wan 3.0 Prime text, image, and multimodal reference video generation. |
+| `wan3.0-reference-to-video` | generate |  | Wan 3.0 text, image, and multimodal reference video generation. |
+| `wan3.0-text-to-video` | generate |  | Wan 3.0 text, image, and multimodal reference video generation. |

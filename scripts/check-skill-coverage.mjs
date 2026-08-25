@@ -57,6 +57,28 @@ for (const [modelId, expected] of Object.entries(expectedSeedanceRates)) {
   }
 }
 
+const expectedWan30Rates = {
+  "wan3.0-text-to-video": {"480p": 10, "720p": 20, "1080p": 40},
+  "wan3.0-image-to-video": {"480p": 10, "720p": 20, "1080p": 40},
+  "wan3.0-reference-to-video": {"480p": 10, "720p": 20, "1080p": 40},
+  "wan3.0-prime-text-to-video": {"480p": 13.6, "720p": 28, "1080p": 56},
+  "wan3.0-prime-image-to-video": {"480p": 13.6, "720p": 28, "1080p": 56},
+  "wan3.0-prime-reference-to-video": {"480p": 13.6, "720p": 28, "1080p": 56},
+};
+for (const [modelId, expected] of Object.entries(expectedWan30Rates)) {
+  const model = catalog.items.find((item) => item.model_id === modelId);
+  const properties = model?.input_schema?.properties ?? {};
+  if (
+    model?.billing?.type !== "tiered"
+    || model.billing.unit !== "second"
+    || !equal(model.billing.resolution_credits, expected)
+    || properties.audio?.type !== "boolean"
+    || Object.hasOwn(properties, "generate_audio")
+  ) {
+    throw new Error(`Wan 3.0 capability is out of sync: ${modelId}`);
+  }
+}
+
 const expectedQwenImageRates = {
   "qwen-image-3": {resolution_credits: {"1K": 4.8, "2K": 4.8}, input_image_credits: 0.5},
   "qwen-image-3-pro": {resolution_credits: {"1K": 6.4, "2K": 12}, input_image_credits: 0.5},

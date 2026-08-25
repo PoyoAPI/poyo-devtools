@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-cbb73f9deb6f",
+  "schema_version": "v1-afbebee37604",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -28883,70 +28883,19 @@
       "input_schema": {
         "type": "object",
         "properties": {
-          "seed": {
-            "type": "integer",
-            "maximum": 2147483647,
-            "minimum": 0
-          },
           "prompt": {
             "type": "string",
             "maxLength": 5000,
             "description": "Text prompt. Required for text-to-video, reference-to-video, and edit-video."
           },
-          "duration": {
-            "type": "integer",
-            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
-          },
-          "audio_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional audio URL for text-to-video and image-to-video."
-          },
-          "video_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional video input for image-to-video, required source video for edit-video."
-          },
           "image_urls": {
             "type": "array",
+            "maxItems": 2,
             "items": {
               "type": "string",
               "format": "uri"
             },
-            "maxItems": 2,
             "description": "Image-to-video input. The first item maps to image_url and the second item maps to end_image_url."
-          },
-          "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
-            "default": "720p"
-          },
-          "multi_shots": {
-            "type": "boolean",
-            "description": "Optional multi-shot control for image, reference, and edit workflows."
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1",
-              "4:3",
-              "3:4"
-            ],
-            "type": "string",
-            "default": "16:9"
-          },
-          "audio_setting": {
-            "type": "string",
-            "description": "Optional audio setting for edit-video."
-          },
-          "reference_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Single reference image for wan2.7-edit-video."
           },
           "reference_image_urls": {
             "type": "array",
@@ -28963,6 +28912,57 @@
               "format": "uri"
             },
             "description": "Reference videos for wan2.7-reference-to-video."
+          },
+          "reference_image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Single reference image for wan2.7-edit-video."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional video input for image-to-video, required source video for edit-video."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional audio URL for text-to-video and image-to-video."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4"
+            ],
+            "default": "16:9"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "description": "Optional multi-shot control for image, reference, and edit models."
+          },
+          "audio_setting": {
+            "type": "string",
+            "description": "Optional audio setting for edit-video."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
           },
           "enable_safety_checker": {
             "type": "boolean"
@@ -28988,16 +28988,16 @@
               "created_time"
             ],
             "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started"
-              },
               "task_id": {
                 "type": "string",
                 "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started"
               },
               "created_time": {
                 "type": "string",
@@ -29010,35 +29010,35 @@
       "examples": [
         {
           "prompt": "A cinematic tracking shot of a glass greenhouse at sunrise, soft light, slow camera movement.",
-          "duration": 5,
+          "aspect_ratio": "16:9",
           "resolution": "720p",
-          "aspect_ratio": "16:9"
+          "duration": 5
         },
         {
-          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
-          "duration": 5,
           "image_urls": [
             "https://example.com/start-frame.png"
           ],
-          "resolution": "1080p"
+          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
+          "resolution": "1080p",
+          "duration": 5
         },
         {
           "prompt": "A product reveal video using the reference object, clean studio lighting, smooth motion.",
-          "duration": 5,
-          "resolution": "720p",
-          "multi_shots": false,
-          "aspect_ratio": "1:1",
           "reference_image_urls": [
             "https://example.com/reference.png"
-          ]
+          ],
+          "aspect_ratio": "1:1",
+          "resolution": "720p",
+          "duration": 5,
+          "multi_shots": false
         },
         {
           "prompt": "Change the scene into a rainy neon street while preserving the subject motion.",
-          "duration": 0,
           "video_url": "https://example.com/source-video.mp4",
-          "resolution": "720p",
+          "reference_image_url": "https://example.com/style-reference.png",
           "aspect_ratio": "16:9",
-          "reference_image_url": "https://example.com/style-reference.png"
+          "resolution": "720p",
+          "duration": 0
         }
       ],
       "supported_protocols": [],
@@ -29072,70 +29072,19 @@
       "input_schema": {
         "type": "object",
         "properties": {
-          "seed": {
-            "type": "integer",
-            "maximum": 2147483647,
-            "minimum": 0
-          },
           "prompt": {
             "type": "string",
             "maxLength": 5000,
             "description": "Text prompt. Required for text-to-video, reference-to-video, and edit-video."
           },
-          "duration": {
-            "type": "integer",
-            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
-          },
-          "audio_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional audio URL for text-to-video and image-to-video."
-          },
-          "video_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional video input for image-to-video, required source video for edit-video."
-          },
           "image_urls": {
             "type": "array",
+            "maxItems": 2,
             "items": {
               "type": "string",
               "format": "uri"
             },
-            "maxItems": 2,
             "description": "Image-to-video input. The first item maps to image_url and the second item maps to end_image_url."
-          },
-          "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
-            "default": "720p"
-          },
-          "multi_shots": {
-            "type": "boolean",
-            "description": "Optional multi-shot control for image, reference, and edit workflows."
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1",
-              "4:3",
-              "3:4"
-            ],
-            "type": "string",
-            "default": "16:9"
-          },
-          "audio_setting": {
-            "type": "string",
-            "description": "Optional audio setting for edit-video."
-          },
-          "reference_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Single reference image for wan2.7-edit-video."
           },
           "reference_image_urls": {
             "type": "array",
@@ -29152,6 +29101,57 @@
               "format": "uri"
             },
             "description": "Reference videos for wan2.7-reference-to-video."
+          },
+          "reference_image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Single reference image for wan2.7-edit-video."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional video input for image-to-video, required source video for edit-video."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional audio URL for text-to-video and image-to-video."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4"
+            ],
+            "default": "16:9"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "description": "Optional multi-shot control for image, reference, and edit models."
+          },
+          "audio_setting": {
+            "type": "string",
+            "description": "Optional audio setting for edit-video."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
           },
           "enable_safety_checker": {
             "type": "boolean"
@@ -29177,16 +29177,16 @@
               "created_time"
             ],
             "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started"
-              },
               "task_id": {
                 "type": "string",
                 "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started"
               },
               "created_time": {
                 "type": "string",
@@ -29199,35 +29199,35 @@
       "examples": [
         {
           "prompt": "A cinematic tracking shot of a glass greenhouse at sunrise, soft light, slow camera movement.",
-          "duration": 5,
+          "aspect_ratio": "16:9",
           "resolution": "720p",
-          "aspect_ratio": "16:9"
+          "duration": 5
         },
         {
-          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
-          "duration": 5,
           "image_urls": [
             "https://example.com/start-frame.png"
           ],
-          "resolution": "1080p"
+          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
+          "resolution": "1080p",
+          "duration": 5
         },
         {
           "prompt": "A product reveal video using the reference object, clean studio lighting, smooth motion.",
-          "duration": 5,
-          "resolution": "720p",
-          "multi_shots": false,
-          "aspect_ratio": "1:1",
           "reference_image_urls": [
             "https://example.com/reference.png"
-          ]
+          ],
+          "aspect_ratio": "1:1",
+          "resolution": "720p",
+          "duration": 5,
+          "multi_shots": false
         },
         {
           "prompt": "Change the scene into a rainy neon street while preserving the subject motion.",
-          "duration": 0,
           "video_url": "https://example.com/source-video.mp4",
-          "resolution": "720p",
+          "reference_image_url": "https://example.com/style-reference.png",
           "aspect_ratio": "16:9",
-          "reference_image_url": "https://example.com/style-reference.png"
+          "resolution": "720p",
+          "duration": 0
         }
       ],
       "supported_protocols": [],
@@ -29261,70 +29261,19 @@
       "input_schema": {
         "type": "object",
         "properties": {
-          "seed": {
-            "type": "integer",
-            "maximum": 2147483647,
-            "minimum": 0
-          },
           "prompt": {
             "type": "string",
             "maxLength": 5000,
             "description": "Text prompt. Required for text-to-video, reference-to-video, and edit-video."
           },
-          "duration": {
-            "type": "integer",
-            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
-          },
-          "audio_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional audio URL for text-to-video and image-to-video."
-          },
-          "video_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional video input for image-to-video, required source video for edit-video."
-          },
           "image_urls": {
             "type": "array",
+            "maxItems": 2,
             "items": {
               "type": "string",
               "format": "uri"
             },
-            "maxItems": 2,
             "description": "Image-to-video input. The first item maps to image_url and the second item maps to end_image_url."
-          },
-          "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
-            "default": "720p"
-          },
-          "multi_shots": {
-            "type": "boolean",
-            "description": "Optional multi-shot control for image, reference, and edit workflows."
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1",
-              "4:3",
-              "3:4"
-            ],
-            "type": "string",
-            "default": "16:9"
-          },
-          "audio_setting": {
-            "type": "string",
-            "description": "Optional audio setting for edit-video."
-          },
-          "reference_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Single reference image for wan2.7-edit-video."
           },
           "reference_image_urls": {
             "type": "array",
@@ -29341,6 +29290,57 @@
               "format": "uri"
             },
             "description": "Reference videos for wan2.7-reference-to-video."
+          },
+          "reference_image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Single reference image for wan2.7-edit-video."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional video input for image-to-video, required source video for edit-video."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional audio URL for text-to-video and image-to-video."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4"
+            ],
+            "default": "16:9"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "description": "Optional multi-shot control for image, reference, and edit models."
+          },
+          "audio_setting": {
+            "type": "string",
+            "description": "Optional audio setting for edit-video."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
           },
           "enable_safety_checker": {
             "type": "boolean"
@@ -29366,16 +29366,16 @@
               "created_time"
             ],
             "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started"
-              },
               "task_id": {
                 "type": "string",
                 "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started"
               },
               "created_time": {
                 "type": "string",
@@ -29388,35 +29388,35 @@
       "examples": [
         {
           "prompt": "A cinematic tracking shot of a glass greenhouse at sunrise, soft light, slow camera movement.",
-          "duration": 5,
+          "aspect_ratio": "16:9",
           "resolution": "720p",
-          "aspect_ratio": "16:9"
+          "duration": 5
         },
         {
-          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
-          "duration": 5,
           "image_urls": [
             "https://example.com/start-frame.png"
           ],
-          "resolution": "1080p"
+          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
+          "resolution": "1080p",
+          "duration": 5
         },
         {
           "prompt": "A product reveal video using the reference object, clean studio lighting, smooth motion.",
-          "duration": 5,
-          "resolution": "720p",
-          "multi_shots": false,
-          "aspect_ratio": "1:1",
           "reference_image_urls": [
             "https://example.com/reference.png"
-          ]
+          ],
+          "aspect_ratio": "1:1",
+          "resolution": "720p",
+          "duration": 5,
+          "multi_shots": false
         },
         {
           "prompt": "Change the scene into a rainy neon street while preserving the subject motion.",
-          "duration": 0,
           "video_url": "https://example.com/source-video.mp4",
-          "resolution": "720p",
+          "reference_image_url": "https://example.com/style-reference.png",
           "aspect_ratio": "16:9",
-          "reference_image_url": "https://example.com/style-reference.png"
+          "resolution": "720p",
+          "duration": 0
         }
       ],
       "supported_protocols": [],
@@ -29450,70 +29450,19 @@
       "input_schema": {
         "type": "object",
         "properties": {
-          "seed": {
-            "type": "integer",
-            "maximum": 2147483647,
-            "minimum": 0
-          },
           "prompt": {
             "type": "string",
             "maxLength": 5000,
             "description": "Text prompt. Required for text-to-video, reference-to-video, and edit-video."
           },
-          "duration": {
-            "type": "integer",
-            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
-          },
-          "audio_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional audio URL for text-to-video and image-to-video."
-          },
-          "video_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Optional video input for image-to-video, required source video for edit-video."
-          },
           "image_urls": {
             "type": "array",
+            "maxItems": 2,
             "items": {
               "type": "string",
               "format": "uri"
             },
-            "maxItems": 2,
             "description": "Image-to-video input. The first item maps to image_url and the second item maps to end_image_url."
-          },
-          "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
-            "default": "720p"
-          },
-          "multi_shots": {
-            "type": "boolean",
-            "description": "Optional multi-shot control for image, reference, and edit workflows."
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1",
-              "4:3",
-              "3:4"
-            ],
-            "type": "string",
-            "default": "16:9"
-          },
-          "audio_setting": {
-            "type": "string",
-            "description": "Optional audio setting for edit-video."
-          },
-          "reference_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Single reference image for wan2.7-edit-video."
           },
           "reference_image_urls": {
             "type": "array",
@@ -29530,6 +29479,57 @@
               "format": "uri"
             },
             "description": "Reference videos for wan2.7-reference-to-video."
+          },
+          "reference_image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Single reference image for wan2.7-edit-video."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional video input for image-to-video, required source video for edit-video."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional audio URL for text-to-video and image-to-video."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4"
+            ],
+            "default": "16:9"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Text-to-video supports 5, 10, 15. Image-to-video supports 2-15. Reference-to-video supports 2-10. Edit-video supports 0 or 2-10; 0 means PoYo probes the source video duration."
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "description": "Optional multi-shot control for image, reference, and edit models."
+          },
+          "audio_setting": {
+            "type": "string",
+            "description": "Optional audio setting for edit-video."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
           },
           "enable_safety_checker": {
             "type": "boolean"
@@ -29555,16 +29555,16 @@
               "created_time"
             ],
             "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started"
-              },
               "task_id": {
                 "type": "string",
                 "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started"
               },
               "created_time": {
                 "type": "string",
@@ -29577,35 +29577,35 @@
       "examples": [
         {
           "prompt": "A cinematic tracking shot of a glass greenhouse at sunrise, soft light, slow camera movement.",
-          "duration": 5,
+          "aspect_ratio": "16:9",
           "resolution": "720p",
-          "aspect_ratio": "16:9"
+          "duration": 5
         },
         {
-          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
-          "duration": 5,
           "image_urls": [
             "https://example.com/start-frame.png"
           ],
-          "resolution": "1080p"
+          "prompt": "Animate the frame with gentle wind and a slow push-in camera movement.",
+          "resolution": "1080p",
+          "duration": 5
         },
         {
           "prompt": "A product reveal video using the reference object, clean studio lighting, smooth motion.",
-          "duration": 5,
-          "resolution": "720p",
-          "multi_shots": false,
-          "aspect_ratio": "1:1",
           "reference_image_urls": [
             "https://example.com/reference.png"
-          ]
+          ],
+          "aspect_ratio": "1:1",
+          "resolution": "720p",
+          "duration": 5,
+          "multi_shots": false
         },
         {
           "prompt": "Change the scene into a rainy neon street while preserving the subject motion.",
-          "duration": 0,
           "video_url": "https://example.com/source-video.mp4",
-          "resolution": "720p",
+          "reference_image_url": "https://example.com/style-reference.png",
           "aspect_ratio": "16:9",
-          "reference_image_url": "https://example.com/style-reference.png"
+          "resolution": "720p",
+          "duration": 0
         }
       ],
       "supported_protocols": [],
@@ -29622,6 +29622,1281 @@
         "resolution_credits": {
           "720p": 12,
           "1080p": 18
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "wan3.0-image-to-video",
+      "tool_name": "poyo_wan3_0_image_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "wan3.0-image-to-video",
+      "description": "Wan 3.0 text, image, and multimodal reference video generation.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "description": "Required for text-to-video and reference-to-video; optional for image-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Image-to-video start frame and optional end frame."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference images for reference-to-video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference videos for reference-to-video."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference audio clips for reference-to-video."
+          },
+          "reference_file_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One reference document. Cannot be combined with reference_link_urls."
+          },
+          "reference_link_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One publicly accessible webpage. Cannot be combined with reference_file_urls."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "adaptive",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "default": "adaptive"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 30,
+            "default": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to generate an output audio track."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to enable content safety checking."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1787654321-abcd1234"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ]
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A kitten runs across a moonlit rooftop while neon signs glow in the distance.",
+          "resolution": "720p",
+          "aspect_ratio": "16:9",
+          "duration": 5,
+          "audio": true
+        },
+        {
+          "prompt": "Move from a calm expression into a joyful laugh with a slow camera push-in.",
+          "image_urls": [
+            "https://example.com/first-frame.jpg",
+            "https://example.com/last-frame.jpg"
+          ],
+          "resolution": "1080p",
+          "duration": 8,
+          "audio": true,
+          "seed": 12345
+        },
+        {
+          "prompt": "Image1 follows the motion in Video1 while using the rhythm from Audio1.",
+          "reference_image_urls": [
+            "https://example.com/character.png"
+          ],
+          "reference_video_urls": [
+            "https://example.com/motion.mp4"
+          ],
+          "reference_audio_urls": [
+            "https://example.com/rhythm.mp3"
+          ],
+          "resolution": "720p",
+          "aspect_ratio": "adaptive",
+          "duration": 5,
+          "audio": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {
+          "480p": 10,
+          "720p": 20,
+          "1080p": 40
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "wan3.0-prime-image-to-video",
+      "tool_name": "poyo_wan3_0_prime_image_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "wan3.0-prime-image-to-video",
+      "description": "Wan 3.0 Prime text, image, and multimodal reference video generation.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "description": "Required for text-to-video and reference-to-video; optional for image-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Image-to-video start frame and optional end frame."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference images for reference-to-video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference videos for reference-to-video."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference audio clips for reference-to-video."
+          },
+          "reference_file_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One reference document. Cannot be combined with reference_link_urls."
+          },
+          "reference_link_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One publicly accessible webpage. Cannot be combined with reference_file_urls."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "adaptive",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "default": "adaptive"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 30,
+            "default": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to generate an output audio track."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to enable content safety checking."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1787654321-abcd1234"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ]
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A fast-paced cinematic fashion film on a rain-soaked city street.",
+          "resolution": "720p",
+          "aspect_ratio": "9:16",
+          "duration": 10,
+          "audio": true
+        },
+        {
+          "image_urls": [
+            "https://example.com/product.png"
+          ],
+          "prompt": "A polished studio product reveal with smooth rotation and soft highlights.",
+          "resolution": "1080p",
+          "duration": 5,
+          "audio": false
+        },
+        {
+          "prompt": "Create a concise product introduction based on this presentation.",
+          "reference_file_urls": [
+            "https://example.com/product-brief.pdf"
+          ],
+          "resolution": "480p",
+          "aspect_ratio": "16:9",
+          "duration": 10,
+          "audio": true,
+          "enable_safety_checker": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {
+          "480p": 13.6,
+          "720p": 28,
+          "1080p": 56
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "wan3.0-prime-reference-to-video",
+      "tool_name": "poyo_wan3_0_prime_reference_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "wan3.0-prime-reference-to-video",
+      "description": "Wan 3.0 Prime text, image, and multimodal reference video generation.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "description": "Required for text-to-video and reference-to-video; optional for image-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Image-to-video start frame and optional end frame."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference images for reference-to-video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference videos for reference-to-video."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference audio clips for reference-to-video."
+          },
+          "reference_file_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One reference document. Cannot be combined with reference_link_urls."
+          },
+          "reference_link_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One publicly accessible webpage. Cannot be combined with reference_file_urls."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "adaptive",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "default": "adaptive"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 30,
+            "default": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to generate an output audio track."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to enable content safety checking."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1787654321-abcd1234"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ]
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A fast-paced cinematic fashion film on a rain-soaked city street.",
+          "resolution": "720p",
+          "aspect_ratio": "9:16",
+          "duration": 10,
+          "audio": true
+        },
+        {
+          "image_urls": [
+            "https://example.com/product.png"
+          ],
+          "prompt": "A polished studio product reveal with smooth rotation and soft highlights.",
+          "resolution": "1080p",
+          "duration": 5,
+          "audio": false
+        },
+        {
+          "prompt": "Create a concise product introduction based on this presentation.",
+          "reference_file_urls": [
+            "https://example.com/product-brief.pdf"
+          ],
+          "resolution": "480p",
+          "aspect_ratio": "16:9",
+          "duration": 10,
+          "audio": true,
+          "enable_safety_checker": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {
+          "480p": 13.6,
+          "720p": 28,
+          "1080p": 56
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "wan3.0-prime-text-to-video",
+      "tool_name": "poyo_wan3_0_prime_text_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "wan3.0-prime-text-to-video",
+      "description": "Wan 3.0 Prime text, image, and multimodal reference video generation.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "description": "Required for text-to-video and reference-to-video; optional for image-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Image-to-video start frame and optional end frame."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference images for reference-to-video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference videos for reference-to-video."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference audio clips for reference-to-video."
+          },
+          "reference_file_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One reference document. Cannot be combined with reference_link_urls."
+          },
+          "reference_link_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One publicly accessible webpage. Cannot be combined with reference_file_urls."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "adaptive",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "default": "adaptive"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 30,
+            "default": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to generate an output audio track."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to enable content safety checking."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1787654321-abcd1234"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ]
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A fast-paced cinematic fashion film on a rain-soaked city street.",
+          "resolution": "720p",
+          "aspect_ratio": "9:16",
+          "duration": 10,
+          "audio": true
+        },
+        {
+          "image_urls": [
+            "https://example.com/product.png"
+          ],
+          "prompt": "A polished studio product reveal with smooth rotation and soft highlights.",
+          "resolution": "1080p",
+          "duration": 5,
+          "audio": false
+        },
+        {
+          "prompt": "Create a concise product introduction based on this presentation.",
+          "reference_file_urls": [
+            "https://example.com/product-brief.pdf"
+          ],
+          "resolution": "480p",
+          "aspect_ratio": "16:9",
+          "duration": 10,
+          "audio": true,
+          "enable_safety_checker": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {
+          "480p": 13.6,
+          "720p": 28,
+          "1080p": 56
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "wan3.0-reference-to-video",
+      "tool_name": "poyo_wan3_0_reference_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "wan3.0-reference-to-video",
+      "description": "Wan 3.0 text, image, and multimodal reference video generation.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "description": "Required for text-to-video and reference-to-video; optional for image-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Image-to-video start frame and optional end frame."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference images for reference-to-video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference videos for reference-to-video."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference audio clips for reference-to-video."
+          },
+          "reference_file_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One reference document. Cannot be combined with reference_link_urls."
+          },
+          "reference_link_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One publicly accessible webpage. Cannot be combined with reference_file_urls."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "adaptive",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "default": "adaptive"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 30,
+            "default": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to generate an output audio track."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to enable content safety checking."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1787654321-abcd1234"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ]
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A kitten runs across a moonlit rooftop while neon signs glow in the distance.",
+          "resolution": "720p",
+          "aspect_ratio": "16:9",
+          "duration": 5,
+          "audio": true
+        },
+        {
+          "prompt": "Move from a calm expression into a joyful laugh with a slow camera push-in.",
+          "image_urls": [
+            "https://example.com/first-frame.jpg",
+            "https://example.com/last-frame.jpg"
+          ],
+          "resolution": "1080p",
+          "duration": 8,
+          "audio": true,
+          "seed": 12345
+        },
+        {
+          "prompt": "Image1 follows the motion in Video1 while using the rhythm from Audio1.",
+          "reference_image_urls": [
+            "https://example.com/character.png"
+          ],
+          "reference_video_urls": [
+            "https://example.com/motion.mp4"
+          ],
+          "reference_audio_urls": [
+            "https://example.com/rhythm.mp3"
+          ],
+          "resolution": "720p",
+          "aspect_ratio": "adaptive",
+          "duration": 5,
+          "audio": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {
+          "480p": 10,
+          "720p": 20,
+          "1080p": 40
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "wan3.0-text-to-video",
+      "tool_name": "poyo_wan3_0_text_to_video",
+      "service_type": "generate",
+      "category": "video",
+      "title": "wan3.0-text-to-video",
+      "description": "Wan 3.0 text, image, and multimodal reference video generation.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "description": "Required for text-to-video and reference-to-video; optional for image-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Image-to-video start frame and optional end frame."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference images for reference-to-video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference videos for reference-to-video."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference audio clips for reference-to-video."
+          },
+          "reference_file_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One reference document. Cannot be combined with reference_link_urls."
+          },
+          "reference_link_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One publicly accessible webpage. Cannot be combined with reference_file_urls."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "adaptive",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "default": "adaptive"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 30,
+            "default": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to generate an output audio track."
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to enable content safety checking."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1787654321-abcd1234"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ]
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A kitten runs across a moonlit rooftop while neon signs glow in the distance.",
+          "resolution": "720p",
+          "aspect_ratio": "16:9",
+          "duration": 5,
+          "audio": true
+        },
+        {
+          "prompt": "Move from a calm expression into a joyful laugh with a slow camera push-in.",
+          "image_urls": [
+            "https://example.com/first-frame.jpg",
+            "https://example.com/last-frame.jpg"
+          ],
+          "resolution": "1080p",
+          "duration": 8,
+          "audio": true,
+          "seed": 12345
+        },
+        {
+          "prompt": "Image1 follows the motion in Video1 while using the rhythm from Audio1.",
+          "reference_image_urls": [
+            "https://example.com/character.png"
+          ],
+          "reference_video_urls": [
+            "https://example.com/motion.mp4"
+          ],
+          "reference_audio_urls": [
+            "https://example.com/rhythm.mp3"
+          ],
+          "resolution": "720p",
+          "aspect_ratio": "adaptive",
+          "duration": 5,
+          "audio": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {
+          "480p": 10,
+          "720p": 20,
+          "1080p": 40
         }
       },
       "status": "stable"
