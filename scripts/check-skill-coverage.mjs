@@ -40,6 +40,7 @@ const expectedSeedanceRates = {
   "seedance-2.5": {
     "480p": {with_video: 17, without_video: 28},
     "720p": {with_video: 38, without_video: 63},
+    "1080p": {with_video: 68.5, without_video: 114},
   },
   "seedance-2-fast": {
     "480p": {with_video: 9, without_video: 14},
@@ -55,6 +56,11 @@ for (const [modelId, expected] of Object.entries(expectedSeedanceRates)) {
   if (!equal(model?.billing?.credit_rules, expected)) {
     throw new Error(`Seedance pricing table is out of sync: ${modelId}`);
   }
+}
+
+const seedance25 = catalog.items.find((item) => item.model_id === "seedance-2.5");
+if (!equal(seedance25?.input_schema?.properties?.resolution?.enum, ["480p", "720p", "1080p"])) {
+  throw new Error("Seedance 2.5 resolution enum is out of sync");
 }
 
 const expectedWan30Rates = {
