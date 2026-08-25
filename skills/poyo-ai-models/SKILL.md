@@ -24,16 +24,15 @@ Keep `POYO_API_KEY` in the environment or system keyring. Never put it in prompt
 3. Validate every input against that schema.
 4. For chat, use `poyo_chat`; use CLI `poyo chat MODEL --stream` only when incremental output is required.
 5. For short generation, use `poyo_run_model`. For video, 3D, music, or other long work, use `poyo_submit_job`.
-6. Reuse one idempotency key for transport retries of the same paid request.
-7. Treat queued and running as incomplete. Poll with `poyo_check_job` until succeeded or failed.
-8. Report model ID, final status, credits, output URLs, and any partial or failed result.
+6. Treat queued and running as incomplete. Poll with `poyo_check_job` until succeeded or failed.
+7. Report model ID, final status, credits, output URLs, and any partial or failed result.
 
 Read the generated reference matching the requested category when it exists in `references/`.
 
 ## Guardrails
 
 - Check account credits before expensive or repeated generation.
-- Do not retry a paid failure until the normalized error is inspected.
+- Do not automatically resubmit a paid request after a timeout or transport failure; first determine whether a task was created.
 - Do not claim completion while a task is queued or running.
 - Do not pass `stream: true` to MCP chat; MCP returns one complete tool result.
 - Preserve task IDs so interrupted work can resume without resubmission.
