@@ -2,13 +2,15 @@ export function checkSunoContract(catalog, equal) {
   const expectedCredits = {
     "generate-mashup": 12,
     "generate-sounds": 2.5,
-    "stem-split-advanced": 20,
     "suno-voice-validate": 0,
     "suno-voice-generate": 0,
     "suno-voice-regenerate": 0,
     "suno-voice-check": 0,
   };
   const byId = new Map(catalog.items.map((item) => [item.model_id, item]));
+  if (byId.has("stem-split-advanced")) {
+    throw new Error("Disabled Suno public model is still exposed: stem-split-advanced");
+  }
   for (const [modelId, credits] of Object.entries(expectedCredits)) {
     const model = byId.get(modelId);
     const category = modelId === "generate-sounds" ? "text2audio" : "audio2audio";
@@ -34,8 +36,6 @@ export function checkSunoContract(catalog, equal) {
     || props("generate-mashup").upload_url_list?.maxItems !== 2
     || props("generate-sounds").sound_tempo?.minimum !== 1
     || props("generate-sounds").sound_tempo?.maximum !== 300
-    || props("stem-split-advanced").stem_name?.pattern !== "\\S"
-    || !schema("stem-split-advanced").oneOf
     || props("suno-voice-validate").voice_url?.pattern !== "^https?://"
     || props("suno-voice-generate").verify_url?.pattern !== "^https?://"
     || extend.prompt?.maxLength !== 5000

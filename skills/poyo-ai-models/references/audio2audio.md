@@ -1,6 +1,6 @@
 # audio2audio
 
-Generated from PoYo Catalog `v1-1b7ee5730bbb`. Always call describe before execution.
+Generated from PoYo Catalog `v1-169417947f69`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -10,7 +10,6 @@ Generated from PoYo Catalog `v1-1b7ee5730bbb`. Always call describe before execu
 | `generate-midi` | generate |  | Generate a MIDI file from an existing PoYo music task. |
 | `generate-persona` | generate |  | Create reusable musical personas from existing audio tracks |
 | `replace-section` | generate |  | Replace specific sections of generated music tracks |
-| `stem-split-advanced` | generate |  | Extract or remove a selected vocal or instrument stem |
 | `suno-voice-check` | generate |  | Check whether a generated Suno Voice is available |
 | `suno-voice-generate` | generate |  | Create a reusable Suno Voice ID from a verification recording |
 | `suno-voice-regenerate` | generate |  | Regenerate a Suno Voice verification phrase |

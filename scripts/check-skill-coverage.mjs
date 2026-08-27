@@ -91,7 +91,6 @@ for (const [modelId, expected] of Object.entries(expectedWan30Rates)) {
 const expectedSunoCredits = {
   "generate-mashup": 12,
   "generate-sounds": 2.5,
-  "stem-split-advanced": 20,
   "suno-voice-validate": 0,
   "suno-voice-generate": 0,
   "suno-voice-regenerate": 0,
@@ -110,7 +109,6 @@ for (const [modelId, credits] of Object.entries(expectedSunoCredits)) {
 }
 const mashup = catalog.items.find((item) => item.model_id === "generate-mashup")?.input_schema?.properties ?? {};
 const sounds = catalog.items.find((item) => item.model_id === "generate-sounds")?.input_schema?.properties ?? {};
-const advancedStem = catalog.items.find((item) => item.model_id === "stem-split-advanced")?.input_schema ?? {};
 const replaceSection = catalog.items.find((item) => item.model_id === "replace-section")?.input_schema ?? {};
 const separateVocals = catalog.items.find((item) => item.model_id === "separate-vocals")?.input_schema ?? {};
 const stemSplit = catalog.items.find((item) => item.model_id === "stem-split")?.input_schema ?? {};
@@ -163,7 +161,6 @@ if (
   || sounds.sound_tempo?.minimum !== 1 || sounds.sound_tempo?.maximum !== 300
   || sounds.sound_loop?.default !== false || sounds.grab_lyrics?.default !== false
   || !equal(sounds.sound_key?.enum, expectedSoundKeys)
-  || advancedStem.properties?.upload_url?.pattern !== "^https?://" || advancedStem.properties?.stem_name?.pattern !== "\\S" || !advancedStem.oneOf
   || replaceSection.properties?.upload_url?.pattern !== "^https?://" || !replaceSection.properties?.mv || !replaceSection.oneOf
   || replaceSection.properties?.infill_start_s?.multipleOf !== 0.01
   || replaceSection.properties?.infill_end_s?.multipleOf !== 0.01

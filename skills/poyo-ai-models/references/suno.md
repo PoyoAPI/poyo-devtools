@@ -20,4 +20,4 @@ Use only task IDs returned by the public API. A generated voice can be used in c
 
 ## Retry safety
 
-Do not automatically repeat paid submissions for `generate-mashup`, `generate-sounds`, or `stem-split-advanced`. After a timeout or transport error, first use the known PoYo task ID with `poyo_check_job` or inspect task history to determine whether submission succeeded.
+Do not automatically repeat paid submissions for `generate-mashup` or `generate-sounds`. After a timeout or transport error, first use the known PoYo task ID with `poyo_check_job` or inspect task history to determine whether submission succeeded.
