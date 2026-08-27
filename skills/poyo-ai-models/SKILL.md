@@ -28,6 +28,7 @@ Keep `POYO_API_KEY` in the environment or system keyring. Never put it in prompt
 7. Report model ID, final status, credits, output URLs, and any partial or failed result.
 
 Read the generated reference matching the requested category when it exists in `references/`.
+For every Suno model or workflow, also read `references/suno.md` before validating inputs or submitting a task.
 
 ## Guardrails
 

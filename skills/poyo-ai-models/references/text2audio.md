@@ -1,6 +1,6 @@
 # text2audio
 
-Generated from PoYo Catalog `v1-8d68e776d96d`. Always call describe before execution.
+Generated from PoYo Catalog `v1-169417947f69`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -11,6 +11,7 @@ Generated from PoYo Catalog `v1-8d68e776d96d`. Always call describe before execu
 | `generate-lyrics` | generate |  | AI-powered lyrics generation based on themes and descriptions |
 | `generate-music` | generate |  | AI-powered music generation with customizable styles and vocals |
 | `generate-music-cover` | generate |  | Create cover images for generated music. |
+| `generate-sounds` | generate |  | Create sound effects and ambience with Suno |
 | `get-timestamped-lyrics` | generate |  | Retrieve synchronized lyrics with precise timestamps |
 | `separate-vocals` | generate |  | Separate vocals and instruments from music tracks |
 | `stem-split` | generate |  | Split music tracks into multiple instrument stems |
