@@ -3692,6 +3692,295 @@
       "status": "stable"
     },
     {
+      "model_id": "generate-mashup",
+      "tool_name": "poyo_generate_mashup",
+      "service_type": "generate",
+      "category": "audio2audio",
+      "title": "Generate Mashup",
+      "description": "Blend exactly two audio tracks with Suno",
+      "tags": [
+        "suno",
+        "audio2audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "custom_mode": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "style",
+                "title"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "custom_mode"
+              ],
+              "properties": {
+                "custom_mode": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "prompt"
+              ],
+              "properties": {
+                "prompt": {
+                  "maxLength": 500
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "instrumental"
+              ],
+              "properties": {
+                "instrumental": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "prompt"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "duration"
+              ]
+            },
+            "then": {
+              "properties": {
+                "mv": {
+                  "const": "V5_5"
+                },
+                "custom_mode": {
+                  "const": true
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "mv": {
+                  "const": "V4"
+                },
+                "custom_mode": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "style": {
+                  "maxLength": 200
+                },
+                "title": {
+                  "maxLength": 80
+                },
+                "prompt": {
+                  "maxLength": 3000
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "mv": {
+                  "enum": [
+                    "V4_5",
+                    "V4_5ALL",
+                    "V4_5PLUS",
+                    "V5",
+                    "V5_5"
+                  ]
+                },
+                "custom_mode": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "style": {
+                  "maxLength": 1000
+                },
+                "title": {
+                  "maxLength": 80
+                },
+                "prompt": {
+                  "maxLength": 5000
+                }
+              }
+            }
+          }
+        ],
+        "required": [
+          "upload_url_list",
+          "mv"
+        ],
+        "properties": {
+          "mv": {
+            "enum": [
+              "V4",
+              "V4_5",
+              "V4_5ALL",
+              "V4_5PLUS",
+              "V5",
+              "V5_5"
+            ],
+            "type": "string"
+          },
+          "style": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "duration": {
+            "type": "integer",
+            "maximum": 360,
+            "minimum": 10
+          },
+          "custom_mode": {
+            "type": "boolean",
+            "default": true
+          },
+          "audio_weight": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "instrumental": {
+            "type": "boolean",
+            "default": true
+          },
+          "style_weight": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "multipleOf": 0.01
+          },
+          "vocal_gender": {
+            "enum": [
+              "m",
+              "f"
+            ],
+            "type": "string"
+          },
+          "upload_url_list": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 2,
+            "minItems": 2
+          },
+          "weirdness_constraint": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "multipleOf": 0.01
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "audio_id": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "number"
+          },
+          "audio_url": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "model_name": {
+            "type": "string"
+          },
+          "source_audio_url": {
+            "type": "string"
+          },
+          "source_image_url": {
+            "type": "string"
+          },
+          "stream_audio_url": {
+            "type": "string"
+          },
+          "source_stream_audio_url": {
+            "type": "string"
+          }
+        }
+      },
+      "examples": [
+        {
+          "mv": "V5_5",
+          "style": "cinematic",
+          "title": "Mashup",
+          "duration": 120,
+          "custom_mode": true,
+          "instrumental": true,
+          "upload_url_list": [
+            "https://example.com/a.mp3",
+            "https://example.com/b.mp3"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 12,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "generate-midi",
       "tool_name": "poyo_generate_midi",
       "service_type": "generate",
@@ -4075,6 +4364,332 @@
         "type": "fixed",
         "unit": "request",
         "credits": 10,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "suno-voice-check",
+      "tool_name": "poyo_suno_voice_check",
+      "service_type": "generate",
+      "category": "audio2audio",
+      "title": "Suno Voice Check",
+      "description": "Check whether a generated Suno Voice is available",
+      "tags": [
+        "suno",
+        "audio2audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "task_id"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Task ID returned by Generate Voice."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "is_available": {
+            "type": "boolean"
+          }
+        }
+      },
+      "examples": [
+        {
+          "task_id": "poyo_voice_generate_task_id"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 0,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "suno-voice-generate",
+      "tool_name": "poyo_suno_voice_generate",
+      "service_type": "generate",
+      "category": "audio2audio",
+      "title": "Suno Voice Generate",
+      "description": "Create a reusable Suno Voice ID from a verification recording",
+      "tags": [
+        "suno",
+        "audio2audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "task_id",
+          "verify_url"
+        ],
+        "properties": {
+          "style": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Task ID returned by Validate Voice or Regenerate Voice Phrase."
+          },
+          "verify_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "voice_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "singer_skill_level": {
+            "enum": [
+              "beginner",
+              "intermediate",
+              "advanced",
+              "professional"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "voice_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "error_code": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ]
+          },
+          "voice_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "error_message": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "task_id": "poyo_validation_task_id",
+          "verify_url": "https://example.com/verification.wav"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 0,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "suno-voice-regenerate",
+      "tool_name": "poyo_suno_voice_regenerate",
+      "service_type": "generate",
+      "category": "audio2audio",
+      "title": "Suno Voice Regenerate",
+      "description": "Regenerate a Suno Voice verification phrase",
+      "tags": [
+        "suno",
+        "audio2audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "task_id"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Task ID returned by Validate Voice."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "error_code": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ]
+          },
+          "voice_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "error_message": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "validate_info": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "task_id": "poyo_validation_task_id"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 0,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "suno-voice-validate",
+      "tool_name": "poyo_suno_voice_validate",
+      "service_type": "generate",
+      "category": "audio2audio",
+      "title": "Suno Voice Validate",
+      "description": "Validate a Suno Voice sample and receive a verification phrase",
+      "tags": [
+        "suno",
+        "audio2audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "voice_url",
+          "vocal_start_s",
+          "vocal_end_s"
+        ],
+        "properties": {
+          "language": {
+            "enum": [
+              "en",
+              "zh",
+              "es",
+              "fr",
+              "pt",
+              "de",
+              "ja",
+              "ko",
+              "hi",
+              "ru"
+            ],
+            "type": "string",
+            "default": "en"
+          },
+          "voice_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "vocal_end_s": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "End of the selected vocal segment; must be greater than vocal_start_s."
+          },
+          "vocal_start_s": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Start of the selected vocal segment."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "error_code": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ]
+          },
+          "voice_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "error_message": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "validate_info": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "language": "en",
+          "voice_url": "https://example.com/voice.mp3",
+          "vocal_end_s": 20,
+          "vocal_start_s": 0
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 0,
         "input_credits": null,
         "output_credits": null
       },
@@ -21020,6 +21635,144 @@
       "status": "stable"
     },
     {
+      "model_id": "generate-sounds",
+      "tool_name": "poyo_generate_sounds",
+      "service_type": "generate",
+      "category": "text2audio",
+      "title": "Generate Sounds",
+      "description": "Create sound effects and ambience with Suno",
+      "tags": [
+        "suno",
+        "text2audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "mv"
+        ],
+        "properties": {
+          "mv": {
+            "enum": [
+              "V5",
+              "V5_5"
+            ],
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          },
+          "sound_key": {
+            "enum": [
+              "Cm",
+              "C#m",
+              "Dm",
+              "D#m",
+              "Em",
+              "Fm",
+              "F#m",
+              "Gm",
+              "G#m",
+              "Am",
+              "A#m",
+              "Bm",
+              "C",
+              "C#",
+              "D",
+              "D#",
+              "E",
+              "F",
+              "F#",
+              "G",
+              "G#",
+              "A",
+              "A#",
+              "B"
+            ],
+            "type": "string"
+          },
+          "sound_loop": {
+            "type": "boolean",
+            "default": false
+          },
+          "grab_lyrics": {
+            "type": "boolean",
+            "default": false
+          },
+          "sound_tempo": {
+            "type": "integer",
+            "maximum": 300,
+            "minimum": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "audio_id": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "number"
+          },
+          "audio_url": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "model_name": {
+            "type": "string"
+          },
+          "source_audio_url": {
+            "type": "string"
+          },
+          "source_image_url": {
+            "type": "string"
+          },
+          "stream_audio_url": {
+            "type": "string"
+          },
+          "source_stream_audio_url": {
+            "type": "string"
+          }
+        }
+      },
+      "examples": [
+        {
+          "mv": "V5_5",
+          "prompt": "Rain and distant thunder",
+          "sound_key": "Cm",
+          "sound_loop": true,
+          "sound_tempo": 90
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 2.5,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "get-timestamped-lyrics",
       "tool_name": "poyo_get_timestamped_lyrics",
       "service_type": "generate",
@@ -33447,759 +34200,6 @@
             "15": 360
           }
         },
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "generate-mashup",
-      "tool_name": "poyo_generate_mashup",
-      "service_type": "generate",
-      "category": "audio2audio",
-      "title": "Generate Mashup",
-      "description": "Blend exactly two audio tracks with Suno",
-      "tags": [
-        "suno",
-        "audio2audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "allOf": [
-          {
-            "if": {
-              "properties": {
-                "custom_mode": {
-                  "const": true
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "style",
-                "title"
-              ]
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "custom_mode"
-              ],
-              "properties": {
-                "custom_mode": {
-                  "const": false
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "prompt"
-              ],
-              "properties": {
-                "prompt": {
-                  "maxLength": 500
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "instrumental"
-              ],
-              "properties": {
-                "instrumental": {
-                  "const": false
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "prompt"
-              ]
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "duration"
-              ]
-            },
-            "then": {
-              "properties": {
-                "mv": {
-                  "const": "V5_5"
-                },
-                "custom_mode": {
-                  "const": true
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "properties": {
-                "mv": {
-                  "const": "V4"
-                },
-                "custom_mode": {
-                  "const": true
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "style": {
-                  "maxLength": 200
-                },
-                "title": {
-                  "maxLength": 80
-                },
-                "prompt": {
-                  "maxLength": 3000
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "properties": {
-                "mv": {
-                  "enum": [
-                    "V4_5",
-                    "V4_5ALL",
-                    "V4_5PLUS",
-                    "V5",
-                    "V5_5"
-                  ]
-                },
-                "custom_mode": {
-                  "const": true
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "style": {
-                  "maxLength": 1000
-                },
-                "title": {
-                  "maxLength": 80
-                },
-                "prompt": {
-                  "maxLength": 5000
-                }
-              }
-            }
-          }
-        ],
-        "required": [
-          "upload_url_list",
-          "mv"
-        ],
-        "properties": {
-          "mv": {
-            "enum": [
-              "V4",
-              "V4_5",
-              "V4_5ALL",
-              "V4_5PLUS",
-              "V5",
-              "V5_5"
-            ],
-            "type": "string"
-          },
-          "style": {
-            "type": "string",
-            "minLength": 1
-          },
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "prompt": {
-            "type": "string",
-            "minLength": 1
-          },
-          "duration": {
-            "type": "integer",
-            "maximum": 360,
-            "minimum": 10
-          },
-          "custom_mode": {
-            "type": "boolean",
-            "default": true
-          },
-          "audio_weight": {
-            "type": "number",
-            "maximum": 1,
-            "minimum": 0,
-            "multipleOf": 0.01
-          },
-          "instrumental": {
-            "type": "boolean",
-            "default": true
-          },
-          "style_weight": {
-            "type": "number",
-            "maximum": 1,
-            "minimum": 0,
-            "multipleOf": 0.01
-          },
-          "vocal_gender": {
-            "enum": [
-              "m",
-              "f"
-            ],
-            "type": "string"
-          },
-          "upload_url_list": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
-            },
-            "maxItems": 2,
-            "minItems": 2
-          },
-          "weirdness_constraint": {
-            "type": "number",
-            "maximum": 1,
-            "minimum": 0,
-            "multipleOf": 0.01
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "tags": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "prompt": {
-            "type": "string"
-          },
-          "audio_id": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "number"
-          },
-          "audio_url": {
-            "type": "string"
-          },
-          "image_url": {
-            "type": "string"
-          },
-          "model_name": {
-            "type": "string"
-          },
-          "source_audio_url": {
-            "type": "string"
-          },
-          "source_image_url": {
-            "type": "string"
-          },
-          "stream_audio_url": {
-            "type": "string"
-          },
-          "source_stream_audio_url": {
-            "type": "string"
-          }
-        }
-      },
-      "examples": [
-        {
-          "mv": "V5_5",
-          "style": "cinematic",
-          "title": "Mashup",
-          "duration": 120,
-          "custom_mode": true,
-          "instrumental": true,
-          "upload_url_list": [
-            "https://example.com/a.mp3",
-            "https://example.com/b.mp3"
-          ]
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 12,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "suno-voice-check",
-      "tool_name": "poyo_suno_voice_check",
-      "service_type": "generate",
-      "category": "audio2audio",
-      "title": "Suno Voice Check",
-      "description": "Check whether a generated Suno Voice is available",
-      "tags": [
-        "suno",
-        "audio2audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "task_id"
-        ],
-        "properties": {
-          "task_id": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Task ID returned by Generate Voice."
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "is_available": {
-            "type": "boolean"
-          }
-        }
-      },
-      "examples": [
-        {
-          "task_id": "poyo_voice_generate_task_id"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 0,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "suno-voice-generate",
-      "tool_name": "poyo_suno_voice_generate",
-      "service_type": "generate",
-      "category": "audio2audio",
-      "title": "Suno Voice Generate",
-      "description": "Create a reusable Suno Voice ID from a verification recording",
-      "tags": [
-        "suno",
-        "audio2audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "task_id",
-          "verify_url"
-        ],
-        "properties": {
-          "style": {
-            "type": "string"
-          },
-          "task_id": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Task ID returned by Validate Voice or Regenerate Voice Phrase."
-          },
-          "verify_url": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https?://"
-          },
-          "voice_name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "singer_skill_level": {
-            "enum": [
-              "beginner",
-              "intermediate",
-              "advanced",
-              "professional"
-            ],
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "voice_id": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "error_code": {
-            "type": [
-              "string",
-              "integer",
-              "null"
-            ]
-          },
-          "voice_status": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "error_message": {
-            "type": [
-              "string",
-              "null"
-            ]
-          }
-        }
-      },
-      "examples": [
-        {
-          "task_id": "poyo_validation_task_id",
-          "verify_url": "https://example.com/verification.wav"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 0,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "suno-voice-regenerate",
-      "tool_name": "poyo_suno_voice_regenerate",
-      "service_type": "generate",
-      "category": "audio2audio",
-      "title": "Suno Voice Regenerate",
-      "description": "Regenerate a Suno Voice verification phrase",
-      "tags": [
-        "suno",
-        "audio2audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "task_id"
-        ],
-        "properties": {
-          "task_id": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Task ID returned by Validate Voice."
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "error_code": {
-            "type": [
-              "string",
-              "integer",
-              "null"
-            ]
-          },
-          "voice_status": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "error_message": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "validate_info": {
-            "type": [
-              "string",
-              "null"
-            ]
-          }
-        }
-      },
-      "examples": [
-        {
-          "task_id": "poyo_validation_task_id"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 0,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "suno-voice-validate",
-      "tool_name": "poyo_suno_voice_validate",
-      "service_type": "generate",
-      "category": "audio2audio",
-      "title": "Suno Voice Validate",
-      "description": "Validate a Suno Voice sample and receive a verification phrase",
-      "tags": [
-        "suno",
-        "audio2audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "voice_url",
-          "vocal_start_s",
-          "vocal_end_s"
-        ],
-        "properties": {
-          "language": {
-            "enum": [
-              "en",
-              "zh",
-              "es",
-              "fr",
-              "pt",
-              "de",
-              "ja",
-              "ko",
-              "hi",
-              "ru"
-            ],
-            "type": "string",
-            "default": "en"
-          },
-          "voice_url": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https?://"
-          },
-          "vocal_end_s": {
-            "type": "integer",
-            "minimum": 1,
-            "description": "End of the selected vocal segment; must be greater than vocal_start_s."
-          },
-          "vocal_start_s": {
-            "type": "integer",
-            "minimum": 0,
-            "description": "Start of the selected vocal segment."
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "error_code": {
-            "type": [
-              "string",
-              "integer",
-              "null"
-            ]
-          },
-          "voice_status": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "error_message": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "validate_info": {
-            "type": [
-              "string",
-              "null"
-            ]
-          }
-        }
-      },
-      "examples": [
-        {
-          "language": "en",
-          "voice_url": "https://example.com/voice.mp3",
-          "vocal_end_s": 20,
-          "vocal_start_s": 0
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 0,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "generate-sounds",
-      "tool_name": "poyo_generate_sounds",
-      "service_type": "generate",
-      "category": "text2audio",
-      "title": "Generate Sounds",
-      "description": "Create sound effects and ambience with Suno",
-      "tags": [
-        "suno",
-        "text2audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt",
-          "mv"
-        ],
-        "properties": {
-          "mv": {
-            "enum": [
-              "V5",
-              "V5_5"
-            ],
-            "type": "string"
-          },
-          "prompt": {
-            "type": "string",
-            "maxLength": 500,
-            "minLength": 1
-          },
-          "sound_key": {
-            "enum": [
-              "Cm",
-              "C#m",
-              "Dm",
-              "D#m",
-              "Em",
-              "Fm",
-              "F#m",
-              "Gm",
-              "G#m",
-              "Am",
-              "A#m",
-              "Bm",
-              "C",
-              "C#",
-              "D",
-              "D#",
-              "E",
-              "F",
-              "F#",
-              "G",
-              "G#",
-              "A",
-              "A#",
-              "B"
-            ],
-            "type": "string"
-          },
-          "sound_loop": {
-            "type": "boolean",
-            "default": false
-          },
-          "grab_lyrics": {
-            "type": "boolean",
-            "default": false
-          },
-          "sound_tempo": {
-            "type": "integer",
-            "maximum": 300,
-            "minimum": 1
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "tags": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "prompt": {
-            "type": "string"
-          },
-          "audio_id": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "number"
-          },
-          "audio_url": {
-            "type": "string"
-          },
-          "image_url": {
-            "type": "string"
-          },
-          "model_name": {
-            "type": "string"
-          },
-          "source_audio_url": {
-            "type": "string"
-          },
-          "source_image_url": {
-            "type": "string"
-          },
-          "stream_audio_url": {
-            "type": "string"
-          },
-          "source_stream_audio_url": {
-            "type": "string"
-          }
-        }
-      },
-      "examples": [
-        {
-          "mv": "V5_5",
-          "prompt": "Rain and distant thunder",
-          "sound_key": "Cm",
-          "sound_loop": true,
-          "sound_tempo": 90
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 2.5,
         "input_credits": null,
         "output_credits": null
       },
