@@ -132,6 +132,11 @@ const hasCustomRequiredRule = (schema, modeField, required) => schema.allOf?.som
   rule.if?.properties?.[modeField]?.const === true
   && required.every((field) => rule.then?.required?.includes(field))
 ));
+const hasInstrumentalPromptRule = (schema, modeField) => schema.allOf?.some((rule) => (
+  rule.if?.properties?.[modeField]?.const === true
+  && rule.if?.properties?.instrumental?.not?.const === true
+  && rule.then?.required?.includes("prompt")
+));
 const hasLimitRule = (schema, modeField, modeValue, mvValue, limits) => schema.allOf?.some((rule) => (
   rule.if?.properties?.[modeField]?.const === modeValue
   && (
@@ -179,13 +184,15 @@ if (
   || !hasPersonaCustomRule(uploadCover, "custom_mode")
   || !hasPersonaCustomRule(extendMusic, "default_param_flag")
   || !hasPersonaCustomRule(uploadExtend, "default_param_flag")
-  || !hasCustomRequiredRule(extendMusic, "default_param_flag", ["mv", "prompt", "style", "title", "continue_at"])
+  || !hasCustomRequiredRule(extendMusic, "default_param_flag", ["mv", "style", "title", "continue_at"])
+  || !hasInstrumentalPromptRule(extendMusic, "default_param_flag")
   || !hasCustomRequiredRule(uploadExtend, "default_param_flag", ["mv", "style", "title", "continue_at"])
   || !equal(extendMusic.required, ["audio_id"])
   || !equal(uploadExtend.required, ["upload_url"])
   || generateMusic.properties?.custom_mode?.default !== true
   || generateMusic.properties?.instrumental?.default !== true
   || extendMusic.properties?.default_param_flag?.default !== true
+  || extendMusic.properties?.instrumental?.type !== "boolean"
   || uploadCover.properties?.upload_url?.pattern !== "^https?://"
   || uploadExtend.properties?.upload_url?.pattern !== "^https?://"
   || !hasLimitRule(generateMusic, "custom_mode", true, "V4", {prompt: 3000, style: 200, title: 80})

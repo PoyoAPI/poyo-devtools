@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-169417947f69",
+  "schema_version": "v1-a824373633db",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -20151,10 +20151,28 @@
             "then": {
               "required": [
                 "mv",
-                "prompt",
                 "style",
                 "title",
                 "continue_at"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "instrumental": {
+                  "not": {
+                    "const": true
+                  }
+                },
+                "default_param_flag": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "prompt"
               ]
             }
           },
@@ -20337,7 +20355,7 @@
           },
           "instrumental": {
             "type": "boolean",
-            "description": "Whether the extension is instrumental."
+            "description": "Whether the extension is instrumental. When true, prompt is not sent."
           },
           "style_weight": {
             "type": "number",
@@ -24043,7 +24061,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
+        "type": "tiered",
         "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credit_rates[resolution]",
+        "input_credits": null,
+        "output_credits": null,
         "resolution_credit_rates": {
           "720p": 82,
           "1080p": 106
@@ -24223,7 +24246,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
+        "type": "tiered",
         "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credit_rates[resolution]",
+        "input_credits": null,
+        "output_credits": null,
         "resolution_credit_rates": {
           "720p": 34,
           "1080p": 58
@@ -24403,7 +24431,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
+        "type": "tiered",
         "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credit_rates[resolution]",
+        "input_credits": null,
+        "output_credits": null,
         "resolution_credit_rates": {
           "720p": 34,
           "1080p": 58
@@ -24583,7 +24616,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
+        "type": "tiered",
         "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credit_rates[resolution]",
+        "input_credits": null,
+        "output_credits": null,
         "resolution_credit_rates": {
           "720p": 34,
           "1080p": 58
@@ -24763,7 +24801,12 @@
       "supports_streaming": false,
       "supports_callback": true,
       "billing": {
+        "type": "tiered",
         "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credit_rates[resolution]",
+        "input_credits": null,
+        "output_credits": null,
         "resolution_credit_rates": {
           "720p": 34,
           "1080p": 58

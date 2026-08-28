@@ -28,6 +28,11 @@ export function checkSunoContract(catalog, equal) {
     rule.if?.properties?.default_param_flag?.const === true
     && fields.every((field) => rule.then?.required?.includes(field))
   ));
+  const hasConditionalPrompt = (modelId) => schema(modelId).allOf?.some((rule) => (
+    rule.if?.properties?.default_param_flag?.const === true
+    && rule.if?.properties?.instrumental?.not?.const === true
+    && rule.then?.required?.includes("prompt")
+  ));
   const generateMusic = schema("generate-music");
   const extend = props("extend-music");
   const uploadCover = props("upload-and-cover-audio");
@@ -41,12 +46,14 @@ export function checkSunoContract(catalog, equal) {
     || extend.prompt?.maxLength !== 5000
     || extend.style?.maxLength !== 1000
     || extend.title?.maxLength !== 100
+    || extend.instrumental?.type !== "boolean"
     || uploadCover.prompt?.maxLength !== 5000
     || uploadCover.style?.maxLength !== 1000
     || uploadCover.title?.maxLength !== 100
     || !equal(schema("extend-music").required, ["audio_id"])
     || !equal(schema("upload-and-extend-audio").required, ["upload_url"])
-    || !hasCustomRequired("extend-music", ["mv", "prompt", "style", "title", "continue_at"])
+    || !hasCustomRequired("extend-music", ["mv", "style", "title", "continue_at"])
+    || !hasConditionalPrompt("extend-music")
     || !hasCustomRequired("upload-and-extend-audio", ["mv", "style", "title", "continue_at"])
     || !generateMusic.allOf?.some((rule) => (
       rule.if?.properties?.custom_mode?.const === false
