@@ -4,6 +4,8 @@ Generated from PoYo Catalog `v1-169417947f69`. Always call describe before execu
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
+| `flux-2-flex-edit` | generate |  | 32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering |
+| `flux-2-pro-edit` | generate |  | 32B parameter image generation model from Black Forest Labs with multi-reference support and superior text rendering |
 | `gpt-image-1.5-edit` | generate |  | GPT Image 1.5 Generation and Editing |
 | `gpt-image-2` | generate |  | GPT Image 2 generation and multi-image editing |
 | `gpt-image-2-edit` | generate |  | GPT Image 2 generation and multi-image editing |
