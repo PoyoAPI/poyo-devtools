@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-a824373633db",
+  "schema_version": "v1-0ff6ed9b03bf",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -25563,6 +25563,227 @@
         "resolution_credit_rates": {
           "720p": 34,
           "1080p": 58
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gemini-omni-1.1-flash",
+      "tool_name": "poyo_gemini_omni_1_1_flash",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Gemini Omni 1.1 Flash",
+      "description": "Generate videos from text, first and last frames, reference images, or a reference video.",
+      "tags": [
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "reference-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000,
+            "description": "Text prompt describing the target video."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "First frame and optional last frame images."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 7,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Reference images. At most 5 are allowed with a reference video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "One optional reference video with a duration from 3 to 10 seconds.",
+            "x-video-duration-seconds": {
+              "minimum": 3,
+              "maximum": 10
+            }
+          },
+          "duration": {
+            "type": "integer",
+            "enum": [
+              4,
+              6,
+              8,
+              10
+            ],
+            "default": 8,
+            "description": "Output duration in seconds. It does not affect video-input generation."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "360p",
+              "720p",
+              "1080p",
+              "4k"
+            ],
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16"
+            ],
+            "default": "16:9"
+          }
+        },
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "image_urls",
+                "reference_image_urls"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "image_urls",
+                "reference_video_urls"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "reference_video_urls"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reference_image_urls": {
+                  "maxItems": 5
+                }
+              }
+            }
+          }
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A cinematic city at night with a slow camera push-in.",
+          "duration": 8,
+          "resolution": "720p",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "prompt": "Transition smoothly between the two frames.",
+          "image_urls": [
+            "https://example.com/first-frame.png",
+            "https://example.com/last-frame.png"
+          ],
+          "duration": 8,
+          "resolution": "1080p"
+        },
+        {
+          "prompt": "Use the references to create a coherent product video.",
+          "reference_image_urls": [
+            "https://example.com/product.png"
+          ],
+          "reference_video_urls": [
+            "https://example.com/motion.mp4"
+          ],
+          "resolution": "720p"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "request",
+        "credits": null,
+        "formula": "price_table[has_video_input][resolution_group][duration]",
+        "parameters": {
+          "has_video_input": "true when reference_video_urls is non-empty",
+          "resolution_group": "4k for 4K output; standard for 360p, 720p, or 1080p"
+        },
+        "price_table": {
+          "true": {
+            "4k": 180,
+            "standard": 120
+          },
+          "false": {
+            "4k": {
+              "4": 105,
+              "6": 120,
+              "8": 135,
+              "10": 150
+            },
+            "standard": {
+              "4": 45,
+              "6": 60,
+              "8": 75,
+              "10": 90
+            }
+          }
         }
       },
       "status": "stable"

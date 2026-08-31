@@ -66,6 +66,40 @@ if (!equal(seedance25?.input_schema?.properties?.resolution?.enum, ["480p", "720
   throw new Error("Seedance 2.5 resolution enum is out of sync");
 }
 
+const geminiOmni11 = catalog.items.find((item) => item.model_id === "gemini-omni-1.1-flash");
+const geminiOmni11Properties = geminiOmni11?.input_schema?.properties ?? {};
+const expectedGeminiOmni11PriceTable = {
+  true: {"4k": 180, standard: 120},
+  false: {
+    "4k": {"4": 105, "6": 120, "8": 135, "10": 150},
+    standard: {"4": 45, "6": 60, "8": 75, "10": 90},
+  },
+};
+if (
+  !geminiOmni11
+  || geminiOmni11.tool_name !== "poyo_gemini_omni_1_1_flash"
+  || geminiOmni11.input_schema?.additionalProperties !== false
+  || geminiOmni11Properties.duration?.default !== 8
+  || !equal(geminiOmni11Properties.duration?.enum, [4, 6, 8, 10])
+  || !equal(geminiOmni11Properties.resolution?.enum, ["360p", "720p", "1080p", "4k"])
+  || geminiOmni11Properties.image_urls?.maxItems !== 2
+  || geminiOmni11Properties.reference_image_urls?.maxItems !== 7
+  || geminiOmni11Properties.reference_video_urls?.maxItems !== 1
+  || !equal(geminiOmni11Properties.reference_video_urls?.["x-video-duration-seconds"], {
+    minimum: 3,
+    maximum: 10,
+  })
+  || ["video_start", "video_end", "audio_ids", "character_ids", "seed"].some(
+    (field) => Object.hasOwn(geminiOmni11Properties, field),
+  )
+  || geminiOmni11.billing?.type !== "parameterized"
+  || geminiOmni11.billing?.unit !== "request"
+  || geminiOmni11.billing?.formula !== "price_table[has_video_input][resolution_group][duration]"
+  || !equal(geminiOmni11.billing?.price_table, expectedGeminiOmni11PriceTable)
+) {
+  throw new Error("Gemini Omni 1.1 Flash capability is out of sync");
+}
+
 const expectedWan30Rates = {
   "wan3.0-text-to-video": {"480p": 10, "720p": 20, "1080p": 40},
   "wan3.0-image-to-video": {"480p": 10, "720p": 20, "1080p": 40},

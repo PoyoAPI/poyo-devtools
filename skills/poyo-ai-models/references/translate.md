@@ -1,6 +1,6 @@
 # translate
 
-Generated from PoYo Catalog `v1-a824373633db`. Always call describe before execution.
+Generated from PoYo Catalog `v1-0ff6ed9b03bf`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|

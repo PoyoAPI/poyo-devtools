@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-a824373633db`. Always call describe before execution.
+Generated from PoYo Catalog `v1-0ff6ed9b03bf`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -9,6 +9,7 @@ Generated from PoYo Catalog `v1-a824373633db`. Always call describe before execu
 | `flux-3/image-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `flux-3/keyframes-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `flux-3/text-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
+| `gemini-omni-1.1-flash` | generate |  | Generate videos from text, first and last frames, reference images, or a reference video. |
 | `grok-imagine-video-1.5` | generate |  | Text, image, and reference-to-video generation with Grok Imagine Video 1.5 |
 | `hailuo-03` | generate |  | Generate 2K videos from text, keyframes, or multimodal references |
 | `hailuo-2.3` | generate |  | Text-to-video and optional first-frame guided generation |
