@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-0ff6ed9b03bf",
+  "schema_version": "v1-70947418c5ce",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -10446,242 +10446,6 @@
       "status": "stable"
     },
     {
-      "model_id": "gpt-5.2",
-      "tool_name": "poyo_gpt_5_2",
-      "service_type": "chat",
-      "category": "chat",
-      "title": "gpt-5.2",
-      "description": "Run the PoYo gpt-5.2 model.",
-      "tags": [
-        "chat",
-        "openai-chat",
-        "openai-responses"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "messages"
-        ],
-        "properties": {
-          "n": {
-            "type": "integer",
-            "example": 1,
-            "minimum": 1,
-            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
-          },
-          "stop": {
-            "oneOf": [
-              {
-                "type": "string",
-                "example": "\n\nHuman:"
-              },
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            ],
-            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
-          },
-          "top_p": {
-            "type": "number",
-            "example": 1,
-            "maximum": 1,
-            "minimum": 0,
-            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
-          },
-          "messages": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "role",
-                "content"
-              ],
-              "properties": {
-                "role": {
-                  "enum": [
-                    "system",
-                    "user",
-                    "assistant"
-                  ],
-                  "type": "string",
-                  "default": "user",
-                  "example": "user",
-                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
-                },
-                "content": {
-                  "type": "string",
-                  "example": "Explain vector databases in one sentence.",
-                  "description": "Message content, question, or instruction."
-                }
-              }
-            },
-            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
-          },
-          "max_tokens": {
-            "type": "integer",
-            "example": 256,
-            "minimum": 1,
-            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
-          },
-          "temperature": {
-            "type": "number",
-            "example": 1,
-            "maximum": 2,
-            "minimum": 0,
-            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
-          },
-          "presence_penalty": {
-            "type": "number",
-            "example": 0,
-            "maximum": 2,
-            "minimum": -2,
-            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
-          },
-          "frequency_penalty": {
-            "type": "number",
-            "example": 0,
-            "maximum": 2,
-            "minimum": -2,
-            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
-          }
-        }
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "example": "chatcmpl-9876543210",
-                "description": "Unique identifier for the response."
-              },
-              "model": {
-                "type": "string",
-                "example": "gpt-5.2",
-                "description": "The actual model name used."
-              },
-              "usage": {
-                "type": "object",
-                "properties": {
-                  "total_tokens": {
-                    "type": "integer",
-                    "example": 348,
-                    "description": "Total number of tokens."
-                  },
-                  "prompt_tokens": {
-                    "type": "integer",
-                    "example": 28,
-                    "description": "Number of tokens in the input messages."
-                  },
-                  "completion_tokens": {
-                    "type": "integer",
-                    "example": 320,
-                    "description": "Number of tokens in the generated content."
-                  }
-                }
-              },
-              "object": {
-                "type": "string",
-                "example": "chat.completion",
-                "description": "Object type."
-              },
-              "choices": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "index": {
-                      "type": "integer",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "object",
-                      "required": [
-                        "role",
-                        "content"
-                      ],
-                      "properties": {
-                        "role": {
-                          "enum": [
-                            "system",
-                            "user",
-                            "assistant"
-                          ],
-                          "type": "string",
-                          "default": "user",
-                          "example": "user",
-                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
-                        },
-                        "content": {
-                          "type": "string",
-                          "example": "Explain vector databases in one sentence.",
-                          "description": "Message content, question, or instruction."
-                        }
-                      }
-                    },
-                    "finish_reason": {
-                      "enum": [
-                        "stop",
-                        "length",
-                        "content_filter",
-                        "function_call"
-                      ],
-                      "type": "string",
-                      "example": "stop",
-                      "description": "Reason for completion."
-                    }
-                  }
-                }
-              },
-              "created": {
-                "type": "integer",
-                "example": 1677652288,
-                "description": "Creation timestamp."
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "messages": [
-            {
-              "role": "system",
-              "content": "You are a structured output assistant. Reply with JSON only."
-            },
-            {
-              "role": "user",
-              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
-            }
-          ]
-        }
-      ],
-      "supported_protocols": [
-        "openai-chat",
-        "openai-responses"
-      ],
-      "execution_mode": "sync",
-      "supports_streaming": true,
-      "supports_callback": false,
-      "billing": {
-        "type": "token",
-        "unit": "token",
-        "credits": null,
-        "input_credits": 87.5,
-        "output_credits": 700
-      },
-      "status": "stable"
-    },
-    {
       "model_id": "gpt-5.4",
       "tool_name": "poyo_gpt_5_4",
       "service_type": "chat",
@@ -19691,136 +19455,6 @@
       "status": "stable"
     },
     {
-      "model_id": "sora-2-beta",
-      "tool_name": "poyo_sora_2_beta",
-      "service_type": "generate",
-      "category": "img2vid",
-      "title": "sora-2-beta",
-      "description": "Text-to-video and optional image-guided video generation",
-      "tags": [
-        "img2vid"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic shot of a red sports car driving through neon rain at night, reflective streets, dramatic lighting, smooth camera tracking.",
-            "description": "Generation prompt describing the desired video"
-          },
-          "duration": {
-            "enum": [
-              4,
-              8,
-              12
-            ],
-            "type": "integer",
-            "default": 4,
-            "example": 8,
-            "description": "Output duration in seconds"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "https://example.com/reference-image.png"
-            ],
-            "maxItems": 1,
-            "description": "Optional reference image array for image-to-video generation. If provided, exactly one image is used as the first frame/reference image. Supports HTTP(S) image URLs or base64 image strings, including data:image/...;base64,... values."
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "default": "16:9",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        }
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A cinematic shot of a red sports car driving through neon rain at night, reflective streets, dramatic lighting, smooth camera tracking.",
-          "duration": 8,
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "Animate this image into a smooth cinematic video with natural motion and soft camera movement.",
-          "duration": 4,
-          "image_urls": [
-            "https://example.com/reference-image.png"
-          ],
-          "aspect_ratio": "9:16"
-        },
-        {
-          "prompt": "Animate this image into a smooth cinematic video with natural motion and soft camera movement.",
-          "duration": 4,
-          "image_urls": [
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
-          ],
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "fixed",
-        "unit": "request",
-        "credits": 40,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
       "model_id": "veo3.1-fast",
       "tool_name": "poyo_veo3_1_fast",
       "service_type": "generate",
@@ -25582,81 +25216,6 @@
       ],
       "input_schema": {
         "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 20000,
-            "description": "Text prompt describing the target video."
-          },
-          "image_urls": {
-            "type": "array",
-            "minItems": 1,
-            "maxItems": 2,
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "description": "First frame and optional last frame images."
-          },
-          "reference_image_urls": {
-            "type": "array",
-            "minItems": 1,
-            "maxItems": 7,
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "description": "Reference images. At most 5 are allowed with a reference video."
-          },
-          "reference_video_urls": {
-            "type": "array",
-            "minItems": 1,
-            "maxItems": 1,
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "description": "One optional reference video with a duration from 3 to 10 seconds.",
-            "x-video-duration-seconds": {
-              "minimum": 3,
-              "maximum": 10
-            }
-          },
-          "duration": {
-            "type": "integer",
-            "enum": [
-              4,
-              6,
-              8,
-              10
-            ],
-            "default": 8,
-            "description": "Output duration in seconds. It does not affect video-input generation."
-          },
-          "resolution": {
-            "type": "string",
-            "enum": [
-              "360p",
-              "720p",
-              "1080p",
-              "4k"
-            ],
-            "default": "720p"
-          },
-          "aspect_ratio": {
-            "type": "string",
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "default": "16:9"
-          }
-        },
         "allOf": [
           {
             "not": {
@@ -25688,7 +25247,82 @@
               }
             }
           }
-        ]
+        ],
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "minLength": 1,
+            "description": "Text prompt describing the target video."
+          },
+          "duration": {
+            "enum": [
+              4,
+              6,
+              8,
+              10
+            ],
+            "type": "integer",
+            "default": 8,
+            "description": "Output duration in seconds. It does not affect video-input generation."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 2,
+            "minItems": 1,
+            "description": "First frame and optional last frame images."
+          },
+          "resolution": {
+            "enum": [
+              "360p",
+              "720p",
+              "1080p",
+              "4k"
+            ],
+            "type": "string",
+            "default": "720p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "16:9"
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 7,
+            "minItems": 1,
+            "description": "Reference images. At most 5 are allowed with a reference video."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "One optional reference video with a duration from 3 to 10 seconds.",
+            "x-video-duration-seconds": {
+              "maximum": 10,
+              "minimum": 3
+            }
+          }
+        },
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -25700,9 +25334,6 @@
           "code": {
             "type": "integer"
           },
-          "message": {
-            "type": "string"
-          },
           "data": {
             "type": "object",
             "required": [
@@ -25711,10 +25342,10 @@
               "created_time"
             ],
             "properties": {
-              "task_id": {
+              "status": {
                 "type": "string"
               },
-              "status": {
+              "task_id": {
                 "type": "string"
               },
               "created_time": {
@@ -25722,6 +25353,9 @@
                 "format": "date-time"
               }
             }
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -25734,22 +25368,22 @@
         },
         {
           "prompt": "Transition smoothly between the two frames.",
+          "duration": 8,
           "image_urls": [
             "https://example.com/first-frame.png",
             "https://example.com/last-frame.png"
           ],
-          "duration": 8,
           "resolution": "1080p"
         },
         {
           "prompt": "Use the references to create a coherent product video.",
+          "resolution": "720p",
           "reference_image_urls": [
             "https://example.com/product.png"
           ],
           "reference_video_urls": [
             "https://example.com/motion.mp4"
-          ],
-          "resolution": "720p"
+          ]
         }
       ],
       "supported_protocols": [],
