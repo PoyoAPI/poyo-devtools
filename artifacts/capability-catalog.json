@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-4307f0199431",
+  "schema_version": "v1-1989bb1c3e5e",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -5058,6 +5058,242 @@
         "credits": null,
         "input_credits": 2142.8,
         "output_credits": 10714
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "claude-fable-5-1",
+      "tool_name": "poyo_claude_fable_5_1",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "claude-fable-5-1",
+      "description": "Run the PoYo Claude Fable 5.1 model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "anthropic"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "anthropic"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 1600,
+        "output_credits": 8000
       },
       "status": "stable"
     },
@@ -12233,48 +12469,25 @@
       ],
       "input_schema": {
         "type": "object",
-        "additionalProperties": false,
         "required": [
           "prompt"
         ],
-        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
         "properties": {
-          "prompt": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 32000,
-            "pattern": "\\S",
-            "description": "Prompt describing the image or the requested edit."
-          },
-          "image_urls": {
-            "type": "array",
-            "maxItems": 16,
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
-            },
-            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
-          },
           "size": {
             "type": "string",
             "default": "1:1",
-            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K.",
+            "example": "1:1",
             "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
-            "example": "1:1"
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K."
           },
-          "resolution": {
+          "prompt": {
             "type": "string",
-            "enum": [
-              "1K",
-              "2K",
-              "4K"
-            ],
-            "default": "1K",
-            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit."
           },
           "quality": {
-            "type": "string",
             "enum": [
               "low",
               "medium",
@@ -12282,36 +12495,59 @@
               "xhigh",
               "max"
             ],
+            "type": "string",
             "default": "low",
             "description": "Output quality level."
-          },
-          "background": {
-            "type": "string",
-            "enum": [
-              "auto",
-              "transparent",
-              "opaque"
-            ],
-            "default": "auto",
-            "description": "Background mode. transparent requires png or webp output."
-          },
-          "output_format": {
-            "type": "string",
-            "enum": [
-              "png",
-              "jpeg",
-              "webp"
-            ],
-            "default": "png",
-            "description": "Output image format."
           },
           "mask_url": {
             "type": "string",
             "format": "uri",
             "pattern": "^https?://",
             "description": "Optional mask image URL identifying the area to edit. Requires non-empty image_urls."
+          },
+          "background": {
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Background mode. transparent requires png or webp output."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 16,
+            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
           }
-        }
+        },
+        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -12333,18 +12569,18 @@
               "created_time"
             ],
             "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
               "task_id": {
                 "type": "string",
                 "example": "task-unified-1786751400-abcd1234",
                 "description": "Unique task identifier for status tracking"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started",
-                "description": "Initial task status"
               },
               "created_time": {
                 "type": "string",
@@ -12358,34 +12594,34 @@
       },
       "examples": [
         {
-          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
           "size": "16:9",
-          "resolution": "2K",
-          "quality": "medium"
+          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
+          "quality": "medium",
+          "resolution": "2K"
         },
         {
+          "size": "1:1",
           "prompt": "Keep the product and replace the background with a warm modern studio",
+          "quality": "high",
           "image_urls": [
             "https://example.com/product.png"
-          ],
-          "size": "1:1",
-          "quality": "high"
+          ]
         },
         {
+          "size": "auto",
           "prompt": "Replace only the masked area with a small vase of flowers",
+          "mask_url": "https://example.com/mask.png",
           "image_urls": [
             "https://example.com/room.png"
-          ],
-          "mask_url": "https://example.com/mask.png",
-          "size": "auto"
+          ]
         },
         {
-          "prompt": "A clean cutout of a small silver robot",
-          "background": "transparent",
-          "output_format": "webp",
           "size": "1:1",
+          "prompt": "A clean cutout of a small silver robot",
+          "quality": "xhigh",
+          "background": "transparent",
           "resolution": "4K",
-          "quality": "xhigh"
+          "output_format": "webp"
         }
       ],
       "supported_protocols": [],
@@ -12396,39 +12632,39 @@
         "type": "parameterized",
         "unit": "image",
         "credits": null,
-        "input_credits": null,
-        "output_credits": null,
         "formula": "price_table[resolution][quality]",
+        "parameters": {
+          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max.",
+          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K."
+        },
         "price_table": {
           "1K": {
             "low": 1.31,
-            "medium": 2.95,
+            "max": 47.11,
             "high": 11.78,
             "xhigh": 20.93,
-            "max": 47.11
+            "medium": 2.95
           },
           "2K": {
             "low": 2.65,
-            "medium": 5.99,
+            "max": 95.74,
             "high": 23.94,
             "xhigh": 42.55,
-            "max": 95.74
+            "medium": 5.99
           },
           "4K": {
             "low": 2.47,
-            "medium": 5.81,
+            "max": 89.51,
             "high": 22.39,
             "xhigh": 39.78,
-            "max": 89.51
+            "medium": 5.81
           }
         },
-        "parameters": {
-          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K.",
-          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max."
-        },
+        "mask_credits": 0,
+        "input_credits": null,
         "output_images": 1,
-        "input_image_credits": 0,
-        "mask_credits": 0
+        "output_credits": null,
+        "input_image_credits": 0
       },
       "status": "stable"
     },
@@ -12444,48 +12680,25 @@
       ],
       "input_schema": {
         "type": "object",
-        "additionalProperties": false,
         "required": [
           "prompt"
         ],
-        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
         "properties": {
-          "prompt": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 32000,
-            "pattern": "\\S",
-            "description": "Prompt describing the image or the requested edit."
-          },
-          "image_urls": {
-            "type": "array",
-            "maxItems": 16,
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
-            },
-            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
-          },
           "size": {
             "type": "string",
             "default": "1:1",
-            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K.",
+            "example": "1:1",
             "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
-            "example": "1:1"
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K."
           },
-          "resolution": {
+          "prompt": {
             "type": "string",
-            "enum": [
-              "1K",
-              "2K",
-              "4K"
-            ],
-            "default": "1K",
-            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit."
           },
           "quality": {
-            "type": "string",
             "enum": [
               "low",
               "medium",
@@ -12493,36 +12706,59 @@
               "xhigh",
               "max"
             ],
+            "type": "string",
             "default": "low",
             "description": "Output quality level."
-          },
-          "background": {
-            "type": "string",
-            "enum": [
-              "auto",
-              "transparent",
-              "opaque"
-            ],
-            "default": "auto",
-            "description": "Background mode. transparent requires png or webp output."
-          },
-          "output_format": {
-            "type": "string",
-            "enum": [
-              "png",
-              "jpeg",
-              "webp"
-            ],
-            "default": "png",
-            "description": "Output image format."
           },
           "mask_url": {
             "type": "string",
             "format": "uri",
             "pattern": "^https?://",
             "description": "Optional mask image URL identifying the area to edit. Requires non-empty image_urls."
+          },
+          "background": {
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Background mode. transparent requires png or webp output."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 16,
+            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
           }
-        }
+        },
+        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -12544,18 +12780,18 @@
               "created_time"
             ],
             "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
               "task_id": {
                 "type": "string",
                 "example": "task-unified-1786751400-abcd1234",
                 "description": "Unique task identifier for status tracking"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started",
-                "description": "Initial task status"
               },
               "created_time": {
                 "type": "string",
@@ -12569,34 +12805,34 @@
       },
       "examples": [
         {
-          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
           "size": "16:9",
-          "resolution": "2K",
-          "quality": "medium"
+          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
+          "quality": "medium",
+          "resolution": "2K"
         },
         {
+          "size": "1:1",
           "prompt": "Keep the product and replace the background with a warm modern studio",
+          "quality": "high",
           "image_urls": [
             "https://example.com/product.png"
-          ],
-          "size": "1:1",
-          "quality": "high"
+          ]
         },
         {
+          "size": "auto",
           "prompt": "Replace only the masked area with a small vase of flowers",
+          "mask_url": "https://example.com/mask.png",
           "image_urls": [
             "https://example.com/room.png"
-          ],
-          "mask_url": "https://example.com/mask.png",
-          "size": "auto"
+          ]
         },
         {
-          "prompt": "A clean cutout of a small silver robot",
-          "background": "transparent",
-          "output_format": "webp",
           "size": "1:1",
+          "prompt": "A clean cutout of a small silver robot",
+          "quality": "xhigh",
+          "background": "transparent",
           "resolution": "4K",
-          "quality": "xhigh"
+          "output_format": "webp"
         }
       ],
       "supported_protocols": [],
@@ -12607,39 +12843,39 @@
         "type": "parameterized",
         "unit": "image",
         "credits": null,
-        "input_credits": null,
-        "output_credits": null,
         "formula": "price_table[resolution][quality]",
+        "parameters": {
+          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max.",
+          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K."
+        },
         "price_table": {
           "1K": {
             "low": 1.31,
-            "medium": 2.95,
+            "max": 47.11,
             "high": 11.78,
             "xhigh": 20.93,
-            "max": 47.11
+            "medium": 2.95
           },
           "2K": {
             "low": 2.65,
-            "medium": 5.99,
+            "max": 95.74,
             "high": 23.94,
             "xhigh": 42.55,
-            "max": 95.74
+            "medium": 5.99
           },
           "4K": {
             "low": 2.47,
-            "medium": 5.81,
+            "max": 89.51,
             "high": 22.39,
             "xhigh": 39.78,
-            "max": 89.51
+            "medium": 5.81
           }
         },
-        "parameters": {
-          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K.",
-          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max."
-        },
+        "mask_credits": 0,
+        "input_credits": null,
         "output_images": 1,
-        "input_image_credits": 0,
-        "mask_credits": 0
+        "output_credits": null,
+        "input_image_credits": 0
       },
       "status": "stable"
     },

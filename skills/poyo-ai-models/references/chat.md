@@ -1,10 +1,11 @@
 # chat
 
-Generated from PoYo Catalog `v1-4307f0199431`. Always call describe before execution.
+Generated from PoYo Catalog `v1-1989bb1c3e5e`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
 | `claude-fable-5` | chat | openai-chat, anthropic | Run the PoYo claude-fable-5 model. |
+| `claude-fable-5-1` | chat | openai-chat, anthropic | Run the PoYo Claude Fable 5.1 model. |
 | `claude-haiku-4-5-20251001` | chat | openai-chat, anthropic | Run the PoYo claude-haiku-4-5-20251001 model. |
 | `claude-opus-4-5-20251101` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-5-20251101 model. |
 | `claude-opus-4-6` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-6 model. |
