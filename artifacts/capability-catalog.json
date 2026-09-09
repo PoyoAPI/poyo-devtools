@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-70947418c5ce",
+  "schema_version": "v1-4307f0199431",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -12218,6 +12218,428 @@
           "high": 24,
           "medium": 5
         }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-image-2.5-flare",
+      "tool_name": "poyo_gpt_image_2_5_flare",
+      "service_type": "generate",
+      "category": "image",
+      "title": "GPT Image 2.5 Flare",
+      "description": "GPT Image 2.5 Flare single-image generation and reference-image editing with background, format, and mask controls.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prompt"
+        ],
+        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32000,
+            "pattern": "\\S",
+            "description": "Prompt describing the image or the requested edit."
+          },
+          "image_urls": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
+          },
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K.",
+            "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "example": "1:1"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "default": "1K",
+            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "default": "low",
+            "description": "Output quality level."
+          },
+          "background": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "default": "auto",
+            "description": "Background mode. transparent requires png or webp output."
+          },
+          "output_format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "default": "png",
+            "description": "Output image format."
+          },
+          "mask_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Optional mask image URL identifying the area to edit. Requires non-empty image_urls."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1786751400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-09-09T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
+          "size": "16:9",
+          "resolution": "2K",
+          "quality": "medium"
+        },
+        {
+          "prompt": "Keep the product and replace the background with a warm modern studio",
+          "image_urls": [
+            "https://example.com/product.png"
+          ],
+          "size": "1:1",
+          "quality": "high"
+        },
+        {
+          "prompt": "Replace only the masked area with a small vase of flowers",
+          "image_urls": [
+            "https://example.com/room.png"
+          ],
+          "mask_url": "https://example.com/mask.png",
+          "size": "auto"
+        },
+        {
+          "prompt": "A clean cutout of a small silver robot",
+          "background": "transparent",
+          "output_format": "webp",
+          "size": "1:1",
+          "resolution": "4K",
+          "quality": "xhigh"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "price_table[resolution][quality]",
+        "price_table": {
+          "1K": {
+            "low": 1.31,
+            "medium": 2.95,
+            "high": 11.78,
+            "xhigh": 20.93,
+            "max": 47.11
+          },
+          "2K": {
+            "low": 2.65,
+            "medium": 5.99,
+            "high": 23.94,
+            "xhigh": 42.55,
+            "max": 95.74
+          },
+          "4K": {
+            "low": 2.47,
+            "medium": 5.81,
+            "high": 22.39,
+            "xhigh": 39.78,
+            "max": 89.51
+          }
+        },
+        "parameters": {
+          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K.",
+          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max."
+        },
+        "output_images": 1,
+        "input_image_credits": 0,
+        "mask_credits": 0
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-image-2.5-sunburst",
+      "tool_name": "poyo_gpt_image_2_5_sunburst",
+      "service_type": "generate",
+      "category": "image",
+      "title": "GPT Image 2.5 Sunburst",
+      "description": "GPT Image 2.5 Sunburst single-image generation and reference-image editing with background, format, and mask controls.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prompt"
+        ],
+        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32000,
+            "pattern": "\\S",
+            "description": "Prompt describing the image or the requested edit."
+          },
+          "image_urls": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
+          },
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K.",
+            "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "example": "1:1"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "default": "1K",
+            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "default": "low",
+            "description": "Output quality level."
+          },
+          "background": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "default": "auto",
+            "description": "Background mode. transparent requires png or webp output."
+          },
+          "output_format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "default": "png",
+            "description": "Output image format."
+          },
+          "mask_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Optional mask image URL identifying the area to edit. Requires non-empty image_urls."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1786751400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-09-09T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
+          "size": "16:9",
+          "resolution": "2K",
+          "quality": "medium"
+        },
+        {
+          "prompt": "Keep the product and replace the background with a warm modern studio",
+          "image_urls": [
+            "https://example.com/product.png"
+          ],
+          "size": "1:1",
+          "quality": "high"
+        },
+        {
+          "prompt": "Replace only the masked area with a small vase of flowers",
+          "image_urls": [
+            "https://example.com/room.png"
+          ],
+          "mask_url": "https://example.com/mask.png",
+          "size": "auto"
+        },
+        {
+          "prompt": "A clean cutout of a small silver robot",
+          "background": "transparent",
+          "output_format": "webp",
+          "size": "1:1",
+          "resolution": "4K",
+          "quality": "xhigh"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "price_table[resolution][quality]",
+        "price_table": {
+          "1K": {
+            "low": 1.31,
+            "medium": 2.95,
+            "high": 11.78,
+            "xhigh": 20.93,
+            "max": 47.11
+          },
+          "2K": {
+            "low": 2.65,
+            "medium": 5.99,
+            "high": 23.94,
+            "xhigh": 42.55,
+            "max": 95.74
+          },
+          "4K": {
+            "low": 2.47,
+            "medium": 5.81,
+            "high": 22.39,
+            "xhigh": 39.78,
+            "max": 89.51
+          }
+        },
+        "parameters": {
+          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K.",
+          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max."
+        },
+        "output_images": 1,
+        "input_image_credits": 0,
+        "mask_credits": 0
       },
       "status": "stable"
     },
