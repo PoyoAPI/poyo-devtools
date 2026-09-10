@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-1989bb1c3e5e",
+  "schema_version": "v1-ea817adde182",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -12496,7 +12496,7 @@
               "max"
             ],
             "type": "string",
-            "default": "low",
+            "default": "high",
             "description": "Output quality level."
           },
           "mask_url": {
@@ -12533,7 +12533,7 @@
             ],
             "type": "string",
             "default": "1K",
-            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+            "description": "Output resolution tier. For aspect ratios, actual pixel dimensions may vary by model and generation; inspect the returned image for exact dimensions. Custom WIDTHxHEIGHT specifies exact dimensions."
           },
           "output_format": {
             "enum": [
@@ -12634,7 +12634,7 @@
         "credits": null,
         "formula": "price_table[resolution][quality]",
         "parameters": {
-          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max.",
+          "quality": "Defaults to high. Supported: low, medium, high, xhigh, max.",
           "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K."
         },
         "price_table": {
@@ -12707,7 +12707,7 @@
               "max"
             ],
             "type": "string",
-            "default": "low",
+            "default": "high",
             "description": "Output quality level."
           },
           "mask_url": {
@@ -12744,7 +12744,7 @@
             ],
             "type": "string",
             "default": "1K",
-            "description": "Output resolution tier. Pixel dimensions depend on aspect ratio; a 4K square is 2880x2880."
+            "description": "Output resolution tier. For aspect ratios, actual pixel dimensions may vary by model and generation; inspect the returned image for exact dimensions. Custom WIDTHxHEIGHT specifies exact dimensions."
           },
           "output_format": {
             "enum": [
@@ -12845,7 +12845,7 @@
         "credits": null,
         "formula": "price_table[resolution][quality]",
         "parameters": {
-          "quality": "Defaults to low. Supported: low, medium, high, xhigh, max.",
+          "quality": "Defaults to high. Supported: low, medium, high, xhigh, max.",
           "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K."
         },
         "price_table": {

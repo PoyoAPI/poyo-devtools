@@ -30,7 +30,7 @@ Keep `POYO_API_KEY` in the environment or system keyring. Never put it in prompt
 Read the generated reference matching the requested category when it exists in `references/`.
 For every Suno model or workflow, also read `references/suno.md` before validating inputs or submitting a task.
 
-For GPT Image 2.5 Flare or Sunburst, also read `references/gpt-image-2-5.md` for single-image inputs, size rules, and mask editing examples.
+For GPT Image 2.5 Flare or Sunburst, also read `references/gpt-image-2-5.md` for single-image inputs, aspect-ratio versus exact-pixel sizes, and mask editing examples.
 
 ## Guardrails
 
