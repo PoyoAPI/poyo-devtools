@@ -1,6 +1,6 @@
 # chat
 
-Generated from PoYo Catalog `v1-ea817adde182`. Always call describe before execution.
+Generated from PoYo Catalog `v1-834e3d809602`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -13,9 +13,11 @@ Generated from PoYo Catalog `v1-ea817adde182`. Always call describe before execu
 | `claude-opus-4-7-thinking` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-7-thinking model. |
 | `claude-opus-4-8` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-8 model. |
 | `claude-opus-5` | chat | openai-chat, anthropic | Run the PoYo claude-opus-5 model. |
+| `claude-opus-5-5` | chat | openai-chat, anthropic | Run the PoYo claude-opus-5-5 model. |
 | `claude-sonnet-4-5-20250929` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-4-5-20250929 model. |
 | `claude-sonnet-4-6` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-4-6 model. |
 | `claude-sonnet-5` | chat | openai-chat, anthropic | Run the PoYo claude-sonnet-5 model. |
+| `deepseek-flash` | chat | openai-chat, openai-responses, anthropic | Run the PoYo DeepSeek-V4.1-Flash model. |
 | `deepseek-v4-flash` | chat | openai-chat | Run the PoYo deepseek-v4-flash model. |
 | `deepseek-v4-pro` | chat | openai-chat | Run the PoYo deepseek-v4-pro model. |
 | `gemini-3-flash-preview` | chat | openai-chat, gemini | Run the PoYo gemini-3-flash-preview model. |
@@ -23,11 +25,16 @@ Generated from PoYo Catalog `v1-ea817adde182`. Always call describe before execu
 | `gemini-3.1-pro-preview` | chat | openai-chat, gemini | Run the PoYo gemini-3.1-pro-preview model. |
 | `gemini-3.5-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.5-flash model. |
 | `gemini-3.7-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.7-flash model. |
+| `gemini-3.8-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.8-flash model. |
 | `gpt-5` | chat | openai-chat, openai-responses | Run the PoYo gpt-5 model. |
 | `gpt-5-6-luna` | chat | openai-responses | Run the PoYo gpt-5-6-luna model. |
 | `gpt-5-6-sol` | chat | openai-responses | Run the PoYo gpt-5-6-sol model. |
 | `gpt-5-6-terra` | chat | openai-responses | Run the PoYo gpt-5-6-terra model. |
 | `gpt-5.4` | chat | openai-chat, openai-responses | Run the PoYo gpt-5.4 model. |
 | `gpt-5.5` | chat | openai-chat, openai-responses | Run the PoYo gpt-5.5 model. |
+| `gpt-6-astra` | chat | openai-chat, openai-responses | Run the PoYo GPT-6 Astra model. |
+| `gpt-6-luna` | chat | openai-chat, openai-responses | Run the PoYo gpt-6-luna model. |
+| `gpt-6-sol` | chat | openai-chat, openai-responses | Run the PoYo gpt-6-sol model. |
 | `grok-4.6` | chat | openai-chat, openai-responses | Run the PoYo grok-4.6 model. |
+| `grok-4.7` | chat | openai-chat | Run the PoYo grok-4.7 model. |
 | `kimi-k3` | chat | openai-chat | Run the PoYo kimi-k3 model. |

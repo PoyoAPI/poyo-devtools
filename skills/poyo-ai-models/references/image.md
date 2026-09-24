@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-2ebd4bc34bda`. Always call describe before execution.
+Generated from PoYo Catalog `v1-834e3d809602`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|

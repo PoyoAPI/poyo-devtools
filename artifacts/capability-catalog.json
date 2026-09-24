@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-bf2edd16b76a",
+  "schema_version": "v1-834e3d809602",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -6950,6 +6950,117 @@
       "status": "stable"
     },
     {
+      "model_id": "claude-opus-5-5",
+      "tool_name": "poyo_claude_opus_5_5",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "claude-opus-5-5",
+      "description": "Run the PoYo claude-opus-5-5 model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "anthropic"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "stream": {
+            "type": "boolean",
+            "default": false
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "max_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string",
+                "example": "claude-opus-5-5"
+              },
+              "usage": {
+                "type": "object"
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": "Reply with exactly OK."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "anthropic"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 640,
+        "output_credits": 3200
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "claude-sonnet-4-5-20250929",
       "tool_name": "poyo_claude_sonnet_4_5_20250929",
       "service_type": "chat",
@@ -7654,6 +7765,244 @@
         "credits": null,
         "input_credits": 170,
         "output_credits": 855
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "deepseek-flash",
+      "tool_name": "poyo_deepseek_flash",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "deepseek-flash",
+      "description": "Run the PoYo DeepSeek-V4.1-Flash model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses",
+        "anthropic"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses",
+        "anthropic"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 60,
+        "output_credits": 240
       },
       "status": "stable"
     },
@@ -9076,6 +9425,242 @@
       "category": "chat",
       "title": "gemini-3.7-flash",
       "description": "Run the PoYo gemini-3.7-flash model.",
+      "tags": [
+        "chat",
+        "gemini",
+        "openai-chat"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "gemini"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 120,
+        "output_credits": 600
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gemini-3.8-flash",
+      "tool_name": "poyo_gemini_3_8_flash",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gemini-3.8-flash",
+      "description": "Run the PoYo gemini-3.8-flash model.",
       "tags": [
         "chat",
         "gemini",
@@ -11154,6 +11739,529 @@
       "status": "stable"
     },
     {
+      "model_id": "gpt-6-astra",
+      "tool_name": "poyo_gpt_6_astra",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gpt-6-astra",
+      "description": "Run the PoYo GPT-6 Astra model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 1600,
+        "output_credits": 8000
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-6-luna",
+      "tool_name": "poyo_gpt_6_luna",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gpt-6-luna",
+      "description": "Run the PoYo gpt-6-luna model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses"
+      ],
+      "input_schema": {
+        "type": "object",
+        "anyOf": [
+          {
+            "required": [
+              "messages"
+            ]
+          },
+          {
+            "required": [
+              "input"
+            ]
+          }
+        ],
+        "properties": {
+          "input": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
+          },
+          "stream": {
+            "type": "boolean",
+            "default": false
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "max_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "max_output_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-6-luna"
+              },
+              "usage": {
+                "type": "object"
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": "What is 2 + 2?"
+            }
+          ]
+        },
+        {
+          "input": "What is 2 + 2?"
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 16,
+        "output_credits": 80
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-6-sol",
+      "tool_name": "poyo_gpt_6_sol",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gpt-6-sol",
+      "description": "Run the PoYo gpt-6-sol model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses"
+      ],
+      "input_schema": {
+        "type": "object",
+        "anyOf": [
+          {
+            "required": [
+              "messages"
+            ]
+          },
+          {
+            "required": [
+              "input"
+            ]
+          }
+        ],
+        "properties": {
+          "input": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
+          },
+          "stream": {
+            "type": "boolean",
+            "default": false
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "max_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "max_output_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-6-sol"
+              },
+              "usage": {
+                "type": "object"
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": "What is 2 + 2?"
+            }
+          ]
+        },
+        {
+          "input": "What is 2 + 2?"
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 320,
+        "output_credits": 1600
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "grok-4.6",
       "tool_name": "poyo_grok_4_6",
       "service_type": "chat",
@@ -11376,6 +12484,115 @@
       "supported_protocols": [
         "openai-chat",
         "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 320,
+        "output_credits": 960
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "grok-4.7",
+      "tool_name": "poyo_grok_4_7",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "grok-4.7",
+      "description": "Run the PoYo grok-4.7 model.",
+      "tags": [
+        "chat",
+        "openai-chat"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "stream": {
+            "type": "boolean",
+            "default": false
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "max_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string",
+                "example": "grok-4.7"
+              },
+              "usage": {
+                "type": "object"
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": "Reply with exactly OK."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat"
       ],
       "execution_mode": "sync",
       "supports_streaming": true,
@@ -14784,104 +16001,9 @@
       ],
       "input_schema": {
         "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 5000,
-            "pattern": "\\S",
-            "description": "Describe the desired image or the changes to make."
-          },
-          "image_urls": {
-            "type": "array",
-            "minItems": 0,
-            "maxItems": 10,
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://\\S+$"
-            },
-            "description": "Omit or use an empty array for text-to-image. Otherwise provide 1-10 publicly accessible HTTP(S) reference URLs in prompt order. JPEG, PNG and WebP; up to 30MB and 25MP per image. Media limits are checked during generation."
-          },
-          "size": {
-            "type": "string",
-            "enum": [
-              "1:1",
-              "4:3",
-              "3:4",
-              "3:2",
-              "2:3",
-              "16:9",
-              "9:16",
-              "21:9",
-              "9:21",
-              "auto"
-            ],
-            "description": "Output aspect ratio. Defaults to 1:1 for text-to-image and auto for reference images. auto requires at least one reference image. Ignored when mask_url is supplied."
-          },
-          "resolution": {
-            "type": "string",
-            "enum": [
-              "1K",
-              "2K"
-            ],
-            "default": "1K"
-          },
-          "output_format": {
-            "type": "string",
-            "enum": [
-              "png",
-              "webp",
-              "jpeg"
-            ],
-            "default": "png"
-          },
-          "prompt_extend": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enhance the prompt before generation. Ignored when mask_url is supplied."
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true
-          },
-          "background": {
-            "type": "string",
-            "enum": [
-              "opaque",
-              "transparent"
-            ],
-            "default": "opaque",
-            "description": "Transparent output requires png or webp and cannot be combined with mask_url."
-          },
-          "mask_url": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https?://\\S+$",
-            "description": "Local-edit mask used with exactly one reference image and an opaque background. White areas change; black areas stay unchanged. Match the reference aspect ratio; the mask is scaled to the reference dimensions. Output follows the reference ratio; size and prompt_extend are ignored."
-          },
-          "seed": {
-            "type": "integer",
-            "description": "Optional random seed. Omit to use a random seed."
-          }
-        },
         "allOf": [
           {
             "not": {
-              "required": [
-                "size"
-              ],
-              "properties": {
-                "size": {
-                  "enum": [
-                    "auto"
-                  ]
-                }
-              },
               "not": {
                 "required": [
                   "image_urls"
@@ -14891,30 +16013,40 @@
                     "minItems": 1
                   }
                 }
+              },
+              "required": [
+                "size"
+              ],
+              "properties": {
+                "size": {
+                  "enum": [
+                    "auto"
+                  ]
+                }
               }
             }
           },
           {
             "not": {
-              "required": [
-                "mask_url"
-              ],
               "not": {
                 "required": [
                   "image_urls"
                 ],
                 "properties": {
-                  "image_urls": {
-                    "minItems": 1,
-                    "maxItems": 1
-                  },
                   "background": {
                     "enum": [
                       "opaque"
                     ]
+                  },
+                  "image_urls": {
+                    "maxItems": 1,
+                    "minItems": 1
                   }
                 }
-              }
+              },
+              "required": [
+                "mask_url"
+              ]
             }
           },
           {
@@ -14937,7 +16069,92 @@
               }
             }
           }
-        ]
+        ],
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "description": "Optional random seed. Omit to use a random seed."
+          },
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "16:9",
+              "9:16",
+              "21:9",
+              "9:21",
+              "auto"
+            ],
+            "type": "string",
+            "description": "Output aspect ratio. Defaults to 1:1 for text-to-image and auto for reference images. auto requires at least one reference image. Ignored when mask_url is supplied."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 5000,
+            "minLength": 1,
+            "description": "Describe the desired image or the changes to make."
+          },
+          "mask_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://\\S+$",
+            "description": "Local-edit mask used with exactly one reference image and an opaque background. White areas change; black areas stay unchanged. Match the reference aspect ratio; the mask is scaled to the reference dimensions. Output follows the reference ratio; size and prompt_extend are ignored."
+          },
+          "background": {
+            "enum": [
+              "opaque",
+              "transparent"
+            ],
+            "type": "string",
+            "default": "opaque",
+            "description": "Transparent output requires png or webp and cannot be combined with mask_url."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://\\S+$"
+            },
+            "maxItems": 10,
+            "minItems": 0,
+            "description": "Omit or use an empty array for text-to-image. Otherwise provide 1-10 publicly accessible HTTP(S) reference URLs in prompt order. JPEG, PNG and WebP; up to 30MB and 25MP per image. Media limits are checked during generation."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K"
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "webp",
+              "jpeg"
+            ],
+            "type": "string",
+            "default": "png"
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enhance the prompt before generation. Ignored when mask_url is supplied."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -14953,12 +16170,12 @@
           "data": {
             "type": "object",
             "properties": {
-              "task_id": {
-                "type": "string"
-              },
               "status": {
                 "type": "string",
                 "example": "not_started"
+              },
+              "task_id": {
+                "type": "string"
               },
               "created_time": {
                 "type": "string",
@@ -14970,32 +16187,32 @@
       },
       "examples": [
         {
-          "prompt": "A bilingual technology poster with the headline Future Vision, precise typography, blue and silver palette",
           "size": "3:4",
+          "prompt": "A bilingual technology poster with the headline Future Vision, precise typography, blue and silver palette",
           "resolution": "1K"
         },
         {
+          "size": "auto",
           "prompt": "Combine the product in the first image with the colors and lighting of the second image",
           "image_urls": [
             "https://example.com/product.png",
             "https://example.com/style.jpg"
           ],
-          "size": "auto",
           "resolution": "2K",
           "prompt_extend": false
         },
         {
+          "seed": 20260921,
           "prompt": "A playful corgi sticker, isolated subject",
           "background": "transparent",
-          "output_format": "webp",
-          "seed": 20260921
+          "output_format": "webp"
         },
         {
           "prompt": "Replace the marked cushion with a blue velvet cushion",
+          "mask_url": "https://example.com/mask.png",
           "image_urls": [
             "https://example.com/room.png"
           ],
-          "mask_url": "https://example.com/mask.png",
           "resolution": "2K",
           "output_format": "png"
         }
@@ -15008,9 +16225,9 @@
         "type": "tiered",
         "unit": "request",
         "credits": null,
+        "formula": "resolution_credits[resolution]",
         "input_credits": null,
         "output_credits": null,
-        "formula": "resolution_credits[resolution]",
         "resolution_credits": {
           "1K": 6,
           "2K": 10
@@ -26480,155 +27697,8 @@
       "status": "stable"
     },
     {
-      "model_id": "h3-max-turbo",
-      "tool_name": "poyo_h3_max_turbo",
-      "service_type": "generate",
-      "category": "video",
-      "title": "H3 Max Turbo",
-      "description": "Generate videos from text, a first frame, or first and last frames",
-      "tags": [
-        "video"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 50000,
-            "pattern": "\\S",
-            "description": "Text prompt describing the generated video. Required in both modes."
-          },
-          "duration": {
-            "type": "integer",
-            "minimum": 5,
-            "maximum": 15,
-            "default": 5,
-            "description": "Generated video duration in seconds."
-          },
-          "resolution": {
-            "type": "string",
-            "enum": [
-              "480p",
-              "768p",
-              "1080p",
-              "480P",
-              "768P",
-              "1080P"
-            ],
-            "default": "768p",
-            "description": "Output resolution: 480p, 768p or 1080p. Uppercase P is also accepted."
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true,
-            "description": "If set to true, the safety checker will be enabled. Defaults to true."
-          },
-          "aspect_ratio": {
-            "type": "string",
-            "enum": [
-              "21:9",
-              "16:9",
-              "4:3",
-              "1:1",
-              "3:4",
-              "9:16"
-            ],
-            "description": "Text-to-video only; defaults to 16:9. Omit when image_urls contains images."
-          },
-          "image_urls": {
-            "type": "array",
-            "maxItems": 2,
-            "items": {
-              "type": "string",
-              "minLength": 1
-            },
-            "description": "First frame and optional last frame, in that order. Use public HTTP(S) image URLs or Base64 images. Omit or pass [] for text-to-video."
-          }
-        },
-        "not": {
-          "required": [
-            "image_urls",
-            "aspect_ratio"
-          ],
-          "properties": {
-            "image_urls": {
-              "minItems": 1
-            }
-          }
-        }
-      },
-      "output_schema": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "8FDN1I7M7Q68DDG8"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A cinematic aerial view of a coastal city at sunrise",
-          "duration": 5,
-          "resolution": "768p",
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "The camera slowly moves forward through the scene",
-          "duration": 10,
-          "resolution": "480p",
-          "image_urls": [
-            "https://example.com/start.jpg"
-          ]
-        },
-        {
-          "prompt": "Daylight gradually turns into sunset",
-          "duration": 10,
-          "resolution": "1080p",
-          "image_urls": [
-            "https://example.com/start.jpg",
-            "https://example.com/end.jpg"
-          ]
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "tiered",
-        "unit": "second",
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null,
-        "formula": "duration * resolution_credits[resolution]",
-        "resolution_credits": {
-          "480p": 5,
-          "768p": 8,
-          "1080p": 16
-        }
-      },
-      "status": "stable"
-    },
-    {
+      "model_id": "h3-max",
+      "tool_name": "poyo_h3_max",
       "service_type": "generate",
       "category": "video",
       "title": "H3 Max",
@@ -26638,104 +27708,9 @@
       ],
       "input_schema": {
         "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "prompt"
-        ],
-        "description": "At most 12 reference assets in total. Reference video and audio each require reference images. Media metadata and billing tokens are computed by the server.",
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 50000,
-            "pattern": "\\S",
-            "description": "Describe the video. Refer to assets as Image 1, Video 1, or Audio 1."
-          },
-          "duration": {
-            "type": "integer",
-            "minimum": 5,
-            "maximum": 15,
-            "default": 5
-          },
-          "resolution": {
-            "type": "string",
-            "enum": [
-              "480p",
-              "768p",
-              "1080p"
-            ],
-            "default": "768p"
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true,
-            "description": "If set to true, the safety checker will be enabled. Defaults to true."
-          },
-          "aspect_ratio": {
-            "type": "string",
-            "enum": [
-              "21:9",
-              "16:9",
-              "4:3",
-              "1:1",
-              "3:4",
-              "9:16",
-              "adaptive"
-            ],
-            "description": "Text mode defaults to 16:9 and does not accept adaptive. Reference mode defaults to adaptive. Not accepted with image_urls."
-          },
-          "image_urls": {
-            "type": "array",
-            "maxItems": 2,
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
-            },
-            "description": "Starting frame and optional ending frame; mutually exclusive with all references."
-          },
-          "reference_image_urls": {
-            "type": "array",
-            "maxItems": 9,
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
-            },
-            "description": "Subject or style images; required when reference video or audio is supplied. Supported shapes: 1:1, 4:3, 3:4, 16:9, 9:16, 5:2, 2:5."
-          },
-          "reference_video_urls": {
-            "type": "array",
-            "maxItems": 3,
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
-            },
-            "description": "Each clip must be 2–15 seconds; combined video duration must not exceed 15 seconds. Constant 24 fps, square pixels, no rotation metadata, and 16:9 or 9:16 are required. After capping frames at the requested output duration, counted frames must be 48, 120, 240, or 360."
-          },
-          "reference_audio_urls": {
-            "type": "array",
-            "maxItems": 3,
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
-            },
-            "description": "Each clip must be 2–15 seconds; combined audio duration must not exceed 15 seconds. Requires 32 kHz and a decoded sample count divisible by 800. Each clip must not exceed the requested output duration."
-          }
-        },
         "allOf": [
           {
             "not": {
-              "required": [
-                "image_urls"
-              ],
-              "properties": {
-                "image_urls": {
-                  "minItems": 1
-                }
-              },
               "not": {
                 "not": {
                   "required": [
@@ -26743,15 +27718,23 @@
                   ]
                 },
                 "properties": {
+                  "reference_audio_urls": {
+                    "maxItems": 0
+                  },
                   "reference_image_urls": {
                     "maxItems": 0
                   },
                   "reference_video_urls": {
                     "maxItems": 0
-                  },
-                  "reference_audio_urls": {
-                    "maxItems": 0
                   }
+                }
+              },
+              "required": [
+                "image_urls"
+              ],
+              "properties": {
+                "image_urls": {
+                  "minItems": 1
                 }
               }
             }
@@ -26767,13 +27750,13 @@
                     "adaptive"
                   ]
                 },
+                "reference_audio_urls": {
+                  "maxItems": 0
+                },
                 "reference_image_urls": {
                   "maxItems": 0
                 },
                 "reference_video_urls": {
-                  "maxItems": 0
-                },
-                "reference_audio_urls": {
                   "maxItems": 0
                 }
               }
@@ -26781,6 +27764,16 @@
           },
           {
             "not": {
+              "not": {
+                "required": [
+                  "reference_image_urls"
+                ],
+                "properties": {
+                  "reference_image_urls": {
+                    "minItems": 1
+                  }
+                }
+              },
               "required": [
                 "reference_video_urls"
               ],
@@ -26788,7 +27781,11 @@
                 "reference_video_urls": {
                   "minItems": 1
                 }
-              },
+              }
+            }
+          },
+          {
+            "not": {
               "not": {
                 "required": [
                   "reference_image_urls"
@@ -26798,11 +27795,7 @@
                     "minItems": 1
                   }
                 }
-              }
-            }
-          },
-          {
-            "not": {
+              },
               "required": [
                 "reference_audio_urls"
               ],
@@ -26810,20 +27803,97 @@
                 "reference_audio_urls": {
                   "minItems": 1
                 }
-              },
-              "not": {
-                "required": [
-                  "reference_image_urls"
-                ],
-                "properties": {
-                  "reference_image_urls": {
-                    "minItems": 1
-                  }
-                }
               }
             }
           }
-        ]
+        ],
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 50000,
+            "minLength": 1,
+            "description": "Describe the video. Refer to assets as Image 1, Video 1, or Audio 1."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 15,
+            "minimum": 5
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 2,
+            "description": "Starting frame and optional ending frame; mutually exclusive with all references."
+          },
+          "resolution": {
+            "enum": [
+              "480p",
+              "768p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "768p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16",
+              "adaptive"
+            ],
+            "type": "string",
+            "description": "Text mode defaults to 16:9 and does not accept adaptive. Reference mode defaults to adaptive. Not accepted with image_urls."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 3,
+            "description": "Each clip must be 2–15 seconds; combined audio duration must not exceed 15 seconds. Requires 32 kHz and a decoded sample count divisible by 800. Each clip must not exceed the requested output duration."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 9,
+            "description": "Subject or style images; required when reference video or audio is supplied. Supported shapes: 1:1, 4:3, 3:4, 16:9, 9:16, 5:2, 2:5."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 3,
+            "description": "Each clip must be 2–15 seconds; combined video duration must not exceed 15 seconds. Constant 24 fps, square pixels, no rotation metadata, and 16:9 or 9:16 are required. After capping frames at the requested output duration, counted frames must be 48, 120, 240, or 360."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "If set to true, the safety checker will be enabled. Defaults to true."
+          }
+        },
+        "description": "At most 12 reference assets in total. Reference video and audio each require reference images. Media metadata and billing tokens are computed by the server.",
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -26831,10 +27901,6 @@
           "code": {
             "type": "integer",
             "example": 200
-          },
-          "message": {
-            "type": "string",
-            "example": "success"
           },
           "data": {
             "type": "object",
@@ -26844,6 +27910,10 @@
                 "example": "8FDN1I7M7Q68DDG8"
               }
             }
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
           }
         }
       },
@@ -26854,25 +27924,25 @@
         {
           "prompt": "The camera moves forward as daylight turns into sunset",
           "duration": 8,
-          "resolution": "1080p",
           "image_urls": [
             "https://example.com/start.jpg",
             "https://example.com/end.jpg"
-          ]
+          ],
+          "resolution": "1080p"
         },
         {
           "prompt": "Image 1 follows the movement in Video 1 with the atmosphere of Audio 1",
           "duration": 10,
           "resolution": "768p",
           "aspect_ratio": "adaptive",
+          "reference_audio_urls": [
+            "https://example.com/atmosphere.wav"
+          ],
           "reference_image_urls": [
             "https://example.com/subject.jpg"
           ],
           "reference_video_urls": [
             "https://example.com/motion.mp4"
-          ],
-          "reference_audio_urls": [
-            "https://example.com/atmosphere.wav"
           ]
         }
       ],
@@ -26880,27 +27950,174 @@
       "execution_mode": "async",
       "supports_streaming": false,
       "supports_callback": true,
-      "model_id": "h3-max",
-      "tool_name": "poyo_h3_max",
       "billing": {
         "type": "parameterized",
         "unit": "request",
         "credits": null,
-        "input_credits": null,
-        "output_credits": null,
         "formula": "duration * resolution_credits_per_second[resolution] + max(0, reference_tokens - free_reference_tokens) * reference_credits_per_1000_tokens / 1000",
         "parameters": {
           "duration": "Requested output seconds; defaults to 5",
           "resolution": "Defaults to 768p",
           "reference_tokens": "Server-computed image + video + audio tokens; zero outside reference mode; never client supplied"
         },
+        "input_credits": null,
+        "output_credits": null,
+        "free_reference_tokens": 4096,
         "resolution_credits_per_second": {
           "480p": 10,
           "768p": 16,
           "1080p": 32
         },
-        "free_reference_tokens": 4096,
         "reference_credits_per_1000_tokens": 4
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "h3-max-turbo",
+      "tool_name": "poyo_h3_max_turbo",
+      "service_type": "generate",
+      "category": "video",
+      "title": "H3 Max Turbo",
+      "description": "Generate videos from text, a first frame, or first and last frames",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "not": {
+          "required": [
+            "image_urls",
+            "aspect_ratio"
+          ],
+          "properties": {
+            "image_urls": {
+              "minItems": 1
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 50000,
+            "minLength": 1,
+            "description": "Text prompt describing the generated video. Required in both modes."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 15,
+            "minimum": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 2,
+            "description": "First frame and optional last frame, in that order. Use public HTTP(S) image URLs or Base64 images. Omit or pass [] for text-to-video."
+          },
+          "resolution": {
+            "enum": [
+              "480p",
+              "768p",
+              "1080p",
+              "480P",
+              "768P",
+              "1080P"
+            ],
+            "type": "string",
+            "default": "768p",
+            "description": "Output resolution: 480p, 768p or 1080p. Uppercase P is also accepted."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "type": "string",
+            "description": "Text-to-video only; defaults to 16:9. Omit when image_urls contains images."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "If set to true, the safety checker will be enabled. Defaults to true."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "8FDN1I7M7Q68DDG8"
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A cinematic aerial view of a coastal city at sunrise",
+          "duration": 5,
+          "resolution": "768p",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "prompt": "The camera slowly moves forward through the scene",
+          "duration": 10,
+          "image_urls": [
+            "https://example.com/start.jpg"
+          ],
+          "resolution": "480p"
+        },
+        {
+          "prompt": "Daylight gradually turns into sunset",
+          "duration": 10,
+          "image_urls": [
+            "https://example.com/start.jpg",
+            "https://example.com/end.jpg"
+          ],
+          "resolution": "1080p"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits": {
+          "480p": 5,
+          "768p": 8,
+          "1080p": 16
+        }
       },
       "status": "stable"
     },
