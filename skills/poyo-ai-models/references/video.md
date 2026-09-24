@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-ea817adde182`. Always call describe before execution.
+Generated from PoYo Catalog `v1-bf2edd16b76a`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -11,6 +11,8 @@ Generated from PoYo Catalog `v1-ea817adde182`. Always call describe before execu
 | `flux-3/text-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `gemini-omni-1.1-flash` | generate |  | Generate videos from text, first and last frames, reference images, or a reference video. |
 | `grok-imagine-video-1.5` | generate |  | Text, image, and reference-to-video generation with Grok Imagine Video 1.5 |
+| `h3-max-turbo` | generate |  | Generate videos from text, a first frame, or first and last frames |
+| `h3-max` | generate |  | Text, keyframes, or image-led references. Check live availability and media limits in [H3 Max](h3-max.md). |
 | `hailuo-03` | generate |  | Generate 2K videos from text, keyframes, or multimodal references |
 | `hailuo-2.3` | generate |  | Text-to-video and optional first-frame guided generation |
 | `happy-horse` | generate |  | Alibaba Happy Horse text-to-video, image-to-video, reference-to-video, and video-edit workflows |

@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-ea817adde182",
+  "schema_version": "v1-bf2edd16b76a",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -14773,6 +14773,252 @@
       "status": "stable"
     },
     {
+      "model_id": "qwen-image-2.1",
+      "tool_name": "poyo_qwen_image_2_1",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Qwen Image 2.1",
+      "description": "Text-to-image, multi-reference generation, transparent backgrounds, and mask editing with Qwen Image 2.1",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000,
+            "pattern": "\\S",
+            "description": "Describe the desired image or the changes to make."
+          },
+          "image_urls": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://\\S+$"
+            },
+            "description": "Omit or use an empty array for text-to-image. Otherwise provide 1-10 publicly accessible HTTP(S) reference URLs in prompt order. JPEG, PNG and WebP; up to 30MB and 25MP per image. Media limits are checked during generation."
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "16:9",
+              "9:16",
+              "21:9",
+              "9:21",
+              "auto"
+            ],
+            "description": "Output aspect ratio. Defaults to 1:1 for text-to-image and auto for reference images. auto requires at least one reference image. Ignored when mask_url is supplied."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "default": "1K"
+          },
+          "output_format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "webp",
+              "jpeg"
+            ],
+            "default": "png"
+          },
+          "prompt_extend": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enhance the prompt before generation. Ignored when mask_url is supplied."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true
+          },
+          "background": {
+            "type": "string",
+            "enum": [
+              "opaque",
+              "transparent"
+            ],
+            "default": "opaque",
+            "description": "Transparent output requires png or webp and cannot be combined with mask_url."
+          },
+          "mask_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://\\S+$",
+            "description": "Local-edit mask used with exactly one reference image and an opaque background. White areas change; black areas stay unchanged. Match the reference aspect ratio; the mask is scaled to the reference dimensions. Output follows the reference ratio; size and prompt_extend are ignored."
+          },
+          "seed": {
+            "type": "integer",
+            "description": "Optional random seed. Omit to use a random seed."
+          }
+        },
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "size"
+              ],
+              "properties": {
+                "size": {
+                  "enum": [
+                    "auto"
+                  ]
+                }
+              },
+              "not": {
+                "required": [
+                  "image_urls"
+                ],
+                "properties": {
+                  "image_urls": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "mask_url"
+              ],
+              "not": {
+                "required": [
+                  "image_urls"
+                ],
+                "properties": {
+                  "image_urls": {
+                    "minItems": 1,
+                    "maxItems": 1
+                  },
+                  "background": {
+                    "enum": [
+                      "opaque"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "background",
+                "output_format"
+              ],
+              "properties": {
+                "background": {
+                  "enum": [
+                    "transparent"
+                  ]
+                },
+                "output_format": {
+                  "enum": [
+                    "jpeg"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "example": "not_started"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A bilingual technology poster with the headline Future Vision, precise typography, blue and silver palette",
+          "size": "3:4",
+          "resolution": "1K"
+        },
+        {
+          "prompt": "Combine the product in the first image with the colors and lighting of the second image",
+          "image_urls": [
+            "https://example.com/product.png",
+            "https://example.com/style.jpg"
+          ],
+          "size": "auto",
+          "resolution": "2K",
+          "prompt_extend": false
+        },
+        {
+          "prompt": "A playful corgi sticker, isolated subject",
+          "background": "transparent",
+          "output_format": "webp",
+          "seed": 20260921
+        },
+        {
+          "prompt": "Replace the marked cushion with a blue velvet cushion",
+          "image_urls": [
+            "https://example.com/room.png"
+          ],
+          "mask_url": "https://example.com/mask.png",
+          "resolution": "2K",
+          "output_format": "png"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "request",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "resolution_credits[resolution]",
+        "resolution_credits": {
+          "1K": 6,
+          "2K": 10
+        }
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "qwen-image-3",
       "tool_name": "poyo_qwen_image_3",
       "service_type": "generate",
@@ -26230,6 +26476,431 @@
           "1080p": 45
         },
         "input_image_credits": 2
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "h3-max-turbo",
+      "tool_name": "poyo_h3_max_turbo",
+      "service_type": "generate",
+      "category": "video",
+      "title": "H3 Max Turbo",
+      "description": "Generate videos from text, a first frame, or first and last frames",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50000,
+            "pattern": "\\S",
+            "description": "Text prompt describing the generated video. Required in both modes."
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 15,
+            "default": 5,
+            "description": "Generated video duration in seconds."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "768p",
+              "1080p",
+              "480P",
+              "768P",
+              "1080P"
+            ],
+            "default": "768p",
+            "description": "Output resolution: 480p, 768p or 1080p. Uppercase P is also accepted."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "If set to true, the safety checker will be enabled. Defaults to true."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "description": "Text-to-video only; defaults to 16:9. Omit when image_urls contains images."
+          },
+          "image_urls": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "First frame and optional last frame, in that order. Use public HTTP(S) image URLs or Base64 images. Omit or pass [] for text-to-video."
+          }
+        },
+        "not": {
+          "required": [
+            "image_urls",
+            "aspect_ratio"
+          ],
+          "properties": {
+            "image_urls": {
+              "minItems": 1
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "8FDN1I7M7Q68DDG8"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A cinematic aerial view of a coastal city at sunrise",
+          "duration": 5,
+          "resolution": "768p",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "prompt": "The camera slowly moves forward through the scene",
+          "duration": 10,
+          "resolution": "480p",
+          "image_urls": [
+            "https://example.com/start.jpg"
+          ]
+        },
+        {
+          "prompt": "Daylight gradually turns into sunset",
+          "duration": 10,
+          "resolution": "1080p",
+          "image_urls": [
+            "https://example.com/start.jpg",
+            "https://example.com/end.jpg"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits[resolution]",
+        "resolution_credits": {
+          "480p": 5,
+          "768p": 8,
+          "1080p": 16
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "service_type": "generate",
+      "category": "video",
+      "title": "H3 Max",
+      "description": "Generate 5–15 second videos from text, keyframes, or image-led multimodal references.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prompt"
+        ],
+        "description": "At most 12 reference assets in total. Reference video and audio each require reference images. Media metadata and billing tokens are computed by the server.",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50000,
+            "pattern": "\\S",
+            "description": "Describe the video. Refer to assets as Image 1, Video 1, or Audio 1."
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 15,
+            "default": 5
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "768p",
+              "1080p"
+            ],
+            "default": "768p"
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "If set to true, the safety checker will be enabled. Defaults to true."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16",
+              "adaptive"
+            ],
+            "description": "Text mode defaults to 16:9 and does not accept adaptive. Reference mode defaults to adaptive. Not accepted with image_urls."
+          },
+          "image_urls": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "description": "Starting frame and optional ending frame; mutually exclusive with all references."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "maxItems": 9,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "description": "Subject or style images; required when reference video or audio is supplied. Supported shapes: 1:1, 4:3, 3:4, 16:9, 9:16, 5:2, 2:5."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "description": "Each clip must be 2–15 seconds; combined video duration must not exceed 15 seconds. Constant 24 fps, square pixels, no rotation metadata, and 16:9 or 9:16 are required. After capping frames at the requested output duration, counted frames must be 48, 120, 240, or 360."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "description": "Each clip must be 2–15 seconds; combined audio duration must not exceed 15 seconds. Requires 32 kHz and a decoded sample count divisible by 800. Each clip must not exceed the requested output duration."
+          }
+        },
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "image_urls"
+              ],
+              "properties": {
+                "image_urls": {
+                  "minItems": 1
+                }
+              },
+              "not": {
+                "not": {
+                  "required": [
+                    "aspect_ratio"
+                  ]
+                },
+                "properties": {
+                  "reference_image_urls": {
+                    "maxItems": 0
+                  },
+                  "reference_video_urls": {
+                    "maxItems": 0
+                  },
+                  "reference_audio_urls": {
+                    "maxItems": 0
+                  }
+                }
+              }
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "aspect_ratio"
+              ],
+              "properties": {
+                "aspect_ratio": {
+                  "enum": [
+                    "adaptive"
+                  ]
+                },
+                "reference_image_urls": {
+                  "maxItems": 0
+                },
+                "reference_video_urls": {
+                  "maxItems": 0
+                },
+                "reference_audio_urls": {
+                  "maxItems": 0
+                }
+              }
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "reference_video_urls"
+              ],
+              "properties": {
+                "reference_video_urls": {
+                  "minItems": 1
+                }
+              },
+              "not": {
+                "required": [
+                  "reference_image_urls"
+                ],
+                "properties": {
+                  "reference_image_urls": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "reference_audio_urls"
+              ],
+              "properties": {
+                "reference_audio_urls": {
+                  "minItems": 1
+                }
+              },
+              "not": {
+                "required": [
+                  "reference_image_urls"
+                ],
+                "properties": {
+                  "reference_image_urls": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "8FDN1I7M7Q68DDG8"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A cinematic aerial view of a coastal city at sunrise"
+        },
+        {
+          "prompt": "The camera moves forward as daylight turns into sunset",
+          "duration": 8,
+          "resolution": "1080p",
+          "image_urls": [
+            "https://example.com/start.jpg",
+            "https://example.com/end.jpg"
+          ]
+        },
+        {
+          "prompt": "Image 1 follows the movement in Video 1 with the atmosphere of Audio 1",
+          "duration": 10,
+          "resolution": "768p",
+          "aspect_ratio": "adaptive",
+          "reference_image_urls": [
+            "https://example.com/subject.jpg"
+          ],
+          "reference_video_urls": [
+            "https://example.com/motion.mp4"
+          ],
+          "reference_audio_urls": [
+            "https://example.com/atmosphere.wav"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "model_id": "h3-max",
+      "tool_name": "poyo_h3_max",
+      "billing": {
+        "type": "parameterized",
+        "unit": "request",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits_per_second[resolution] + max(0, reference_tokens - free_reference_tokens) * reference_credits_per_1000_tokens / 1000",
+        "parameters": {
+          "duration": "Requested output seconds; defaults to 5",
+          "resolution": "Defaults to 768p",
+          "reference_tokens": "Server-computed image + video + audio tokens; zero outside reference mode; never client supplied"
+        },
+        "resolution_credits_per_second": {
+          "480p": 10,
+          "768p": 16,
+          "1080p": 32
+        },
+        "free_reference_tokens": 4096,
+        "reference_credits_per_1000_tokens": 4
       },
       "status": "stable"
     },

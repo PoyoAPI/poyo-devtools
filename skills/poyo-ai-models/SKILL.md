@@ -32,6 +32,12 @@ For every Suno model or workflow, also read `references/suno.md` before validati
 
 For GPT Image 2.5 Flare or Sunburst, also read `references/gpt-image-2-5.md` for single-image inputs, aspect-ratio versus exact-pixel sizes, and mask editing examples.
 
+For H3 Max, read `references/h3-max.md` for mode selection, reference limits, and server-calculated reference charges. Check live availability before submitting. Both H3 models accept the optional boolean `enable_safety_checker` (default `true`); use `--enable-safety-checker false` in CLI or `enable_safety_checker: false` in MCP to disable it when requested. Omit it unless the user selects a value.
+
+For `h3-max-turbo`, omit `image_urls` or pass `[]` for text-to-video; one image sets the first frame, and two set the first and last frames. Omit `aspect_ratio` when using images. Only `prompt`, `duration`, `resolution`, `aspect_ratio`, `image_urls`, and `enable_safety_checker` are supported; reference media, seed, custom audio, and prompt-expansion controls are unavailable. Always describe the model before submitting.
+
+For Qwen Image 2.1, also read `references/qwen-image-2-1.md` for reference images, transparent backgrounds, and mask editing constraints.
+
 ## Guardrails
 
 - Check account credits before expensive or repeated generation.

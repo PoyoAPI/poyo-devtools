@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-ea817adde182`. Always call describe before execution.
+Generated from PoYo Catalog `v1-2ebd4bc34bda`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -23,6 +23,7 @@ Generated from PoYo Catalog `v1-ea817adde182`. Always call describe before execu
 | `nano-banana-2-official-edit` | generate |  | Next-generation AI image generation powered by Gemini 3.1 Flash Image Preview |
 | `nano-banana-pro` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
 | `nano-banana-pro-edit` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
+| `qwen-image-2.1` | generate |  | Text-to-image, multi-reference generation, transparent backgrounds, and mask editing with Qwen Image 2.1 |
 | `qwen-image-3` | generate |  | Unified text-to-image and reference-image generation with Qwen Image 3 |
 | `qwen-image-3-pro` | generate |  | Unified text-to-image and reference-image generation with Qwen Image 3 |
 | `seedream-4.5` | generate |  | Advanced image generation model with support for text-to-image, image-to-image, and multi-image reference capabilities |
