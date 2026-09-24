@@ -16099,13 +16099,13 @@
             "pattern": "\\S",
             "maxLength": 5000,
             "minLength": 1,
-            "description": "Describe the desired image or the changes to make. The prompt must not consist only of whitespace."
+            "description": "Describe the desired image or the changes to make."
           },
           "mask_url": {
             "type": "string",
             "format": "uri",
             "pattern": "^https?://\\S+$",
-            "description": "HTTP(S) URL of a local-edit mask used with exactly one reference image and an opaque background. White areas change; black areas stay unchanged. Match the reference aspect ratio; the mask is scaled to the reference dimensions. Output follows the reference ratio; size and prompt_extend are ignored."
+            "description": "Local-edit mask used with exactly one reference image and an opaque background. White areas change; black areas stay unchanged. Match the reference aspect ratio; the mask is scaled to the reference dimensions. Output follows the reference ratio; size and prompt_extend are ignored."
           },
           "background": {
             "enum": [
@@ -16175,29 +16175,13 @@
                 "example": "not_started"
               },
               "task_id": {
-                "type": "string",
-                "example": "task-unified-1790245800-qwen21"
+                "type": "string"
               },
               "created_time": {
                 "type": "string",
-                "format": "date-time",
-                "example": "2026-09-24T10:30:00Z",
-                "description": "ISO 8601 timestamp when the task was created."
+                "format": "date-time"
               }
-            },
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ]
-          }
-        },
-        "example": {
-          "code": 200,
-          "data": {
-            "task_id": "task-unified-1790245800-qwen21",
-            "status": "not_started",
-            "created_time": "2026-09-24T10:30:00Z"
+            }
           }
         }
       },
@@ -27832,7 +27816,7 @@
             "pattern": "\\S",
             "maxLength": 50000,
             "minLength": 1,
-            "description": "Describe the video. The prompt must not consist only of whitespace. Refer to assets as Image 1, Video 1, or Audio 1."
+            "description": "Describe the video. Refer to assets as Image 1, Video 1, or Audio 1."
           },
           "duration": {
             "type": "integer",
@@ -27908,7 +27892,7 @@
             "description": "If set to true, the safety checker will be enabled. Defaults to true."
           }
         },
-        "description": "At most 12 reference assets in total. All media URLs must use HTTP(S). Reference video and audio each require reference images. Media metadata and billing tokens are computed by the server.",
+        "description": "At most 12 reference assets in total. Reference video and audio each require reference images. Media metadata and billing tokens are computed by the server.",
         "additionalProperties": false
       },
       "output_schema": {
@@ -27923,36 +27907,13 @@
             "properties": {
               "task_id": {
                 "type": "string",
-                "example": "task-unified-1790245800-h3max01"
-              },
-              "status": {
-                "type": "string",
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-09-24T10:30:00Z",
-                "description": "ISO 8601 timestamp when the task was created."
+                "example": "8FDN1I7M7Q68DDG8"
               }
-            },
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ]
-          }
-        },
-        "required": [
-          "code",
-          "data"
-        ],
-        "example": {
-          "code": 200,
-          "data": {
-            "task_id": "task-unified-1790245800-h3max01",
-            "status": "not_started",
-            "created_time": "2026-09-24T10:30:00Z"
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
           }
         }
       },
@@ -28043,7 +28004,7 @@
             "pattern": "\\S",
             "maxLength": 50000,
             "minLength": 1,
-            "description": "Text prompt describing the generated video. Required in both modes and must not consist only of whitespace."
+            "description": "Text prompt describing the generated video. Required in both modes."
           },
           "duration": {
             "type": "integer",
@@ -28106,36 +28067,13 @@
             "properties": {
               "task_id": {
                 "type": "string",
-                "example": "task-unified-1790245800-h3turbo1"
-              },
-              "status": {
-                "type": "string",
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-09-24T10:30:00Z",
-                "description": "ISO 8601 timestamp when the task was created."
+                "example": "8FDN1I7M7Q68DDG8"
               }
-            },
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ]
-          }
-        },
-        "required": [
-          "code",
-          "data"
-        ],
-        "example": {
-          "code": 200,
-          "data": {
-            "task_id": "task-unified-1790245800-h3turbo1",
-            "status": "not_started",
-            "created_time": "2026-09-24T10:30:00Z"
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
           }
         }
       },
