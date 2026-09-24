@@ -17,13 +17,15 @@ Use the production Capability Catalog as the source of truth. Never invent model
 
 Keep `POYO_API_KEY` in the environment or system keyring. Never put it in prompts, query strings, committed files, or retained shell history.
 
+Inspect `tools/list` on the selected connection before calling a tool. A filtered connection exposes model-specific tools and `poyo_check_job`; generic execution tools such as `poyo_submit_job` are available on the unfiltered `/mcp` connection. The same rule applies to stdio `--models` and `--categories` filters.
+
 ## Execute
 
 1. Restate the desired modality, model constraints, inputs, output requirements, and budget.
 2. Search the catalog and inspect the selected model's schema and pricing.
 3. Validate every input against that schema.
-4. For chat, use `poyo_chat`; use CLI `poyo chat MODEL --stream` only when incremental output is required.
-5. For short generation, use `poyo_run_model`. For video, 3D, music, or other long work, use `poyo_submit_job`.
+4. For chat, use the model-specific tool on a filtered connection or `poyo_chat` on the unfiltered connection; use CLI `poyo chat MODEL --stream` only when incremental output is required.
+5. For generation on a filtered connection, call the model-specific tool with `_wait_seconds: 0` for video, 3D, music, or other long work. On the unfiltered connection, use `poyo_submit_job` for long work or `poyo_run_model` for short generation. Never call a generic execution tool that is absent from `tools/list`.
 6. Treat queued and running as incomplete. Poll with `poyo_check_job` until succeeded or failed.
 7. Report model ID, final status, credits, output URLs, and any partial or failed result.
 

@@ -19,7 +19,7 @@ export async function buildInput(
     if (RESERVED.has(key)) continue;
     const field = key.replace(/-/g, "_");
     if (!(field in properties)) throw new Error(`Unknown option --${key} for ${capability.model_id}`);
-    input[field] = coerce(value, properties[field]);
+    input[field] = coerce(value, properties[field], key);
   }
   return input;
 }
@@ -30,9 +30,19 @@ function parseObject(value: string, source: string): Record<string, unknown> {
   return parsed as Record<string, unknown>;
 }
 
-function coerce(value: string | boolean, schema: JsonSchema): unknown {
-  if (schema.type === "boolean") return value === true || value === "true";
-  if (schema.type === "integer") return Number.parseInt(String(value), 10);
+function coerce(value: string | boolean, schema: JsonSchema, option: string): unknown {
+  // 非法参数必须在提交前报错，不能静默关闭开关或截断时长。
+  if (schema.type === "boolean") {
+    if (value === true || value === "true") return true;
+    if (value === false || value === "false") return false;
+    throw new Error(`Invalid value for --${option}: expected true or false`);
+  }
+  if (schema.type === "integer") {
+    if (typeof value !== "string" || !/^[+-]?\d+$/.test(value.trim()) || !Number.isSafeInteger(Number(value))) {
+      throw new Error(`Invalid value for --${option}: expected a safe integer`);
+    }
+    return Number(value);
+  }
   if (schema.type === "number") return Number(value);
   if (schema.type === "array") {
     if (typeof value !== "string") return [];

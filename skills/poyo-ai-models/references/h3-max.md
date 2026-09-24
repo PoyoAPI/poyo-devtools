@@ -4,7 +4,7 @@ Public model: `h3-max`. Model-specific MCP tool: `poyo_h3_max`.
 
 The rollout configuration enables this model. Always describe the model in the live catalog before use; deployment availability can differ from this snapshot.
 
-Use the existing dynamic CLI (`poyo run h3-max`) or hosted MCP. No model-specific command is required. Prefer `poyo_submit_job` for long video jobs and poll the returned task ID. Do not retry a paid submission automatically.
+Use the existing dynamic CLI (`poyo run h3-max`) or hosted MCP. No model-specific CLI command is required. On a filtered MCP connection, submit with `poyo_h3_max` and `_wait_seconds: 0`; on the unfiltered `/mcp` connection, use `poyo_submit_job`. Poll the returned task ID with `poyo_check_job`. Do not retry a paid submission automatically.
 
 | Field | Contract |
 | --- | --- |
@@ -33,4 +33,4 @@ poyo run h3-max --prompt "The camera glides forward" --image-urls 'https://examp
 poyo run h3-max --prompt "Image 1 follows Video 1 with Audio 1" --reference-image-urls https://example.com/subject.jpg --reference-video-urls https://example.com/motion.mp4 --reference-audio-urls https://example.com/atmosphere.wav --duration 10 --request-source skill
 ```
 
-For `poyo_h3_max`, use the same input fields as tool arguments and add `_request_source: "skill"`. For `poyo_submit_job`, put them under `input` and set `model: "h3-max"`. Preserve the task ID and report final status, credits, and output URLs.
+For `poyo_h3_max`, use the same input fields as tool arguments and add `_wait_seconds: 0` and `_request_source: "skill"`. For `poyo_submit_job` on an unfiltered connection, put them under `input`, set `model: "h3-max"`, and add `_request_source: "skill"`. Preserve the task ID and report final status, credits, and output URLs.
