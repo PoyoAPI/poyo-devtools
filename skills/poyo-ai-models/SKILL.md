@@ -40,6 +40,10 @@ For `h3-max-turbo`, omit `image_urls` or pass `[]` for text-to-video; one image 
 
 For Qwen Image 2.1, also read `references/qwen-image-2-1.md` for reference images, transparent backgrounds, and mask editing constraints.
 
+For Seedream 5.0 Flash, also read `references/seedream-5-0-flash.md` for text generation, editing references, and the `size` versus `resolution` mapping.
+
+For Nano Banana 2.1, also read `references/nano-banana-2-1.md` for its shared image parameters and single model ID for generation and editing.
+
 ## Guardrails
 
 - Check account credits before expensive or repeated generation.
