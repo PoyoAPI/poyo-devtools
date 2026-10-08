@@ -1,6 +1,6 @@
 # img2img
 
-Generated from PoYo Catalog `v1-834e3d809602`. Always call describe before execution.
+Generated from PoYo Catalog `v1-9e5b7d818224`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -13,4 +13,5 @@ Generated from PoYo Catalog `v1-834e3d809602`. Always call describe before execu
 | `nano-banana-2-edit` | generate |  | Classic Nano Banana 2 and Nano Banana Pro image generation and editing |
 | `nano-banana-2-new` | generate |  | Next-generation AI image generation powered by Gemini 3.1 Flash Image Preview |
 | `nano-banana-2-new-edit` | generate |  | Next-generation AI image generation powered by Gemini 3.1 Flash Image Preview |
+| `nano-banana-2.1` | generate |  | Create and edit images with optional reference URLs at 1K, 2K, or 4K. |
 | `nano-banana-edit` | generate |  | Fast Image Generation powered by Gemini 2.5 Flash |

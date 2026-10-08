@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-834e3d809602`. Always call describe before execution.
+Generated from PoYo Catalog `v1-9e5b7d818224`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -39,8 +39,6 @@ Generated from PoYo Catalog `v1-834e3d809602`. Always call describe before execu
 | `seedance-2-fast` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
 | `seedance-2-mini` | generate |  | Fast video generation with Seedance 2 Mini |
 | `seedance-2.5` | generate |  | Generate videos with Seedance 2.5 from text, frames, or multimodal references |
-| `sora-2-official` | generate |  | Text-to-video and optional image-guided video generation |
-| `sora-2-pro-official` | generate |  | Official Sora 2 Pro text-to-video and image-to-video generation |
 | `veo3.1-extend` | generate |  | Extend an existing video with Veo 3.1. |
 | `veo3.1-fast-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
 | `veo3.1-lite-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |

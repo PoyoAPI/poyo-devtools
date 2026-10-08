@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-834e3d809602",
+  "schema_version": "v1-9e5b7d818224",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -7,17 +7,16 @@
       "service_type": "generate",
       "category": "3d",
       "title": "Hunyuan 3D v3.1 Pro Image to 3D",
-      "description": "Hunyuan 3D v3.1 Pro and Rapid text-to-3D and image-to-3D generation",
+      "description": "Hunyuan 3D v3.1 Pro. Generate 3D from exactly one image bound to image_urls. Does not accept prompt; do not send text instructions.",
       "tags": [
         "3d"
       ],
       "input_schema": {
         "type": "object",
+        "required": [
+          "image_urls"
+        ],
         "properties": {
-          "prompt": {
-            "type": "string",
-            "description": "Required for text-to-3D models. Pro supports up to 1024 characters; Rapid supports up to 200 characters."
-          },
           "enable_pbr": {
             "type": "boolean",
             "description": "Ignored for geometry-only generation."
@@ -62,10 +61,6 @@
             "format": "uri",
             "description": "Pro image-to-3D only."
           },
-          "enable_geometry": {
-            "type": "boolean",
-            "description": "Rapid models only."
-          },
           "right_image_url": {
             "type": "string",
             "format": "uri",
@@ -86,7 +81,8 @@
             "format": "uri",
             "description": "Pro image-to-3D only."
           }
-        }
+        },
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -133,23 +129,6 @@
             "https://example.com/object-front.png"
           ],
           "generate_type": "Normal"
-        },
-        {
-          "prompt": "A detailed sci-fi cargo drone with compact landing legs and panel seams",
-          "enable_pbr": true,
-          "face_count": 500000,
-          "generate_type": "Normal"
-        },
-        {
-          "prompt": "A rustic wooden treasure chest with metal bands",
-          "enable_pbr": false
-        },
-        {
-          "enable_pbr": false,
-          "image_urls": [
-            "https://example.com/object-front.png"
-          ],
-          "enable_geometry": false
         }
       ],
       "supported_protocols": [],
@@ -178,15 +157,21 @@
       "service_type": "generate",
       "category": "3d",
       "title": "Hunyuan 3D v3.1 Pro Text to 3D",
-      "description": "Hunyuan 3D v3.1 Pro and Rapid text-to-3D and image-to-3D generation",
+      "description": "Hunyuan 3D v3.1 Pro. Generate 3D from a required text prompt (up to 1024 characters). Does not accept image inputs.",
       "tags": [
         "3d"
       ],
       "input_schema": {
         "type": "object",
+        "required": [
+          "prompt"
+        ],
         "properties": {
           "prompt": {
             "type": "string",
+            "pattern": "\\S",
+            "maxLength": 1024,
+            "minLength": 1,
             "description": "Required for text-to-3D models. Pro supports up to 1024 characters; Rapid supports up to 200 characters."
           },
           "enable_pbr": {
@@ -200,16 +185,6 @@
             "minimum": 40000,
             "description": "Pro models only."
           },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "maxItems": 1,
-            "minItems": 1,
-            "description": "Required for image-to-3D models. Use exactly one image URL."
-          },
           "generate_type": {
             "enum": [
               "Normal",
@@ -217,47 +192,9 @@
             ],
             "type": "string",
             "description": "Pro models only."
-          },
-          "top_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "back_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "left_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "enable_geometry": {
-            "type": "boolean",
-            "description": "Rapid models only."
-          },
-          "right_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "bottom_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "left_front_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "right_front_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
           }
-        }
+        },
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -298,29 +235,10 @@
       },
       "examples": [
         {
-          "enable_pbr": true,
-          "face_count": 500000,
-          "image_urls": [
-            "https://example.com/object-front.png"
-          ],
-          "generate_type": "Normal"
-        },
-        {
           "prompt": "A detailed sci-fi cargo drone with compact landing legs and panel seams",
           "enable_pbr": true,
           "face_count": 500000,
           "generate_type": "Normal"
-        },
-        {
-          "prompt": "A rustic wooden treasure chest with metal bands",
-          "enable_pbr": false
-        },
-        {
-          "enable_pbr": false,
-          "image_urls": [
-            "https://example.com/object-front.png"
-          ],
-          "enable_geometry": false
         }
       ],
       "supported_protocols": [],
@@ -349,27 +267,19 @@
       "service_type": "generate",
       "category": "3d",
       "title": "Hunyuan 3D v3.1 Rapid Image to 3D",
-      "description": "Hunyuan 3D v3.1 Pro and Rapid text-to-3D and image-to-3D generation",
+      "description": "Hunyuan 3D v3.1 Rapid. Generate 3D from exactly one image bound to image_urls. Does not accept prompt; do not send text instructions.",
       "tags": [
         "3d"
       ],
       "input_schema": {
         "type": "object",
+        "required": [
+          "image_urls"
+        ],
         "properties": {
-          "prompt": {
-            "type": "string",
-            "description": "Required for text-to-3D models. Pro supports up to 1024 characters; Rapid supports up to 200 characters."
-          },
           "enable_pbr": {
             "type": "boolean",
             "description": "Ignored for geometry-only generation."
-          },
-          "face_count": {
-            "type": "integer",
-            "default": 500000,
-            "maximum": 1500000,
-            "minimum": 40000,
-            "description": "Pro models only."
           },
           "image_urls": {
             "type": "array",
@@ -381,54 +291,12 @@
             "minItems": 1,
             "description": "Required for image-to-3D models. Use exactly one image URL."
           },
-          "generate_type": {
-            "enum": [
-              "Normal",
-              "Geometry"
-            ],
-            "type": "string",
-            "description": "Pro models only."
-          },
-          "top_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "back_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "left_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
           "enable_geometry": {
             "type": "boolean",
             "description": "Rapid models only."
-          },
-          "right_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "bottom_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "left_front_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "right_front_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
           }
-        }
+        },
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -468,24 +336,6 @@
         }
       },
       "examples": [
-        {
-          "enable_pbr": true,
-          "face_count": 500000,
-          "image_urls": [
-            "https://example.com/object-front.png"
-          ],
-          "generate_type": "Normal"
-        },
-        {
-          "prompt": "A detailed sci-fi cargo drone with compact landing legs and panel seams",
-          "enable_pbr": true,
-          "face_count": 500000,
-          "generate_type": "Normal"
-        },
-        {
-          "prompt": "A rustic wooden treasure chest with metal bands",
-          "enable_pbr": false
-        },
         {
           "enable_pbr": false,
           "image_urls": [
@@ -520,86 +370,33 @@
       "service_type": "generate",
       "category": "3d",
       "title": "Hunyuan 3D v3.1 Rapid Text to 3D",
-      "description": "Hunyuan 3D v3.1 Pro and Rapid text-to-3D and image-to-3D generation",
+      "description": "Hunyuan 3D v3.1 Rapid. Generate 3D from a required text prompt (up to 200 characters). Does not accept image inputs.",
       "tags": [
         "3d"
       ],
       "input_schema": {
         "type": "object",
+        "required": [
+          "prompt"
+        ],
         "properties": {
           "prompt": {
             "type": "string",
+            "pattern": "\\S",
+            "maxLength": 200,
+            "minLength": 1,
             "description": "Required for text-to-3D models. Pro supports up to 1024 characters; Rapid supports up to 200 characters."
           },
           "enable_pbr": {
             "type": "boolean",
             "description": "Ignored for geometry-only generation."
           },
-          "face_count": {
-            "type": "integer",
-            "default": 500000,
-            "maximum": 1500000,
-            "minimum": 40000,
-            "description": "Pro models only."
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "maxItems": 1,
-            "minItems": 1,
-            "description": "Required for image-to-3D models. Use exactly one image URL."
-          },
-          "generate_type": {
-            "enum": [
-              "Normal",
-              "Geometry"
-            ],
-            "type": "string",
-            "description": "Pro models only."
-          },
-          "top_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "back_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "left_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
           "enable_geometry": {
             "type": "boolean",
             "description": "Rapid models only."
-          },
-          "right_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "bottom_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "left_front_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
-          },
-          "right_front_image_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "Pro image-to-3D only."
           }
-        }
+        },
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -640,29 +437,8 @@
       },
       "examples": [
         {
-          "enable_pbr": true,
-          "face_count": 500000,
-          "image_urls": [
-            "https://example.com/object-front.png"
-          ],
-          "generate_type": "Normal"
-        },
-        {
-          "prompt": "A detailed sci-fi cargo drone with compact landing legs and panel seams",
-          "enable_pbr": true,
-          "face_count": 500000,
-          "generate_type": "Normal"
-        },
-        {
           "prompt": "A rustic wooden treasure chest with metal bands",
           "enable_pbr": false
-        },
-        {
-          "enable_pbr": false,
-          "image_urls": [
-            "https://example.com/object-front.png"
-          ],
-          "enable_geometry": false
         }
       ],
       "supported_protocols": [],
@@ -16099,13 +15875,13 @@
             "pattern": "\\S",
             "maxLength": 5000,
             "minLength": 1,
-            "description": "Describe the desired image or the changes to make. The prompt must not consist only of whitespace."
+            "description": "Describe the desired image or the changes to make."
           },
           "mask_url": {
             "type": "string",
             "format": "uri",
             "pattern": "^https?://\\S+$",
-            "description": "HTTP(S) URL of a local-edit mask used with exactly one reference image and an opaque background. White areas change; black areas stay unchanged. Match the reference aspect ratio; the mask is scaled to the reference dimensions. Output follows the reference ratio; size and prompt_extend are ignored."
+            "description": "Local-edit mask used with exactly one reference image and an opaque background. White areas change; black areas stay unchanged. Match the reference aspect ratio; the mask is scaled to the reference dimensions. Output follows the reference ratio; size and prompt_extend are ignored."
           },
           "background": {
             "enum": [
@@ -16175,29 +15951,13 @@
                 "example": "not_started"
               },
               "task_id": {
-                "type": "string",
-                "example": "task-unified-1790245800-qwen21"
+                "type": "string"
               },
               "created_time": {
                 "type": "string",
-                "format": "date-time",
-                "example": "2026-09-24T10:30:00Z",
-                "description": "ISO 8601 timestamp when the task was created."
+                "format": "date-time"
               }
-            },
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ]
-          }
-        },
-        "example": {
-          "code": 200,
-          "data": {
-            "task_id": "task-unified-1790245800-qwen21",
-            "status": "not_started",
-            "created_time": "2026-09-24T10:30:00Z"
+            }
           }
         }
       },
@@ -16944,6 +16704,181 @@
         "credits": 5,
         "input_credits": null,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "seedream-5.0-flash",
+      "tool_name": "poyo_seedream_5_0_flash",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Seedream 5.0 Flash",
+      "description": "Fast Seedream image generation and reference-image editing.",
+      "tags": [
+        "image",
+        "text-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "2:3",
+              "3:2",
+              "21:9"
+            ],
+            "type": "string",
+            "default": "1:1"
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "1.5K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K"
+          },
+          "output_format": {
+            "enum": [
+              "jpeg",
+              "png"
+            ],
+            "type": "string"
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "size": "3:4",
+          "prompt": "Create a clean product poster",
+          "resolution": "1.5K"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 4
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "seedream-5.0-flash-edit",
+      "tool_name": "poyo_seedream_5_0_flash_edit",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Seedream 5.0 Flash Edit",
+      "description": "Fast Seedream image generation and reference-image editing.",
+      "tags": [
+        "image",
+        "image-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "image_urls"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "2:3",
+              "3:2",
+              "21:9"
+            ],
+            "type": "string",
+            "default": "1:1"
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 10,
+            "minItems": 1
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "1.5K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K"
+          },
+          "output_format": {
+            "enum": [
+              "jpeg",
+              "png"
+            ],
+            "type": "string"
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "size": "1:1",
+          "prompt": "Change the background to a studio setting",
+          "image_urls": [
+            "https://example.com/reference.png"
+          ],
+          "resolution": "2K"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 4
       },
       "status": "stable"
     },
@@ -20066,6 +20001,99 @@
           "1K": 5,
           "2K": 8,
           "4K": 12
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "nano-banana-2.1",
+      "tool_name": "poyo_nano_banana_2_1",
+      "service_type": "generate",
+      "category": "img2img",
+      "title": "Nano Banana 2.1",
+      "description": "Create and edit images with optional reference URLs at 1K, 2K, or 4K.",
+      "tags": [
+        "image",
+        "text-to-image",
+        "image-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "auto",
+              "1:1",
+              "2:3",
+              "3:2",
+              "3:4",
+              "4:3",
+              "4:5",
+              "5:4",
+              "9:16",
+              "16:9",
+              "21:9"
+            ],
+            "type": "string",
+            "description": "Defaults to auto when image_urls are provided, otherwise 1:1. auto is only supported for image editing."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 20000,
+            "minLength": 1
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 10,
+            "minItems": 1
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "type": "string",
+            "default": "1K"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "size": "1:1",
+          "prompt": "An orange cat by a window",
+          "resolution": "1K"
+        },
+        {
+          "prompt": "Keep the subject and use a watercolor style",
+          "image_urls": [
+            "https://example.com/reference.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "image",
+        "resolution_credits": {
+          "1K": 4,
+          "2K": 6,
+          "4K": 10
         }
       },
       "status": "stable"
@@ -27832,7 +27860,7 @@
             "pattern": "\\S",
             "maxLength": 50000,
             "minLength": 1,
-            "description": "Describe the video. The prompt must not consist only of whitespace. Refer to assets as Image 1, Video 1, or Audio 1."
+            "description": "Describe the video. Refer to assets as Image 1, Video 1, or Audio 1."
           },
           "duration": {
             "type": "integer",
@@ -27908,7 +27936,7 @@
             "description": "If set to true, the safety checker will be enabled. Defaults to true."
           }
         },
-        "description": "At most 12 reference assets in total. All media URLs must use HTTP(S). Reference video and audio each require reference images. Media metadata and billing tokens are computed by the server.",
+        "description": "At most 12 reference assets in total. Reference video and audio each require reference images. Media metadata and billing tokens are computed by the server.",
         "additionalProperties": false
       },
       "output_schema": {
@@ -27923,36 +27951,13 @@
             "properties": {
               "task_id": {
                 "type": "string",
-                "example": "task-unified-1790245800-h3max01"
-              },
-              "status": {
-                "type": "string",
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-09-24T10:30:00Z",
-                "description": "ISO 8601 timestamp when the task was created."
+                "example": "8FDN1I7M7Q68DDG8"
               }
-            },
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ]
-          }
-        },
-        "required": [
-          "code",
-          "data"
-        ],
-        "example": {
-          "code": 200,
-          "data": {
-            "task_id": "task-unified-1790245800-h3max01",
-            "status": "not_started",
-            "created_time": "2026-09-24T10:30:00Z"
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
           }
         }
       },
@@ -28043,7 +28048,7 @@
             "pattern": "\\S",
             "maxLength": 50000,
             "minLength": 1,
-            "description": "Text prompt describing the generated video. Required in both modes and must not consist only of whitespace."
+            "description": "Text prompt describing the generated video. Required in both modes."
           },
           "duration": {
             "type": "integer",
@@ -28106,36 +28111,13 @@
             "properties": {
               "task_id": {
                 "type": "string",
-                "example": "task-unified-1790245800-h3turbo1"
-              },
-              "status": {
-                "type": "string",
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-09-24T10:30:00Z",
-                "description": "ISO 8601 timestamp when the task was created."
+                "example": "8FDN1I7M7Q68DDG8"
               }
-            },
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ]
-          }
-        },
-        "required": [
-          "code",
-          "data"
-        ],
-        "example": {
-          "code": 200,
-          "data": {
-            "task_id": "task-unified-1790245800-h3turbo1",
-            "status": "not_started",
-            "created_time": "2026-09-24T10:30:00Z"
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
           }
         }
       },
@@ -32611,277 +32593,6 @@
         },
         "input_credits": null,
         "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-official",
-      "tool_name": "poyo_sora_2_official",
-      "service_type": "generate",
-      "category": "video",
-      "title": "sora-2-official",
-      "description": "Text-to-video and optional image-guided video generation",
-      "tags": [
-        "video"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "example": "An astronaut riding a horse across the surface of Mars, red dust blowing in the wind, dramatic sunset on the horizon, cinematic wide shot, slow motion, ultra realistic textures, detailed space suit reflections, epic atmosphere, 8k cinematic film, volumetric lighting, smooth camera tracking.",
-            "description": "Generation prompt describing the desired video"
-          },
-          "duration": {
-            "enum": [
-              4,
-              8,
-              12,
-              16,
-              20
-            ],
-            "type": "integer",
-            "default": 4,
-            "example": 20,
-            "description": "Output duration in seconds"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [
-              "https://example.com/reference-image.png"
-            ],
-            "maxItems": 1,
-            "minItems": 1,
-            "description": "Optional reference image URLs. Only one image is supported"
-          },
-          "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
-            "default": "16:9",
-            "example": "16:9",
-            "description": "Video aspect ratio"
-          }
-        }
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "An astronaut riding a horse across the surface of Mars, red dust blowing in the wind, dramatic sunset on the horizon, cinematic wide shot, slow motion, ultra realistic textures, detailed space suit reflections, epic atmosphere, 8k cinematic film, volumetric lighting, smooth camera tracking.",
-          "duration": 20,
-          "aspect_ratio": "16:9"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "request",
-        "credits": null,
-        "formula": "duration_credits[duration]",
-        "input_credits": null,
-        "output_credits": null,
-        "duration_credits": {
-          "4": 48,
-          "8": 96,
-          "12": 144,
-          "16": 192,
-          "20": 240
-        }
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "sora-2-pro-official",
-      "tool_name": "poyo_sora_2_pro_official",
-      "service_type": "generate",
-      "category": "video",
-      "title": "sora-2-pro-official",
-      "description": "Official Sora 2 Pro text-to-video and image-to-video generation",
-      "tags": [
-        "video"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "example": "A cinematic video scene",
-            "description": "Generation prompt describing the desired video"
-          },
-          "duration": {
-            "enum": [
-              4,
-              8,
-              12,
-              16,
-              20
-            ],
-            "type": "integer",
-            "default": 4,
-            "example": 8,
-            "description": "Output duration in seconds"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            },
-            "example": [
-              "https://example.com/reference-image.png"
-            ],
-            "maxItems": 1,
-            "description": "Optional reference image URLs for image-to-video. Only one image is supported."
-          },
-          "resolution": {
-            "enum": [
-              "720p",
-              "1024p",
-              "1080p"
-            ],
-            "type": "string",
-            "default": "1024p",
-            "example": "1024p",
-            "description": "Output resolution. Billing is calculated based on the selected resolution and video duration in seconds."
-          },
-          "aspect_ratio": {
-            "enum": [
-              "auto",
-              "9:16",
-              "16:9"
-            ],
-            "type": "string",
-            "default": "16:9",
-            "example": "16:9",
-            "description": "Video aspect ratio. `auto` is only supported when `image_urls` is provided."
-          }
-        }
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "status": {
-                "enum": [
-                  "not_started"
-                ],
-                "type": "string",
-                "example": "not_started"
-              },
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2025-11-12T10:30:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A cinematic drone shot flying through a misty forest at dawn, sun rays cutting through the trees, realistic motion, natural ambience.",
-          "duration": 8,
-          "resolution": "1024p",
-          "aspect_ratio": "16:9"
-        },
-        {
-          "prompt": "Animate this scene with slow cinematic camera movement and realistic atmospheric lighting.",
-          "duration": 4,
-          "image_urls": [
-            "https://example.com/reference-image.png"
-          ],
-          "resolution": "720p",
-          "aspect_ratio": "auto"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "tiered",
-        "unit": "second",
-        "credits": null,
-        "formula": "duration * resolution_credits[resolution]",
-        "input_credits": null,
-        "output_credits": null,
-        "resolution_credits": {
-          "720p": 48,
-          "1024p": 80,
-          "1080p": 112
-        }
       },
       "status": "stable"
     },
