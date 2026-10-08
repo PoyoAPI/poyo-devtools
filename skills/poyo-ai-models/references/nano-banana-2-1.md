@@ -1,6 +1,6 @@
 # Nano Banana 2.1
 
-Use model ID `nano-banana-2.1` for both text-to-image and image-to-image work. Add `image_urls` only when the user provides reference images. Up to 14 HTTP(S) image URLs are supported.
+Use model ID `nano-banana-2.1` for both text-to-image and image-to-image work. Add `image_urls` only when the user provides reference images. Up to 10 HTTP(S) image URLs are supported.
 
 Required input: `prompt`. Optional inputs: `image_urls`, `size`, `resolution`. Keep these field names in MCP and CLI calls; do not substitute provider-specific names. Omitted `size` defaults to `auto` when `image_urls` are provided, otherwise `1:1`; omitted `resolution` defaults to `1K`. Use `auto` only for image editing. It lets the model choose an aspect ratio from the reference images; an explicit ratio overrides it.
 
