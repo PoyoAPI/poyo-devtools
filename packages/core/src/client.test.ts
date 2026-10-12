@@ -17,4 +17,16 @@ describe("PoyoClient", () => {
     });
     await expect(client.task("t1")).resolves.toMatchObject({status: "succeeded", raw_status: "finished"});
   });
+
+  it("preserves structured Voice and Advanced Stem task files", async () => {
+    const files = [
+      {voice_id: "voice-1", is_available: true, voice_status: "success"},
+      {origin_data: [{extract: {audio_url: "https://example.com/extract.mp3"}, remove: {audio_url: "https://example.com/remove.mp3"}}]},
+    ];
+    const client = new PoyoClient({
+      apiKey: "sk-test",
+      fetch: async () => new Response(JSON.stringify({data: {task_id: "t2", status: "finished", files}}), {status: 200}) as never,
+    });
+    await expect(client.task("t2")).resolves.toMatchObject({status: "succeeded", files});
+  });
 });

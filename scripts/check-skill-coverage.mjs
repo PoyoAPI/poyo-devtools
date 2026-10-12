@@ -1,4 +1,6 @@
 import {readFile} from "node:fs/promises";
+import {checkGptImage25Contract} from "./check-gpt-image-2-5-contract.mjs";
+import {checkH3MaxContract} from "./check-h3-max-contract.mjs";
 import {checkSunoContract} from "./check-suno-contract.mjs";
 
 const stable = (value) => {
@@ -32,6 +34,8 @@ for (const model of catalog.items) {
   }
 }
 checkSunoContract(catalog, equal);
+checkGptImage25Contract(catalog, equal);
+checkH3MaxContract(catalog, equal);
 
 const expectedSeedanceRates = {
   "seedance-2": {
@@ -256,6 +260,28 @@ for (const [modelId, expected] of Object.entries(expectedQwenImageRates)) {
   ) {
     throw new Error(`Qwen Image 3 pricing is out of sync: ${modelId}`);
   }
+}
+
+const qwenImage21 = catalog.items.find((item) => item.model_id === "qwen-image-2.1");
+const qwenImage21Properties = qwenImage21?.input_schema?.properties ?? {};
+if (
+  qwenImage21?.tool_name !== "poyo_qwen_image_2_1"
+  || qwenImage21.input_schema?.additionalProperties !== false
+  || !equal(qwenImage21.billing?.resolution_credits, {"1K": 6, "2K": 10})
+  || qwenImage21.billing?.formula !== "resolution_credits[resolution]"
+  || qwenImage21Properties.image_urls?.maxItems !== 10
+  || qwenImage21Properties.image_urls?.minItems !== 0
+  || !equal(qwenImage21Properties.output_format?.enum, ["png", "webp", "jpeg"])
+  || !equal(qwenImage21Properties.background?.enum, ["opaque", "transparent"])
+  || qwenImage21Properties.prompt_extend?.default !== true
+  || qwenImage21Properties.enable_safety_checker?.default !== true
+  || !qwenImage21Properties.mask_url
+  || qwenImage21.input_schema?.allOf?.length !== 3
+  || ["negative_prompt", "aspect_ratio", "enhance_prompt", "nsfw_checker", "n"].some(
+    (field) => Object.hasOwn(qwenImage21Properties, field),
+  )
+) {
+  throw new Error("Qwen Image 2.1 capability is out of sync");
 }
 
 const grokImage20 = catalog.items.find((item) => item.model_id === "grok-imagine-image-2.0");
