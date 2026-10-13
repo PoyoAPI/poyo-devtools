@@ -6,9 +6,9 @@ Describe the selected model before submitting:
 - `meshy-7.1-image-to-3d`: exactly one URL in `image_urls`.
 - `meshy-7.1-multi-image-to-3d`: 1–4 URLs in `image_urls`, showing the same object from different angles.
 
-Text and single-image models accept `model_type="standard"`, `lowpoly`, or `smart-topology`, and optional `geometry_resolution="standard"`, `2k`, or `4k`. Multi-image accepts only standard/2k geometry and has no `model_type`.
+Text and single-image models accept `model_type="standard"` or `smart-topology`, and optional `geometry_resolution="standard"`, `2k`, or `4k`. Set `geometry_resolution` only when `model_type="standard"` (the default); omit it for `smart-topology`. Multi-image accepts only standard/2k geometry and has no `model_type`.
 
-`target_polycount` accepts 100–300000 (default 30000). Smart Topology allows at most 15000 and defaults to 4000. `topology` is triangle (default) or quad. Lowpoly ignores remeshing controls. Retained controls include `should_remesh`, `symmetry_mode`, `pose_mode`, `enable_pbr`, `texture_prompt`, `texture_image_url`, and `enable_safety_checker`; inspect their current schema defaults. Image models use `should_texture` (default true). On multi-image generation, PBR and texture guidance require textures.
+`target_polycount` accepts 100–300000 (default 30000). Smart Topology allows at most 15000 and defaults to 4000. `topology` is triangle (default) or quad. Lowpoly is not supported by this model version. Retained controls include `should_remesh`, `symmetry_mode`, `pose_mode`, `enable_pbr`, `texture_prompt`, `texture_image_url`, and `enable_safety_checker`; inspect their current schema defaults. Image models use `should_texture` (default true). On multi-image generation, PBR and texture guidance require textures.
 
 `enable_animation=true` requires `enable_rigging=true`. `rigging_height_meters` must be positive (default 1.7), and `animation_action_id` accepts 0–696 (default 92). Base generation, textures, rigging, and animation affect pricing; inspect the quote before submitting.
 
