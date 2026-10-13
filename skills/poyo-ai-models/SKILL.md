@@ -44,6 +44,12 @@ For Seedream 5.0 Flash, also read `references/seedream-5-0-flash.md` for text ge
 
 For Nano Banana 2.1, also read `references/nano-banana-2-1.md` for its shared image parameters and single model ID for generation and editing.
 
+For Ideogram V4.5 generation or editing, read `references/ideogram-v4-5.md` for primary images, references, mask limits, and precision-dependent sizes.
+
+For ElevenLabs V4, V4 Turbo, or Gemini 3.8 speech, read `references/speech-v4-gemini-3-8.md` for original audio formats and mutually exclusive transcript/dialogue inputs. Send structured dialogue arrays through JSON or CLI `--input-file`.
+
+For Meshy 7.1, read `references/meshy-7-1.md` for text/image/multi-image selection, topology limits, and rigging requirements. Omit optional values unless the user chooses them.
+
 ## Guardrails
 
 - Check account credits before expensive or repeated generation.

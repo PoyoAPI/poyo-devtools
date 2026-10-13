@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-9e5b7d818224`. Always call describe before execution.
+Generated from PoYo Catalog `v1-ec874c8d66f5`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -14,6 +14,8 @@ Generated from PoYo Catalog `v1-9e5b7d818224`. Always call describe before execu
 | `gpt-image-2.5-sunburst` | generate |  | GPT Image 2.5 Sunburst single-image generation and reference-image editing with background, format, and mask controls. |
 | `grok-imagine-image-2.0` | generate |  | Grok Imagine Image 2.0 generation and editing with selectable quality and resolution |
 | `grok-imagine-image-quality` | generate |  | High-quality Grok Imagine Image generation with text-to-image and image editing support |
+| `ideogram-v4.5` | generate |  | Generate images from a prompt with quality and size controls. |
+| `ideogram-v4.5-edit` | generate |  | Edit exactly one primary image with references, optional masks, and precision controls. |
 | `kling-o1-image-edit` | generate |  | A high-consistency image generation model optimized for precise reference alignment and fine detail control, ideal for character and product-focused use cases |
 | `kling-o3-image` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
 | `kling-o3-image-edit` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
