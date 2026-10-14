@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-4f660808dfbf",
+  "schema_version": "v1-0a63fdea0316",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -1082,6 +1082,798 @@
         "credits": 60,
         "input_credits": null,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "meshy-7.1-image-to-3d",
+      "tool_name": "poyo_meshy_7_1_image_to_3d",
+      "service_type": "generate",
+      "category": "3d",
+      "title": "Meshy 7.1 Image to 3D",
+      "description": "Generate a 3D model from exactly one image, with optional textures, rigging, and animation.",
+      "tags": [
+        "3d"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "enable_animation"
+              ],
+              "properties": {
+                "enable_animation": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "enable_rigging"
+              ],
+              "properties": {
+                "enable_rigging": {
+                  "const": true
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "model_type"
+              ],
+              "properties": {
+                "model_type": {
+                  "const": "smart-topology"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "target_polycount": {
+                  "maximum": 15000
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "geometry_resolution"
+              ]
+            },
+            "then": {
+              "properties": {
+                "model_type": {
+                  "const": "standard"
+                }
+              }
+            }
+          }
+        ],
+        "required": [
+          "image_urls"
+        ],
+        "properties": {
+          "topology": {
+            "enum": [
+              "quad",
+              "triangle"
+            ],
+            "type": "string",
+            "default": "triangle",
+            "description": "Output mesh topology."
+          },
+          "pose_mode": {
+            "enum": [
+              "a-pose",
+              "t-pose",
+              ""
+            ],
+            "type": "string",
+            "default": "",
+            "description": "Character pose; empty string selects no specific pose."
+          },
+          "enable_pbr": {
+            "type": "boolean",
+            "default": false,
+            "description": "Generate PBR texture maps."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(https?://\\S+|data:image/\\S+)$",
+              "description": "Public image URL or image data URI."
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Image urls."
+          },
+          "model_type": {
+            "enum": [
+              "standard",
+              "smart-topology"
+            ],
+            "type": "string",
+            "default": "standard",
+            "description": "Mesh generation method. Lowpoly is not supported by this model version."
+          },
+          "should_remesh": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable remeshing."
+          },
+          "symmetry_mode": {
+            "enum": [
+              "off",
+              "auto",
+              "on"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Mesh symmetry behavior."
+          },
+          "enable_rigging": {
+            "type": "boolean",
+            "default": false,
+            "description": "Rig the generated humanoid character."
+          },
+          "should_texture": {
+            "type": "boolean",
+            "default": true,
+            "description": "Generate textures."
+          },
+          "texture_prompt": {
+            "type": "string",
+            "maxLength": 600,
+            "description": "Texture guidance, at most 600 characters."
+          },
+          "enable_animation": {
+            "type": "boolean",
+            "default": false,
+            "description": "Apply an animation; requires enable_rigging=true."
+          },
+          "target_polycount": {
+            "type": "integer",
+            "default": 30000,
+            "maximum": 300000,
+            "minimum": 100,
+            "description": "100-300000 polygons. Smart topology: maximum 15000, default 4000 when omitted."
+          },
+          "texture_image_url": {
+            "type": "string",
+            "pattern": "^(https?://\\S+|data:image/\\S+)$",
+            "description": "Public image URL or image data URI."
+          },
+          "animation_action_id": {
+            "type": "integer",
+            "default": 92,
+            "maximum": 696,
+            "minimum": 0,
+            "description": "Animation preset ID, 0-696."
+          },
+          "geometry_resolution": {
+            "enum": [
+              "standard",
+              "2k",
+              "4k"
+            ],
+            "type": "string",
+            "description": "Geometry resolution. Only available when model_type is standard (the default); omit for smart-topology."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
+          },
+          "rigging_height_meters": {
+            "type": "number",
+            "default": 1.7,
+            "description": "Character height in meters, greater than zero.",
+            "exclusiveMinimum": 0
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "image_urls": [
+            "https://example.com/front.png"
+          ],
+          "enable_rigging": true,
+          "enable_animation": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "request",
+        "credits": null,
+        "formula": "base_credits + textured * texture_credits + enable_rigging * rigging_credits + enable_animation * animation_credits",
+        "parameters": {
+          "textured": "mode=full for text-to-3d (default); should_texture=true for image models (default)."
+        },
+        "base_credits": 160,
+        "input_credits": null,
+        "output_credits": null,
+        "rigging_credits": 40,
+        "texture_credits": 80,
+        "animation_credits": 24
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "meshy-7.1-multi-image-to-3d",
+      "tool_name": "poyo_meshy_7_1_multi_image_to_3d",
+      "service_type": "generate",
+      "category": "3d",
+      "title": "Meshy 7.1 Multi Image to 3D",
+      "description": "Generate a 3D model from 1–4 images of one object; supports standard or 2k geometry.",
+      "tags": [
+        "3d"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "enable_animation"
+              ],
+              "properties": {
+                "enable_animation": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "enable_rigging"
+              ],
+              "properties": {
+                "enable_rigging": {
+                  "const": true
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "anyOf": [
+                {
+                  "required": [
+                    "enable_pbr"
+                  ],
+                  "properties": {
+                    "enable_pbr": {
+                      "const": true
+                    }
+                  }
+                },
+                {
+                  "required": [
+                    "texture_prompt"
+                  ]
+                },
+                {
+                  "required": [
+                    "texture_image_url"
+                  ]
+                }
+              ]
+            },
+            "then": {
+              "properties": {
+                "should_texture": {
+                  "const": true
+                }
+              }
+            }
+          }
+        ],
+        "required": [
+          "image_urls"
+        ],
+        "properties": {
+          "topology": {
+            "enum": [
+              "quad",
+              "triangle"
+            ],
+            "type": "string",
+            "default": "triangle",
+            "description": "Output mesh topology."
+          },
+          "pose_mode": {
+            "enum": [
+              "a-pose",
+              "t-pose",
+              ""
+            ],
+            "type": "string",
+            "default": "",
+            "description": "Character pose; empty string selects no specific pose."
+          },
+          "enable_pbr": {
+            "type": "boolean",
+            "default": false,
+            "description": "Generate PBR texture maps."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(https?://\\S+|data:image/\\S+)$",
+              "description": "Public image URL or image data URI."
+            },
+            "maxItems": 4,
+            "minItems": 1,
+            "description": "Image urls."
+          },
+          "should_remesh": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable remeshing."
+          },
+          "symmetry_mode": {
+            "enum": [
+              "off",
+              "auto",
+              "on"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Mesh symmetry behavior."
+          },
+          "enable_rigging": {
+            "type": "boolean",
+            "default": false,
+            "description": "Rig the generated humanoid character."
+          },
+          "should_texture": {
+            "type": "boolean",
+            "default": true,
+            "description": "Generate textures."
+          },
+          "texture_prompt": {
+            "type": "string",
+            "maxLength": 600,
+            "description": "Texture guidance, at most 600 characters."
+          },
+          "enable_animation": {
+            "type": "boolean",
+            "default": false,
+            "description": "Apply an animation; requires enable_rigging=true."
+          },
+          "target_polycount": {
+            "type": "integer",
+            "default": 30000,
+            "maximum": 300000,
+            "minimum": 100,
+            "description": "Target polygons: 100-300000."
+          },
+          "texture_image_url": {
+            "type": "string",
+            "pattern": "^(https?://\\S+|data:image/\\S+)$",
+            "description": "Public image URL or image data URI."
+          },
+          "animation_action_id": {
+            "type": "integer",
+            "default": 92,
+            "maximum": 696,
+            "minimum": 0,
+            "description": "Animation preset ID, 0-696."
+          },
+          "geometry_resolution": {
+            "enum": [
+              "standard",
+              "2k"
+            ],
+            "type": "string",
+            "description": "Geometry resolution; multi-image generation does not support 4k."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
+          },
+          "rigging_height_meters": {
+            "type": "number",
+            "default": 1.7,
+            "description": "Character height in meters, greater than zero.",
+            "exclusiveMinimum": 0
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "image_urls": [
+            "https://example.com/front.png",
+            "https://example.com/back.png"
+          ],
+          "enable_rigging": true,
+          "enable_animation": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "request",
+        "credits": null,
+        "formula": "base_credits + textured * texture_credits + enable_rigging * rigging_credits + enable_animation * animation_credits",
+        "parameters": {
+          "textured": "mode=full for text-to-3d (default); should_texture=true for image models (default)."
+        },
+        "base_credits": 160,
+        "input_credits": null,
+        "output_credits": null,
+        "rigging_credits": 40,
+        "texture_credits": 80,
+        "animation_credits": 24
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "meshy-7.1-text-to-3d",
+      "tool_name": "poyo_meshy_7_1_text_to_3d",
+      "service_type": "generate",
+      "category": "3d",
+      "title": "Meshy 7.1 Text to 3D",
+      "description": "Generate 3D geometry or textured models from text, with optional rigging and animation.",
+      "tags": [
+        "3d"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "enable_animation"
+              ],
+              "properties": {
+                "enable_animation": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "enable_rigging"
+              ],
+              "properties": {
+                "enable_rigging": {
+                  "const": true
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "model_type"
+              ],
+              "properties": {
+                "model_type": {
+                  "const": "smart-topology"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "target_polycount": {
+                  "maximum": 15000
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "geometry_resolution"
+              ]
+            },
+            "then": {
+              "properties": {
+                "model_type": {
+                  "const": "standard"
+                }
+              }
+            }
+          }
+        ],
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "mode": {
+            "enum": [
+              "preview",
+              "full"
+            ],
+            "type": "string",
+            "default": "full",
+            "description": "preview returns geometry only; full includes textures."
+          },
+          "seed": {
+            "type": "integer",
+            "description": "Random seed; omit to select automatically."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 600,
+            "minLength": 1,
+            "description": "Prompt."
+          },
+          "topology": {
+            "enum": [
+              "quad",
+              "triangle"
+            ],
+            "type": "string",
+            "default": "triangle",
+            "description": "Output mesh topology."
+          },
+          "pose_mode": {
+            "enum": [
+              "a-pose",
+              "t-pose",
+              ""
+            ],
+            "type": "string",
+            "default": "",
+            "description": "Character pose; empty string selects no specific pose."
+          },
+          "enable_pbr": {
+            "type": "boolean",
+            "default": false,
+            "description": "Generate PBR texture maps."
+          },
+          "model_type": {
+            "enum": [
+              "standard",
+              "smart-topology"
+            ],
+            "type": "string",
+            "default": "standard",
+            "description": "Mesh generation method. Lowpoly is not supported by this model version."
+          },
+          "should_remesh": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable remeshing."
+          },
+          "symmetry_mode": {
+            "enum": [
+              "off",
+              "auto",
+              "on"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Mesh symmetry behavior."
+          },
+          "enable_rigging": {
+            "type": "boolean",
+            "default": false,
+            "description": "Rig the generated humanoid character."
+          },
+          "texture_prompt": {
+            "type": "string",
+            "maxLength": 600,
+            "description": "Texture guidance, at most 600 characters."
+          },
+          "enable_animation": {
+            "type": "boolean",
+            "default": false,
+            "description": "Apply an animation; requires enable_rigging=true."
+          },
+          "target_polycount": {
+            "type": "integer",
+            "default": 30000,
+            "maximum": 300000,
+            "minimum": 100,
+            "description": "100-300000 polygons. Smart topology: maximum 15000, default 4000 when omitted."
+          },
+          "texture_image_url": {
+            "type": "string",
+            "pattern": "^(https?://\\S+|data:image/\\S+)$",
+            "description": "Public image URL or image data URI."
+          },
+          "animation_action_id": {
+            "type": "integer",
+            "default": 92,
+            "maximum": 696,
+            "minimum": 0,
+            "description": "Animation preset ID, 0-696."
+          },
+          "geometry_resolution": {
+            "enum": [
+              "standard",
+              "2k",
+              "4k"
+            ],
+            "type": "string",
+            "description": "Geometry resolution. Only available when model_type is standard (the default); omit for smart-topology."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
+          },
+          "rigging_height_meters": {
+            "type": "number",
+            "default": 1.7,
+            "description": "Character height in meters, greater than zero.",
+            "exclusiveMinimum": 0
+          },
+          "enable_prompt_expansion": {
+            "type": "boolean",
+            "default": false,
+            "description": "Expand the prompt before generation."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A ceramic robot with a clean silhouette.",
+          "enable_rigging": true,
+          "enable_animation": true
+        },
+        {
+          "mode": "preview",
+          "prompt": "A ceramic robot.",
+          "model_type": "smart-topology"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "request",
+        "credits": null,
+        "formula": "base_credits + textured * texture_credits + enable_rigging * rigging_credits + enable_animation * animation_credits",
+        "parameters": {
+          "textured": "mode=full for text-to-3d (default); should_texture=true for image models (default)."
+        },
+        "base_credits": 160,
+        "input_credits": null,
+        "output_credits": null,
+        "rigging_credits": 40,
+        "texture_credits": 80,
+        "animation_credits": 24
       },
       "status": "stable"
     },
@@ -2447,6 +3239,318 @@
       "status": "stable"
     },
     {
+      "model_id": "elevenlabs-v4-tts",
+      "tool_name": "poyo_elevenlabs_v4_tts",
+      "service_type": "generate",
+      "category": "audio",
+      "title": "ElevenLabs V4 TTS",
+      "description": "Generate expressive speech with voice controls, 19 audio formats, and optional timestamps.",
+      "tags": [
+        "audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 5000,
+            "minLength": 1,
+            "description": "Text."
+          },
+          "voice": {
+            "type": "string",
+            "default": "Rachel",
+            "pattern": "\\S",
+            "minLength": 1,
+            "description": "Prebuilt voice for single-speaker speech."
+          },
+          "stability": {
+            "type": "number",
+            "default": 0.5,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Voice stability, from 0 to 1."
+          },
+          "timestamps": {
+            "type": "boolean",
+            "default": false,
+            "description": "Return timing data as a separate JSON file when available."
+          },
+          "language_code": {
+            "type": "string",
+            "description": "ISO 639-1 language code."
+          },
+          "output_format": {
+            "enum": [
+              "mp3_22050_32",
+              "mp3_44100_32",
+              "mp3_44100_64",
+              "mp3_44100_96",
+              "mp3_44100_128",
+              "mp3_44100_192",
+              "pcm_8000",
+              "pcm_16000",
+              "pcm_22050",
+              "pcm_24000",
+              "pcm_44100",
+              "pcm_48000",
+              "ulaw_8000",
+              "alaw_8000",
+              "opus_48000_32",
+              "opus_48000_64",
+              "opus_48000_96",
+              "opus_48000_128",
+              "opus_48000_192"
+            ],
+            "type": "string",
+            "default": "mp3_44100_128",
+            "description": "Audio codec, sample rate, and bitrate."
+          },
+          "similarity_boost": {
+            "type": "number",
+            "default": 0.75,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Voice similarity, from 0 to 1."
+          },
+          "apply_text_normalization": {
+            "enum": [
+              "auto",
+              "on",
+              "off"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Normalize numbers and dates."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "text": "Hello! Welcome to PoYo."
+        },
+        {
+          "text": "Welcome to PoYo.",
+          "timestamps": true,
+          "output_format": "pcm_24000"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "1000_characters",
+        "credits": null,
+        "formula": "len(text) * credits_per_1000_characters / 1000",
+        "input_credits": null,
+        "output_credits": null,
+        "credits_per_1000_characters": 16
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "elevenlabs-v4-turbo-tts",
+      "tool_name": "poyo_elevenlabs_v4_turbo_tts",
+      "service_type": "generate",
+      "category": "audio",
+      "title": "ElevenLabs V4 Turbo TTS",
+      "description": "Generate fast speech with voice controls, 19 audio formats, and optional timestamps.",
+      "tags": [
+        "audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 5000,
+            "minLength": 1,
+            "description": "Text."
+          },
+          "voice": {
+            "type": "string",
+            "default": "Rachel",
+            "pattern": "\\S",
+            "minLength": 1,
+            "description": "Prebuilt voice for single-speaker speech."
+          },
+          "stability": {
+            "type": "number",
+            "default": 0.5,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Voice stability, from 0 to 1."
+          },
+          "timestamps": {
+            "type": "boolean",
+            "default": false,
+            "description": "Return timing data as a separate JSON file when available."
+          },
+          "language_code": {
+            "type": "string",
+            "description": "ISO 639-1 language code."
+          },
+          "output_format": {
+            "enum": [
+              "mp3_22050_32",
+              "mp3_44100_32",
+              "mp3_44100_64",
+              "mp3_44100_96",
+              "mp3_44100_128",
+              "mp3_44100_192",
+              "pcm_8000",
+              "pcm_16000",
+              "pcm_22050",
+              "pcm_24000",
+              "pcm_44100",
+              "pcm_48000",
+              "ulaw_8000",
+              "alaw_8000",
+              "opus_48000_32",
+              "opus_48000_64",
+              "opus_48000_96",
+              "opus_48000_128",
+              "opus_48000_192"
+            ],
+            "type": "string",
+            "default": "mp3_44100_128",
+            "description": "Audio codec, sample rate, and bitrate."
+          },
+          "similarity_boost": {
+            "type": "number",
+            "default": 0.75,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Voice similarity, from 0 to 1."
+          },
+          "apply_text_normalization": {
+            "enum": [
+              "auto",
+              "on",
+              "off"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Normalize numbers and dates."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "text": "Hello! Welcome to PoYo."
+        },
+        {
+          "text": "Welcome to PoYo.",
+          "timestamps": true,
+          "output_format": "pcm_24000"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "1000_characters",
+        "credits": null,
+        "formula": "len(text) * credits_per_1000_characters / 1000",
+        "input_credits": null,
+        "output_credits": null,
+        "credits_per_1000_characters": 8
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "gemini-3-1-flash-tts",
       "tool_name": "poyo_gemini_3_1_flash_tts",
       "service_type": "generate",
@@ -2773,6 +3877,562 @@
         "input_credits": null,
         "output_credits": null,
         "credits_per_unit": 24
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gemini-3.8-flash-lite-tts",
+      "tool_name": "poyo_gemini_3_8_flash_lite_tts",
+      "service_type": "generate",
+      "category": "audio",
+      "title": "Gemini 3.8 Flash Lite TTS",
+      "description": "Generate native WAV speech from a transcript or a two-speaker dialogue.",
+      "tags": [
+        "audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "oneOf": [
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "speakers"
+                  ]
+                },
+                {
+                  "required": [
+                    "turns"
+                  ]
+                }
+              ]
+            },
+            "required": [
+              "text"
+            ]
+          },
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "voice"
+                  ]
+                }
+              ]
+            },
+            "required": [
+              "speakers",
+              "turns"
+            ]
+          }
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "pattern": "\\S",
+            "minLength": 1,
+            "description": "Single-speaker transcript. Complete input is limited to 8192 tokens. Omit for dialogue."
+          },
+          "turns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "speaker_id",
+                "text"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "minLength": 1
+                },
+                "speaker_id": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "minLength": 1
+                },
+                "style_instructions": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "description": "Ordered dialogue turns referencing configured speakers."
+          },
+          "voice": {
+            "enum": [
+              "Achernar",
+              "Achird",
+              "Algenib",
+              "Algieba",
+              "Alnilam",
+              "Aoede",
+              "Autonoe",
+              "Callirrhoe",
+              "Charon",
+              "Despina",
+              "Enceladus",
+              "Erinome",
+              "Fenrir",
+              "Gacrux",
+              "Iapetus",
+              "Kore",
+              "Laomedeia",
+              "Leda",
+              "Orus",
+              "Pulcherrima",
+              "Puck",
+              "Rasalgethi",
+              "Sadachbia",
+              "Sadaltager",
+              "Schedar",
+              "Sulafat",
+              "Umbriel",
+              "Vindemiatrix",
+              "Zephyr",
+              "Zubenelgenubi"
+            ],
+            "type": "string",
+            "default": "Kore",
+            "description": "Prebuilt voice for single-speaker speech."
+          },
+          "speakers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "speaker_id",
+                "voice"
+              ],
+              "properties": {
+                "voice": {
+                  "enum": [
+                    "Achernar",
+                    "Achird",
+                    "Algenib",
+                    "Algieba",
+                    "Alnilam",
+                    "Aoede",
+                    "Autonoe",
+                    "Callirrhoe",
+                    "Charon",
+                    "Despina",
+                    "Enceladus",
+                    "Erinome",
+                    "Fenrir",
+                    "Gacrux",
+                    "Iapetus",
+                    "Kore",
+                    "Laomedeia",
+                    "Leda",
+                    "Orus",
+                    "Pulcherrima",
+                    "Puck",
+                    "Rasalgethi",
+                    "Sadachbia",
+                    "Sadaltager",
+                    "Schedar",
+                    "Sulafat",
+                    "Umbriel",
+                    "Vindemiatrix",
+                    "Zephyr",
+                    "Zubenelgenubi"
+                  ],
+                  "type": "string"
+                },
+                "speaker_id": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "description": "Exactly two speakers with distinct speaker_id values."
+          },
+          "style_instructions": {
+            "type": "string",
+            "description": "Global delivery style, separate from the transcript."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "text": "Hello! Welcome to PoYo."
+        },
+        {
+          "turns": [
+            {
+              "text": "Welcome!",
+              "speaker_id": "host"
+            },
+            {
+              "text": "Thank you.",
+              "speaker_id": "guest",
+              "style_instructions": "Warm and friendly."
+            }
+          ],
+          "speakers": [
+            {
+              "voice": "Kore",
+              "speaker_id": "host"
+            },
+            {
+              "voice": "Puck",
+              "speaker_id": "guest"
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "1000_characters",
+        "credits": null,
+        "formula": "billable_characters * credits_per_1000_characters / 1000",
+        "parameters": {
+          "billable_characters": "Single-speaker text or sum of turns.text, plus global and per-turn style_instructions; speaker IDs are excluded."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "credits_per_1000_characters": 6
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gemini-3.8-flash-tts",
+      "tool_name": "poyo_gemini_3_8_flash_tts",
+      "service_type": "generate",
+      "category": "audio",
+      "title": "Gemini 3.8 Flash TTS",
+      "description": "Generate native WAV speech from a transcript or a two-speaker dialogue with style guidance.",
+      "tags": [
+        "audio"
+      ],
+      "input_schema": {
+        "type": "object",
+        "oneOf": [
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "speakers"
+                  ]
+                },
+                {
+                  "required": [
+                    "turns"
+                  ]
+                }
+              ]
+            },
+            "required": [
+              "text"
+            ]
+          },
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "voice"
+                  ]
+                }
+              ]
+            },
+            "required": [
+              "speakers",
+              "turns"
+            ]
+          }
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "pattern": "\\S",
+            "minLength": 1,
+            "description": "Single-speaker transcript. Complete input is limited to 8192 tokens. Omit for dialogue."
+          },
+          "turns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "speaker_id",
+                "text"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "minLength": 1
+                },
+                "speaker_id": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "minLength": 1
+                },
+                "style_instructions": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "description": "Ordered dialogue turns referencing configured speakers."
+          },
+          "voice": {
+            "enum": [
+              "Achernar",
+              "Achird",
+              "Algenib",
+              "Algieba",
+              "Alnilam",
+              "Aoede",
+              "Autonoe",
+              "Callirrhoe",
+              "Charon",
+              "Despina",
+              "Enceladus",
+              "Erinome",
+              "Fenrir",
+              "Gacrux",
+              "Iapetus",
+              "Kore",
+              "Laomedeia",
+              "Leda",
+              "Orus",
+              "Pulcherrima",
+              "Puck",
+              "Rasalgethi",
+              "Sadachbia",
+              "Sadaltager",
+              "Schedar",
+              "Sulafat",
+              "Umbriel",
+              "Vindemiatrix",
+              "Zephyr",
+              "Zubenelgenubi"
+            ],
+            "type": "string",
+            "default": "Kore",
+            "description": "Prebuilt voice for single-speaker speech."
+          },
+          "speakers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "speaker_id",
+                "voice"
+              ],
+              "properties": {
+                "voice": {
+                  "enum": [
+                    "Achernar",
+                    "Achird",
+                    "Algenib",
+                    "Algieba",
+                    "Alnilam",
+                    "Aoede",
+                    "Autonoe",
+                    "Callirrhoe",
+                    "Charon",
+                    "Despina",
+                    "Enceladus",
+                    "Erinome",
+                    "Fenrir",
+                    "Gacrux",
+                    "Iapetus",
+                    "Kore",
+                    "Laomedeia",
+                    "Leda",
+                    "Orus",
+                    "Pulcherrima",
+                    "Puck",
+                    "Rasalgethi",
+                    "Sadachbia",
+                    "Sadaltager",
+                    "Schedar",
+                    "Sulafat",
+                    "Umbriel",
+                    "Vindemiatrix",
+                    "Zephyr",
+                    "Zubenelgenubi"
+                  ],
+                  "type": "string"
+                },
+                "speaker_id": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "description": "Exactly two speakers with distinct speaker_id values."
+          },
+          "style_instructions": {
+            "type": "string",
+            "description": "Global delivery style, separate from the transcript."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "text": "Hello! Welcome to PoYo."
+        },
+        {
+          "turns": [
+            {
+              "text": "Welcome!",
+              "speaker_id": "host"
+            },
+            {
+              "text": "Thank you.",
+              "speaker_id": "guest",
+              "style_instructions": "Warm and friendly."
+            }
+          ],
+          "speakers": [
+            {
+              "voice": "Kore",
+              "speaker_id": "host"
+            },
+            {
+              "voice": "Puck",
+              "speaker_id": "guest"
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "1000_characters",
+        "credits": null,
+        "formula": "billable_characters * credits_per_1000_characters / 1000",
+        "parameters": {
+          "billable_characters": "Single-speaker text or sum of turns.text, plus global and per-turn style_instructions; speaker IDs are excluded."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "credits_per_1000_characters": 9
       },
       "status": "stable"
     },
@@ -5306,6 +6966,123 @@
         "credits": null,
         "input_credits": 160,
         "output_credits": 800
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "claude-haiku-5-5",
+      "tool_name": "poyo_claude_haiku_5_5",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "Claude Haiku 5.5",
+      "description": "Claude Haiku 5.5 with fixed token pricing; OpenAI Chat and Anthropic Messages.",
+      "tags": [
+        "anthropic",
+        "chat",
+        "openai-chat"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "stream": {
+            "type": "boolean",
+            "default": false
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string"
+                },
+                "content": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 128,
+            "minimum": 1
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "usage": {
+            "type": "object"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": "Reply with exactly OK."
+            }
+          ],
+          "max_tokens": 128
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "anthropic"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 16,
+        "output_credits": 80,
+        "token_price_config": {
+          "cache_read": 1.6,
+          "cache_write": 20,
+          "cache_write_1h": 32,
+          "cache_write_5m": 20,
+          "cache_billing_mode": "charge"
+        }
       },
       "status": "stable"
     },
@@ -9663,6 +11440,243 @@
         "credits": null,
         "input_credits": 120,
         "output_credits": 600
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gemini-4-argon",
+      "tool_name": "poyo_gemini_4_argon",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gemini-4-argon",
+      "description": "Run the PoYo gemini-4-argon model.",
+      "tags": [
+        "chat",
+        "gemini",
+        "openai-chat",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "gemini"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 320,
+        "output_credits": 1600
       },
       "status": "stable"
     },
@@ -14181,6 +16195,363 @@
           "2K": 11
         },
         "input_image_credits": 2
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "ideogram-v4.5",
+      "tool_name": "poyo_ideogram_v4_5",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Ideogram V4.5",
+      "description": "Generate images from a prompt with quality and size controls.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "default": 1,
+            "maximum": 8,
+            "minimum": 1,
+            "description": "Number of output images."
+          },
+          "size": {
+            "enum": [
+              "1:1",
+              "1:1 HD",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "1024x1024",
+              "1024x3072",
+              "1120x896",
+              "1152x2944",
+              "1152x864",
+              "1248x3328",
+              "1248x832",
+              "1280x3072",
+              "1280x720",
+              "1280x800",
+              "1296x3168",
+              "1440x2560",
+              "1440x2880",
+              "1440x720",
+              "1600x2560",
+              "1664x2496",
+              "1728x2304",
+              "1792x2240",
+              "2048x2048",
+              "2240x1792",
+              "2304x1728",
+              "2496x1664",
+              "2560x1440",
+              "2560x1600",
+              "2880x1440",
+              "2944x1152",
+              "3072x1024",
+              "3072x1280",
+              "3168x1296",
+              "3328x1248",
+              "720x1280",
+              "720x1440",
+              "800x1280",
+              "832x1248",
+              "864x1152",
+              "896x1120"
+            ],
+            "type": "string",
+            "default": "1:1 HD",
+            "description": "Use 1:1, 1:1 HD, 4:3, 3:4, 16:9, 9:16, or one of these exact sizes: 1024x1024, 1024x3072, 1120x896, 1152x2944, 1152x864, 1248x3328, 1248x832, 1280x3072, 1280x720, 1280x800, 1296x3168, 1440x2560, 1440x2880, 1440x720, 1600x2560, 1664x2496, 1728x2304, 1792x2240, 2048x2048, 2240x1792, 2304x1728, 2496x1664, 2560x1440, 2560x1600, 2880x1440, 2944x1152, 3072x1024, 3072x1280, 3168x1296, 3328x1248, 720x1280, 720x1440, 800x1280, 832x1248, 864x1152, 896x1120."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Prompt."
+          },
+          "quality": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string",
+            "default": "medium",
+            "description": "Output quality."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A ceramic robot with a clean silhouette."
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "n * quality_credits[quality]",
+        "input_credits": null,
+        "output_credits": null,
+        "quality_credits": {
+          "low": 6,
+          "high": 44,
+          "medium": 12
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "ideogram-v4.5-edit",
+      "tool_name": "poyo_ideogram_v4_5_edit",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Ideogram V4.5 Edit",
+      "description": "Edit exactly one primary image with references, optional masks, and precision controls.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "mask_url"
+              ]
+            },
+            "then": {
+              "properties": {
+                "size": {
+                  "const": "auto"
+                },
+                "reference_image_urls": {
+                  "maxItems": 3
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "edit_precision"
+              ],
+              "properties": {
+                "edit_precision": {
+                  "const": "high"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "size": {
+                  "const": "auto"
+                }
+              }
+            }
+          }
+        ],
+        "required": [
+          "prompt",
+          "image_urls"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "default": 1,
+            "maximum": 8,
+            "minimum": 1,
+            "description": "Number of output images."
+          },
+          "size": {
+            "type": "string",
+            "default": "auto",
+            "pattern": "^(auto|1:1|1:1 HD|4:3|3:4|16:9|9:16|[0-9]+x[0-9]+)$",
+            "description": "auto preserves the source size. Explicit sizes require an unmasked regular edit. Minimum dimension 256; multiples of 32; at most 4194304 pixels; aspect ratio at most 6:1."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Prompt."
+          },
+          "quality": {
+            "enum": [
+              "very_low",
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string",
+            "default": "medium",
+            "description": "Output quality."
+          },
+          "mask_url": {
+            "type": "string",
+            "pattern": "^(https?://\\S+|data:image/\\S+)$",
+            "description": "Same dimensions as the source. Black edits; white preserves; both regions are required."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(https?://\\S+|data:image/\\S+)$",
+              "description": "Public image URL or image data URI."
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one primary source image."
+          },
+          "edit_precision": {
+            "enum": [
+              "regular",
+              "high"
+            ],
+            "type": "string",
+            "default": "regular",
+            "description": "regular edit or high-precision edit with unchanged-pixel restoration."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(https?://\\S+|data:image/\\S+)$",
+              "description": "Public image URL or image data URI."
+            },
+            "maxItems": 4,
+            "description": "Up to four reference images; at most three when mask_url is provided."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-13T10:30:00+08:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "Replace the background with a blue studio.",
+          "image_urls": [
+            "https://example.com/source.png"
+          ]
+        },
+        {
+          "prompt": "Replace the black mask area with flowers.",
+          "mask_url": "https://example.com/mask.png",
+          "image_urls": [
+            "https://example.com/source.png"
+          ],
+          "edit_precision": "high",
+          "reference_image_urls": [
+            "https://example.com/flowers.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "n * quality_credits[quality]",
+        "input_credits": null,
+        "output_credits": null,
+        "quality_credits": {
+          "low": 6,
+          "high": 44,
+          "medium": 12,
+          "very_low": 1.6
+        }
       },
       "status": "stable"
     },
@@ -22262,30 +24633,6 @@
         "moderation"
       ],
       "input_schema": {
-        "type": "object",
-        "additionalProperties": false,
-        "description": "At least one of prompt or image_urls is required; both may be provided. Provide non-whitespace text or one HTTPS image URL. image_urls accepts at most one HTTPS image URL, and prompt may accompany the image.",
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "description": "Text to review. Optional when image_urls contains one image; may be provided together with the image.",
-            "example": "A peaceful mountain landscape."
-          },
-          "image_urls": {
-            "type": "array",
-            "maxItems": 1,
-            "description": "At most one HTTPS image URL to review. Optional when prompt contains non-whitespace text; prompt may accompany the image.",
-            "items": {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^https://",
-              "description": "HTTPS URL of an image to review."
-            },
-            "example": [
-              "https://example.com/image.jpg"
-            ]
-          }
-        },
         "not": {
           "properties": {
             "prompt": {
@@ -22297,7 +24644,31 @@
               "maxItems": 0
             }
           }
-        }
+        },
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "example": "A peaceful mountain landscape.",
+            "description": "Text to review. Optional when image_urls contains one image; may be provided together with the image."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://",
+              "description": "HTTPS URL of an image to review."
+            },
+            "example": [
+              "https://example.com/image.jpg"
+            ],
+            "maxItems": 1,
+            "description": "At most one HTTPS image URL to review. Optional when prompt contains non-whitespace text; prompt may accompany the image."
+          }
+        },
+        "description": "At least one of prompt or image_urls is required; both may be provided. Provide non-whitespace text or one HTTPS image URL. image_urls accepts at most one HTTPS image URL, and prompt may accompany the image.",
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -22321,41 +24692,21 @@
               "progress"
             ],
             "properties": {
-              "task_id": {
-                "type": "string"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started",
-                  "running",
-                  "finished",
-                  "failed"
-                ],
-                "description": "finished means the review completed, including when results[].flagged is true."
-              },
-              "credits_amount": {
-                "type": "number",
-                "const": 0,
-                "description": "FREE: Omni Moderation charges 0 credits."
-              },
               "files": {
                 "type": "array",
-                "maxItems": 0,
                 "items": {
                   "type": "object"
                 },
+                "maxItems": 0,
                 "description": "Always empty for Omni Moderation. Read the structured review from output."
               },
               "output": {
                 "type": "object",
-                "description": "Complete OpenAI response, available when the review has finished.",
                 "required": [
                   "id",
                   "model",
                   "results"
                 ],
-                "additionalProperties": true,
                 "properties": {
                   "id": {
                     "type": "string",
@@ -22367,7 +24718,6 @@
                   },
                   "results": {
                     "type": "array",
-                    "description": "Moderation classifications returned by OpenAI.",
                     "items": {
                       "type": "object",
                       "required": [
@@ -22376,7 +24726,6 @@
                         "category_scores",
                         "category_applied_input_types"
                       ],
-                      "additionalProperties": true,
                       "properties": {
                         "flagged": {
                           "type": "boolean",
@@ -22394,8 +24743,8 @@
                           "description": "OpenAI category names mapped to confidence scores.",
                           "additionalProperties": {
                             "type": "number",
-                            "minimum": 0,
-                            "maximum": 1
+                            "maximum": 1,
+                            "minimum": 0
                           }
                         },
                         "category_applied_input_types": {
@@ -22404,27 +24753,44 @@
                           "additionalProperties": {
                             "type": "array",
                             "items": {
-                              "type": "string",
                               "enum": [
                                 "text",
                                 "image"
-                              ]
+                              ],
+                              "type": "string"
                             }
                           }
                         }
-                      }
-                    }
+                      },
+                      "additionalProperties": true
+                    },
+                    "description": "Moderation classifications returned by OpenAI."
                   }
-                }
+                },
+                "description": "Complete OpenAI response, available when the review has finished.",
+                "additionalProperties": true
+              },
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "description": "finished means the review completed, including when results[].flagged is true."
+              },
+              "task_id": {
+                "type": "string"
+              },
+              "progress": {
+                "type": "integer",
+                "maximum": 100,
+                "minimum": 0
               },
               "created_time": {
                 "type": "string",
                 "format": "date-time"
-              },
-              "progress": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 100
               },
               "error_message": {
                 "type": [
@@ -22432,6 +24798,11 @@
                   "null"
                 ],
                 "description": "Task execution error, if the request failed. Content flagged by a completed review is not an execution error."
+              },
+              "credits_amount": {
+                "type": "number",
+                "const": 0,
+                "description": "FREE: Omni Moderation charges 0 credits."
               }
             }
           }
@@ -22464,9 +24835,9 @@
         "type": "fixed",
         "unit": "request",
         "credits": 0,
+        "display": "FREE",
         "input_credits": null,
-        "output_credits": null,
-        "display": "FREE"
+        "output_credits": null
       },
       "status": "stable"
     },
@@ -36593,2023 +38964,6 @@
             "15": 360
           }
         },
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "ideogram-v4.5",
-      "tool_name": "poyo_ideogram_v4_5",
-      "service_type": "generate",
-      "category": "image",
-      "title": "Ideogram V4.5",
-      "description": "Generate images from a prompt with quality and size controls.",
-      "tags": [
-        "image"
-      ],
-      "input_schema": {
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "quality": {
-            "enum": [
-              "low",
-              "medium",
-              "high"
-            ],
-            "default": "medium",
-            "type": "string",
-            "description": "Output quality."
-          },
-          "prompt": {
-            "type": "string",
-            "maxLength": 10000,
-            "minLength": 1,
-            "pattern": "\\S",
-            "description": "Prompt."
-          },
-          "n": {
-            "minimum": 1,
-            "default": 1,
-            "maximum": 8,
-            "type": "integer",
-            "description": "Number of output images."
-          },
-          "size": {
-            "type": "string",
-            "default": "1:1 HD",
-            "description": "Use 1:1, 1:1 HD, 4:3, 3:4, 16:9, 9:16, or one of these exact sizes: 1024x1024, 1024x3072, 1120x896, 1152x2944, 1152x864, 1248x3328, 1248x832, 1280x3072, 1280x720, 1280x800, 1296x3168, 1440x2560, 1440x2880, 1440x720, 1600x2560, 1664x2496, 1728x2304, 1792x2240, 2048x2048, 2240x1792, 2304x1728, 2496x1664, 2560x1440, 2560x1600, 2880x1440, 2944x1152, 3072x1024, 3072x1280, 3168x1296, 3328x1248, 720x1280, 720x1440, 800x1280, 832x1248, 864x1152, 896x1120.",
-            "enum": [
-              "1:1",
-              "1:1 HD",
-              "4:3",
-              "3:4",
-              "16:9",
-              "9:16",
-              "1024x1024",
-              "1024x3072",
-              "1120x896",
-              "1152x2944",
-              "1152x864",
-              "1248x3328",
-              "1248x832",
-              "1280x3072",
-              "1280x720",
-              "1280x800",
-              "1296x3168",
-              "1440x2560",
-              "1440x2880",
-              "1440x720",
-              "1600x2560",
-              "1664x2496",
-              "1728x2304",
-              "1792x2240",
-              "2048x2048",
-              "2240x1792",
-              "2304x1728",
-              "2496x1664",
-              "2560x1440",
-              "2560x1600",
-              "2880x1440",
-              "2944x1152",
-              "3072x1024",
-              "3072x1280",
-              "3168x1296",
-              "3328x1248",
-              "720x1280",
-              "720x1440",
-              "800x1280",
-              "832x1248",
-              "864x1152",
-              "896x1120"
-            ]
-          }
-        }
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A ceramic robot with a clean silhouette."
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "image",
-        "formula": "n * quality_credits[quality]",
-        "quality_credits": {
-          "low": 6,
-          "medium": 12,
-          "high": 44
-        },
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "ideogram-v4.5-edit",
-      "tool_name": "poyo_ideogram_v4_5_edit",
-      "service_type": "generate",
-      "category": "image",
-      "title": "Ideogram V4.5 Edit",
-      "description": "Edit exactly one primary image with references, optional masks, and precision controls.",
-      "tags": [
-        "image"
-      ],
-      "input_schema": {
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "prompt",
-          "image_urls"
-        ],
-        "properties": {
-          "mask_url": {
-            "type": "string",
-            "pattern": "^(https?://\\S+|data:image/\\S+)$",
-            "description": "Same dimensions as the source. Black edits; white preserves; both regions are required."
-          },
-          "reference_image_urls": {
-            "maxItems": 4,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^(https?://\\S+|data:image/\\S+)$",
-              "description": "Public image URL or image data URI."
-            },
-            "description": "Up to four reference images; at most three when mask_url is provided."
-          },
-          "edit_precision": {
-            "enum": [
-              "regular",
-              "high"
-            ],
-            "default": "regular",
-            "type": "string",
-            "description": "regular edit or high-precision edit with unchanged-pixel restoration."
-          },
-          "quality": {
-            "enum": [
-              "very_low",
-              "low",
-              "medium",
-              "high"
-            ],
-            "default": "medium",
-            "type": "string",
-            "description": "Output quality."
-          },
-          "prompt": {
-            "type": "string",
-            "maxLength": 10000,
-            "minLength": 1,
-            "pattern": "\\S",
-            "description": "Prompt."
-          },
-          "n": {
-            "minimum": 1,
-            "default": 1,
-            "maximum": 8,
-            "type": "integer",
-            "description": "Number of output images."
-          },
-          "size": {
-            "type": "string",
-            "default": "auto",
-            "description": "auto preserves the source size. Explicit sizes require an unmasked regular edit. Minimum dimension 256; multiples of 32; at most 4194304 pixels; aspect ratio at most 6:1.",
-            "pattern": "^(auto|1:1|1:1 HD|4:3|3:4|16:9|9:16|[0-9]+x[0-9]+)$"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^(https?://\\S+|data:image/\\S+)$",
-              "description": "Public image URL or image data URI."
-            },
-            "minItems": 1,
-            "maxItems": 1,
-            "description": "Exactly one primary source image."
-          }
-        },
-        "allOf": [
-          {
-            "if": {
-              "required": [
-                "mask_url"
-              ]
-            },
-            "then": {
-              "properties": {
-                "reference_image_urls": {
-                  "maxItems": 3
-                },
-                "size": {
-                  "const": "auto"
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "edit_precision"
-              ],
-              "properties": {
-                "edit_precision": {
-                  "const": "high"
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "size": {
-                  "const": "auto"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "Replace the background with a blue studio.",
-          "image_urls": [
-            "https://example.com/source.png"
-          ]
-        },
-        {
-          "prompt": "Replace the black mask area with flowers.",
-          "image_urls": [
-            "https://example.com/source.png"
-          ],
-          "mask_url": "https://example.com/mask.png",
-          "reference_image_urls": [
-            "https://example.com/flowers.png"
-          ],
-          "edit_precision": "high"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "image",
-        "formula": "n * quality_credits[quality]",
-        "quality_credits": {
-          "low": 6,
-          "medium": 12,
-          "high": 44,
-          "very_low": 1.6
-        },
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "elevenlabs-v4-tts",
-      "tool_name": "poyo_elevenlabs_v4_tts",
-      "service_type": "generate",
-      "category": "audio",
-      "title": "ElevenLabs V4 TTS",
-      "description": "Generate expressive speech with voice controls, 19 audio formats, and optional timestamps.",
-      "tags": [
-        "audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "text"
-        ],
-        "properties": {
-          "output_format": {
-            "type": "string",
-            "enum": [
-              "mp3_22050_32",
-              "mp3_44100_32",
-              "mp3_44100_64",
-              "mp3_44100_96",
-              "mp3_44100_128",
-              "mp3_44100_192",
-              "pcm_8000",
-              "pcm_16000",
-              "pcm_22050",
-              "pcm_24000",
-              "pcm_44100",
-              "pcm_48000",
-              "ulaw_8000",
-              "alaw_8000",
-              "opus_48000_32",
-              "opus_48000_64",
-              "opus_48000_96",
-              "opus_48000_128",
-              "opus_48000_192"
-            ],
-            "default": "mp3_44100_128",
-            "description": "Audio codec, sample rate, and bitrate."
-          },
-          "language_code": {
-            "type": "string",
-            "description": "ISO 639-1 language code."
-          },
-          "apply_text_normalization": {
-            "type": "string",
-            "enum": [
-              "auto",
-              "on",
-              "off"
-            ],
-            "default": "auto",
-            "description": "Normalize numbers and dates."
-          },
-          "stability": {
-            "type": "number",
-            "default": 0.5,
-            "maximum": 1,
-            "minimum": 0,
-            "description": "Voice stability, from 0 to 1."
-          },
-          "text": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 5000,
-            "pattern": "\\S",
-            "description": "Text."
-          },
-          "voice": {
-            "type": "string",
-            "default": "Rachel",
-            "minLength": 1,
-            "pattern": "\\S",
-            "description": "Prebuilt voice for single-speaker speech."
-          },
-          "similarity_boost": {
-            "type": "number",
-            "default": 0.75,
-            "maximum": 1,
-            "minimum": 0,
-            "description": "Voice similarity, from 0 to 1."
-          },
-          "timestamps": {
-            "type": "boolean",
-            "default": false,
-            "description": "Return timing data as a separate JSON file when available."
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "text": "Hello! Welcome to PoYo."
-        },
-        {
-          "text": "Welcome to PoYo.",
-          "timestamps": true,
-          "output_format": "pcm_24000"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "1000_characters",
-        "formula": "len(text) * credits_per_1000_characters / 1000",
-        "credits_per_1000_characters": 16,
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "elevenlabs-v4-turbo-tts",
-      "tool_name": "poyo_elevenlabs_v4_turbo_tts",
-      "service_type": "generate",
-      "category": "audio",
-      "title": "ElevenLabs V4 Turbo TTS",
-      "description": "Generate fast speech with voice controls, 19 audio formats, and optional timestamps.",
-      "tags": [
-        "audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "text"
-        ],
-        "properties": {
-          "output_format": {
-            "type": "string",
-            "enum": [
-              "mp3_22050_32",
-              "mp3_44100_32",
-              "mp3_44100_64",
-              "mp3_44100_96",
-              "mp3_44100_128",
-              "mp3_44100_192",
-              "pcm_8000",
-              "pcm_16000",
-              "pcm_22050",
-              "pcm_24000",
-              "pcm_44100",
-              "pcm_48000",
-              "ulaw_8000",
-              "alaw_8000",
-              "opus_48000_32",
-              "opus_48000_64",
-              "opus_48000_96",
-              "opus_48000_128",
-              "opus_48000_192"
-            ],
-            "default": "mp3_44100_128",
-            "description": "Audio codec, sample rate, and bitrate."
-          },
-          "language_code": {
-            "type": "string",
-            "description": "ISO 639-1 language code."
-          },
-          "apply_text_normalization": {
-            "type": "string",
-            "enum": [
-              "auto",
-              "on",
-              "off"
-            ],
-            "default": "auto",
-            "description": "Normalize numbers and dates."
-          },
-          "stability": {
-            "type": "number",
-            "default": 0.5,
-            "maximum": 1,
-            "minimum": 0,
-            "description": "Voice stability, from 0 to 1."
-          },
-          "text": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 5000,
-            "pattern": "\\S",
-            "description": "Text."
-          },
-          "voice": {
-            "type": "string",
-            "default": "Rachel",
-            "minLength": 1,
-            "pattern": "\\S",
-            "description": "Prebuilt voice for single-speaker speech."
-          },
-          "similarity_boost": {
-            "type": "number",
-            "default": 0.75,
-            "maximum": 1,
-            "minimum": 0,
-            "description": "Voice similarity, from 0 to 1."
-          },
-          "timestamps": {
-            "type": "boolean",
-            "default": false,
-            "description": "Return timing data as a separate JSON file when available."
-          }
-        },
-        "additionalProperties": false
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "text": "Hello! Welcome to PoYo."
-        },
-        {
-          "text": "Welcome to PoYo.",
-          "timestamps": true,
-          "output_format": "pcm_24000"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "1000_characters",
-        "formula": "len(text) * credits_per_1000_characters / 1000",
-        "credits_per_1000_characters": 8,
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "gemini-3.8-flash-lite-tts",
-      "tool_name": "poyo_gemini_3_8_flash_lite_tts",
-      "service_type": "generate",
-      "category": "audio",
-      "title": "Gemini 3.8 Flash Lite TTS",
-      "description": "Generate native WAV speech from a transcript or a two-speaker dialogue.",
-      "tags": [
-        "audio"
-      ],
-      "input_schema": {
-        "additionalProperties": false,
-        "type": "object",
-        "properties": {
-          "enable_safety_checker": {
-            "default": true,
-            "type": "boolean",
-            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
-          },
-          "speakers": {
-            "maxItems": 2,
-            "minItems": 2,
-            "type": "array",
-            "items": {
-              "required": [
-                "speaker_id",
-                "voice"
-              ],
-              "additionalProperties": false,
-              "type": "object",
-              "properties": {
-                "speaker_id": {
-                  "minLength": 1,
-                  "type": "string",
-                  "pattern": "\\S"
-                },
-                "voice": {
-                  "enum": [
-                    "Achernar",
-                    "Achird",
-                    "Algenib",
-                    "Algieba",
-                    "Alnilam",
-                    "Aoede",
-                    "Autonoe",
-                    "Callirrhoe",
-                    "Charon",
-                    "Despina",
-                    "Enceladus",
-                    "Erinome",
-                    "Fenrir",
-                    "Gacrux",
-                    "Iapetus",
-                    "Kore",
-                    "Laomedeia",
-                    "Leda",
-                    "Orus",
-                    "Pulcherrima",
-                    "Puck",
-                    "Rasalgethi",
-                    "Sadachbia",
-                    "Sadaltager",
-                    "Schedar",
-                    "Sulafat",
-                    "Umbriel",
-                    "Vindemiatrix",
-                    "Zephyr",
-                    "Zubenelgenubi"
-                  ],
-                  "type": "string"
-                }
-              }
-            },
-            "description": "Exactly two speakers with distinct speaker_id values."
-          },
-          "style_instructions": {
-            "type": "string",
-            "description": "Global delivery style, separate from the transcript."
-          },
-          "voice": {
-            "enum": [
-              "Achernar",
-              "Achird",
-              "Algenib",
-              "Algieba",
-              "Alnilam",
-              "Aoede",
-              "Autonoe",
-              "Callirrhoe",
-              "Charon",
-              "Despina",
-              "Enceladus",
-              "Erinome",
-              "Fenrir",
-              "Gacrux",
-              "Iapetus",
-              "Kore",
-              "Laomedeia",
-              "Leda",
-              "Orus",
-              "Pulcherrima",
-              "Puck",
-              "Rasalgethi",
-              "Sadachbia",
-              "Sadaltager",
-              "Schedar",
-              "Sulafat",
-              "Umbriel",
-              "Vindemiatrix",
-              "Zephyr",
-              "Zubenelgenubi"
-            ],
-            "default": "Kore",
-            "type": "string",
-            "description": "Prebuilt voice for single-speaker speech."
-          },
-          "turns": {
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "required": [
-                "speaker_id",
-                "text"
-              ],
-              "additionalProperties": false,
-              "type": "object",
-              "properties": {
-                "text": {
-                  "minLength": 1,
-                  "type": "string",
-                  "pattern": "\\S"
-                },
-                "speaker_id": {
-                  "minLength": 1,
-                  "type": "string",
-                  "pattern": "\\S"
-                },
-                "style_instructions": {
-                  "type": "string"
-                }
-              }
-            },
-            "description": "Ordered dialogue turns referencing configured speakers."
-          },
-          "text": {
-            "type": "string",
-            "minLength": 1,
-            "pattern": "\\S",
-            "description": "Single-speaker transcript. Complete input is limited to 8192 tokens. Omit for dialogue."
-          }
-        },
-        "oneOf": [
-          {
-            "required": [
-              "text"
-            ],
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "speakers"
-                  ]
-                },
-                {
-                  "required": [
-                    "turns"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "required": [
-              "speakers",
-              "turns"
-            ],
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "text"
-                  ]
-                },
-                {
-                  "required": [
-                    "voice"
-                  ]
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "text": "Hello! Welcome to PoYo."
-        },
-        {
-          "speakers": [
-            {
-              "speaker_id": "host",
-              "voice": "Kore"
-            },
-            {
-              "speaker_id": "guest",
-              "voice": "Puck"
-            }
-          ],
-          "turns": [
-            {
-              "speaker_id": "host",
-              "text": "Welcome!"
-            },
-            {
-              "speaker_id": "guest",
-              "text": "Thank you.",
-              "style_instructions": "Warm and friendly."
-            }
-          ]
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "1000_characters",
-        "formula": "billable_characters * credits_per_1000_characters / 1000",
-        "credits_per_1000_characters": 6,
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null,
-        "parameters": {
-          "billable_characters": "Single-speaker text or sum of turns.text, plus global and per-turn style_instructions; speaker IDs are excluded."
-        }
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "gemini-3.8-flash-tts",
-      "tool_name": "poyo_gemini_3_8_flash_tts",
-      "service_type": "generate",
-      "category": "audio",
-      "title": "Gemini 3.8 Flash TTS",
-      "description": "Generate native WAV speech from a transcript or a two-speaker dialogue with style guidance.",
-      "tags": [
-        "audio"
-      ],
-      "input_schema": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "voice": {
-            "enum": [
-              "Achernar",
-              "Achird",
-              "Algenib",
-              "Algieba",
-              "Alnilam",
-              "Aoede",
-              "Autonoe",
-              "Callirrhoe",
-              "Charon",
-              "Despina",
-              "Enceladus",
-              "Erinome",
-              "Fenrir",
-              "Gacrux",
-              "Iapetus",
-              "Kore",
-              "Laomedeia",
-              "Leda",
-              "Orus",
-              "Pulcherrima",
-              "Puck",
-              "Rasalgethi",
-              "Sadachbia",
-              "Sadaltager",
-              "Schedar",
-              "Sulafat",
-              "Umbriel",
-              "Vindemiatrix",
-              "Zephyr",
-              "Zubenelgenubi"
-            ],
-            "type": "string",
-            "default": "Kore",
-            "description": "Prebuilt voice for single-speaker speech."
-          },
-          "speakers": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": {
-              "required": [
-                "speaker_id",
-                "voice"
-              ],
-              "additionalProperties": false,
-              "type": "object",
-              "properties": {
-                "voice": {
-                  "enum": [
-                    "Achernar",
-                    "Achird",
-                    "Algenib",
-                    "Algieba",
-                    "Alnilam",
-                    "Aoede",
-                    "Autonoe",
-                    "Callirrhoe",
-                    "Charon",
-                    "Despina",
-                    "Enceladus",
-                    "Erinome",
-                    "Fenrir",
-                    "Gacrux",
-                    "Iapetus",
-                    "Kore",
-                    "Laomedeia",
-                    "Leda",
-                    "Orus",
-                    "Pulcherrima",
-                    "Puck",
-                    "Rasalgethi",
-                    "Sadachbia",
-                    "Sadaltager",
-                    "Schedar",
-                    "Sulafat",
-                    "Umbriel",
-                    "Vindemiatrix",
-                    "Zephyr",
-                    "Zubenelgenubi"
-                  ],
-                  "type": "string"
-                },
-                "speaker_id": {
-                  "type": "string",
-                  "minLength": 1,
-                  "pattern": "\\S"
-                }
-              }
-            },
-            "description": "Exactly two speakers with distinct speaker_id values."
-          },
-          "turns": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "required": [
-                "speaker_id",
-                "text"
-              ],
-              "additionalProperties": false,
-              "type": "object",
-              "properties": {
-                "speaker_id": {
-                  "type": "string",
-                  "minLength": 1,
-                  "pattern": "\\S"
-                },
-                "text": {
-                  "type": "string",
-                  "minLength": 1,
-                  "pattern": "\\S"
-                },
-                "style_instructions": {
-                  "type": "string"
-                }
-              }
-            },
-            "description": "Ordered dialogue turns referencing configured speakers."
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
-          },
-          "style_instructions": {
-            "type": "string",
-            "description": "Global delivery style, separate from the transcript."
-          },
-          "text": {
-            "type": "string",
-            "minLength": 1,
-            "pattern": "\\S",
-            "description": "Single-speaker transcript. Complete input is limited to 8192 tokens. Omit for dialogue."
-          }
-        },
-        "oneOf": [
-          {
-            "required": [
-              "text"
-            ],
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "speakers"
-                  ]
-                },
-                {
-                  "required": [
-                    "turns"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "required": [
-              "speakers",
-              "turns"
-            ],
-            "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "text"
-                  ]
-                },
-                {
-                  "required": [
-                    "voice"
-                  ]
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "text": "Hello! Welcome to PoYo."
-        },
-        {
-          "speakers": [
-            {
-              "speaker_id": "host",
-              "voice": "Kore"
-            },
-            {
-              "speaker_id": "guest",
-              "voice": "Puck"
-            }
-          ],
-          "turns": [
-            {
-              "speaker_id": "host",
-              "text": "Welcome!"
-            },
-            {
-              "speaker_id": "guest",
-              "text": "Thank you.",
-              "style_instructions": "Warm and friendly."
-            }
-          ]
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "1000_characters",
-        "formula": "billable_characters * credits_per_1000_characters / 1000",
-        "credits_per_1000_characters": 9,
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null,
-        "parameters": {
-          "billable_characters": "Single-speaker text or sum of turns.text, plus global and per-turn style_instructions; speaker IDs are excluded."
-        }
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "meshy-7.1-text-to-3d",
-      "tool_name": "poyo_meshy_7_1_text_to_3d",
-      "service_type": "generate",
-      "category": "3d",
-      "title": "Meshy 7.1 Text to 3D",
-      "description": "Generate 3D geometry or textured models from text, with optional rigging and animation.",
-      "tags": [
-        "3d"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "should_remesh": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable remeshing."
-          },
-          "model_type": {
-            "enum": [
-              "standard",
-              "smart-topology"
-            ],
-            "type": "string",
-            "default": "standard",
-            "description": "Mesh generation method. Lowpoly is not supported by this model version."
-          },
-          "texture_image_url": {
-            "type": "string",
-            "pattern": "^(https?://\\S+|data:image/\\S+)$",
-            "description": "Public image URL or image data URI."
-          },
-          "seed": {
-            "type": "integer",
-            "description": "Random seed; omit to select automatically."
-          },
-          "enable_animation": {
-            "type": "boolean",
-            "default": false,
-            "description": "Apply an animation; requires enable_rigging=true."
-          },
-          "prompt": {
-            "type": "string",
-            "maxLength": 600,
-            "minLength": 1,
-            "pattern": "\\S",
-            "description": "Prompt."
-          },
-          "target_polycount": {
-            "default": 30000,
-            "type": "integer",
-            "minimum": 100,
-            "maximum": 300000,
-            "description": "100-300000 polygons. Smart topology: maximum 15000, default 4000 when omitted."
-          },
-          "animation_action_id": {
-            "type": "integer",
-            "default": 92,
-            "minimum": 0,
-            "maximum": 696,
-            "description": "Animation preset ID, 0-696."
-          },
-          "geometry_resolution": {
-            "enum": [
-              "standard",
-              "2k",
-              "4k"
-            ],
-            "type": "string",
-            "description": "Geometry resolution. Only available when model_type is standard (the default); omit for smart-topology."
-          },
-          "rigging_height_meters": {
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "default": 1.7,
-            "description": "Character height in meters, greater than zero."
-          },
-          "pose_mode": {
-            "enum": [
-              "a-pose",
-              "t-pose",
-              ""
-            ],
-            "type": "string",
-            "default": "",
-            "description": "Character pose; empty string selects no specific pose."
-          },
-          "symmetry_mode": {
-            "enum": [
-              "off",
-              "auto",
-              "on"
-            ],
-            "type": "string",
-            "default": "auto",
-            "description": "Mesh symmetry behavior."
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
-          },
-          "mode": {
-            "enum": [
-              "preview",
-              "full"
-            ],
-            "type": "string",
-            "default": "full",
-            "description": "preview returns geometry only; full includes textures."
-          },
-          "enable_pbr": {
-            "type": "boolean",
-            "default": false,
-            "description": "Generate PBR texture maps."
-          },
-          "enable_rigging": {
-            "type": "boolean",
-            "default": false,
-            "description": "Rig the generated humanoid character."
-          },
-          "topology": {
-            "enum": [
-              "quad",
-              "triangle"
-            ],
-            "type": "string",
-            "default": "triangle",
-            "description": "Output mesh topology."
-          },
-          "texture_prompt": {
-            "type": "string",
-            "maxLength": 600,
-            "description": "Texture guidance, at most 600 characters."
-          },
-          "enable_prompt_expansion": {
-            "type": "boolean",
-            "default": false,
-            "description": "Expand the prompt before generation."
-          }
-        },
-        "additionalProperties": false,
-        "allOf": [
-          {
-            "if": {
-              "required": [
-                "enable_animation"
-              ],
-              "properties": {
-                "enable_animation": {
-                  "const": true
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "enable_rigging"
-              ],
-              "properties": {
-                "enable_rigging": {
-                  "const": true
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "model_type"
-              ],
-              "properties": {
-                "model_type": {
-                  "const": "smart-topology"
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "target_polycount": {
-                  "maximum": 15000
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "geometry_resolution"
-              ]
-            },
-            "then": {
-              "properties": {
-                "model_type": {
-                  "const": "standard"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "prompt": "A ceramic robot with a clean silhouette.",
-          "enable_rigging": true,
-          "enable_animation": true
-        },
-        {
-          "prompt": "A ceramic robot.",
-          "mode": "preview",
-          "model_type": "smart-topology"
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "request",
-        "formula": "base_credits + textured * texture_credits + enable_rigging * rigging_credits + enable_animation * animation_credits",
-        "base_credits": 160,
-        "texture_credits": 80,
-        "rigging_credits": 40,
-        "animation_credits": 24,
-        "parameters": {
-          "textured": "mode=full for text-to-3d (default); should_texture=true for image models (default)."
-        },
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "meshy-7.1-image-to-3d",
-      "tool_name": "poyo_meshy_7_1_image_to_3d",
-      "service_type": "generate",
-      "category": "3d",
-      "title": "Meshy 7.1 Image to 3D",
-      "description": "Generate a 3D model from exactly one image, with optional textures, rigging, and animation.",
-      "tags": [
-        "3d"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "image_urls"
-        ],
-        "properties": {
-          "should_texture": {
-            "type": "boolean",
-            "default": true,
-            "description": "Generate textures."
-          },
-          "model_type": {
-            "enum": [
-              "standard",
-              "smart-topology"
-            ],
-            "type": "string",
-            "default": "standard",
-            "description": "Mesh generation method. Lowpoly is not supported by this model version."
-          },
-          "should_remesh": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable remeshing."
-          },
-          "texture_image_url": {
-            "type": "string",
-            "pattern": "^(https?://\\S+|data:image/\\S+)$",
-            "description": "Public image URL or image data URI."
-          },
-          "enable_animation": {
-            "type": "boolean",
-            "default": false,
-            "description": "Apply an animation; requires enable_rigging=true."
-          },
-          "target_polycount": {
-            "default": 30000,
-            "type": "integer",
-            "minimum": 100,
-            "maximum": 300000,
-            "description": "100-300000 polygons. Smart topology: maximum 15000, default 4000 when omitted."
-          },
-          "animation_action_id": {
-            "type": "integer",
-            "default": 92,
-            "minimum": 0,
-            "maximum": 696,
-            "description": "Animation preset ID, 0-696."
-          },
-          "geometry_resolution": {
-            "enum": [
-              "standard",
-              "2k",
-              "4k"
-            ],
-            "type": "string",
-            "description": "Geometry resolution. Only available when model_type is standard (the default); omit for smart-topology."
-          },
-          "rigging_height_meters": {
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "default": 1.7,
-            "description": "Character height in meters, greater than zero."
-          },
-          "pose_mode": {
-            "enum": [
-              "a-pose",
-              "t-pose",
-              ""
-            ],
-            "type": "string",
-            "default": "",
-            "description": "Character pose; empty string selects no specific pose."
-          },
-          "symmetry_mode": {
-            "enum": [
-              "off",
-              "auto",
-              "on"
-            ],
-            "type": "string",
-            "default": "auto",
-            "description": "Mesh symmetry behavior."
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
-          },
-          "enable_pbr": {
-            "type": "boolean",
-            "default": false,
-            "description": "Generate PBR texture maps."
-          },
-          "enable_rigging": {
-            "type": "boolean",
-            "default": false,
-            "description": "Rig the generated humanoid character."
-          },
-          "topology": {
-            "enum": [
-              "quad",
-              "triangle"
-            ],
-            "type": "string",
-            "default": "triangle",
-            "description": "Output mesh topology."
-          },
-          "texture_prompt": {
-            "type": "string",
-            "maxLength": 600,
-            "description": "Texture guidance, at most 600 characters."
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^(https?://\\S+|data:image/\\S+)$",
-              "description": "Public image URL or image data URI."
-            },
-            "minItems": 1,
-            "maxItems": 1,
-            "description": "Image urls."
-          }
-        },
-        "additionalProperties": false,
-        "allOf": [
-          {
-            "if": {
-              "required": [
-                "enable_animation"
-              ],
-              "properties": {
-                "enable_animation": {
-                  "const": true
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "enable_rigging"
-              ],
-              "properties": {
-                "enable_rigging": {
-                  "const": true
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "model_type"
-              ],
-              "properties": {
-                "model_type": {
-                  "const": "smart-topology"
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "target_polycount": {
-                  "maximum": 15000
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "geometry_resolution"
-              ]
-            },
-            "then": {
-              "properties": {
-                "model_type": {
-                  "const": "standard"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "image_urls": [
-            "https://example.com/front.png"
-          ],
-          "enable_rigging": true,
-          "enable_animation": true
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "request",
-        "formula": "base_credits + textured * texture_credits + enable_rigging * rigging_credits + enable_animation * animation_credits",
-        "base_credits": 160,
-        "texture_credits": 80,
-        "rigging_credits": 40,
-        "animation_credits": 24,
-        "parameters": {
-          "textured": "mode=full for text-to-3d (default); should_texture=true for image models (default)."
-        },
-        "credits": null,
-        "input_credits": null,
-        "output_credits": null
-      },
-      "status": "stable"
-    },
-    {
-      "model_id": "meshy-7.1-multi-image-to-3d",
-      "tool_name": "poyo_meshy_7_1_multi_image_to_3d",
-      "service_type": "generate",
-      "category": "3d",
-      "title": "Meshy 7.1 Multi Image to 3D",
-      "description": "Generate a 3D model from 1–4 images of one object; supports standard or 2k geometry.",
-      "tags": [
-        "3d"
-      ],
-      "input_schema": {
-        "type": "object",
-        "required": [
-          "image_urls"
-        ],
-        "properties": {
-          "should_texture": {
-            "type": "boolean",
-            "default": true,
-            "description": "Generate textures."
-          },
-          "should_remesh": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable remeshing."
-          },
-          "texture_image_url": {
-            "type": "string",
-            "pattern": "^(https?://\\S+|data:image/\\S+)$",
-            "description": "Public image URL or image data URI."
-          },
-          "enable_animation": {
-            "type": "boolean",
-            "default": false,
-            "description": "Apply an animation; requires enable_rigging=true."
-          },
-          "target_polycount": {
-            "default": 30000,
-            "type": "integer",
-            "minimum": 100,
-            "maximum": 300000,
-            "description": "Target polygons: 100-300000."
-          },
-          "animation_action_id": {
-            "type": "integer",
-            "default": 92,
-            "minimum": 0,
-            "maximum": 696,
-            "description": "Animation preset ID, 0-696."
-          },
-          "geometry_resolution": {
-            "enum": [
-              "standard",
-              "2k"
-            ],
-            "type": "string",
-            "description": "Geometry resolution; multi-image generation does not support 4k."
-          },
-          "rigging_height_meters": {
-            "exclusiveMinimum": 0,
-            "type": "number",
-            "default": 1.7,
-            "description": "Character height in meters, greater than zero."
-          },
-          "pose_mode": {
-            "enum": [
-              "a-pose",
-              "t-pose",
-              ""
-            ],
-            "type": "string",
-            "default": "",
-            "description": "Character pose; empty string selects no specific pose."
-          },
-          "symmetry_mode": {
-            "enum": [
-              "off",
-              "auto",
-              "on"
-            ],
-            "type": "string",
-            "default": "auto",
-            "description": "Mesh symmetry behavior."
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable input safety checking. Disabling requires account authorization when applicable."
-          },
-          "enable_pbr": {
-            "type": "boolean",
-            "default": false,
-            "description": "Generate PBR texture maps."
-          },
-          "topology": {
-            "enum": [
-              "quad",
-              "triangle"
-            ],
-            "type": "string",
-            "default": "triangle",
-            "description": "Output mesh topology."
-          },
-          "enable_rigging": {
-            "type": "boolean",
-            "default": false,
-            "description": "Rig the generated humanoid character."
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^(https?://\\S+|data:image/\\S+)$",
-              "description": "Public image URL or image data URI."
-            },
-            "minItems": 1,
-            "maxItems": 4,
-            "description": "Image urls."
-          },
-          "texture_prompt": {
-            "type": "string",
-            "maxLength": 600,
-            "description": "Texture guidance, at most 600 characters."
-          }
-        },
-        "additionalProperties": false,
-        "allOf": [
-          {
-            "if": {
-              "required": [
-                "enable_animation"
-              ],
-              "properties": {
-                "enable_animation": {
-                  "const": true
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "enable_rigging"
-              ],
-              "properties": {
-                "enable_rigging": {
-                  "const": true
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "anyOf": [
-                {
-                  "required": [
-                    "enable_pbr"
-                  ],
-                  "properties": {
-                    "enable_pbr": {
-                      "const": true
-                    }
-                  }
-                },
-                {
-                  "required": [
-                    "texture_prompt"
-                  ]
-                },
-                {
-                  "required": [
-                    "texture_image_url"
-                  ]
-                }
-              ]
-            },
-            "then": {
-              "properties": {
-                "should_texture": {
-                  "const": true
-                }
-              }
-            }
-          }
-        ]
-      },
-      "output_schema": {
-        "type": "object",
-        "required": [
-          "code",
-          "data"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "task_id",
-              "status",
-              "created_time"
-            ],
-            "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1757165031-uyujaw3d"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "not_started"
-                ],
-                "example": "not_started"
-              },
-              "created_time": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2026-10-13T10:30:00+08:00"
-              }
-            }
-          }
-        }
-      },
-      "examples": [
-        {
-          "image_urls": [
-            "https://example.com/front.png",
-            "https://example.com/back.png"
-          ],
-          "enable_rigging": true,
-          "enable_animation": true
-        }
-      ],
-      "supported_protocols": [],
-      "execution_mode": "async",
-      "supports_streaming": false,
-      "supports_callback": true,
-      "billing": {
-        "type": "parameterized",
-        "unit": "request",
-        "formula": "base_credits + textured * texture_credits + enable_rigging * rigging_credits + enable_animation * animation_credits",
-        "base_credits": 160,
-        "texture_credits": 80,
-        "rigging_credits": 40,
-        "animation_credits": 24,
-        "parameters": {
-          "textured": "mode=full for text-to-3d (default); should_texture=true for image models (default)."
-        },
-        "credits": null,
         "input_credits": null,
         "output_credits": null
       },

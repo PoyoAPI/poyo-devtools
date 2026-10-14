@@ -1,12 +1,13 @@
 # chat
 
-Generated from PoYo Catalog `v1-9e5b7d818224`. Always call describe before execution.
+Generated from PoYo Catalog `v1-0a63fdea0316`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
 | `claude-fable-5` | chat | openai-chat, anthropic | Run the PoYo claude-fable-5 model. |
 | `claude-fable-5-1` | chat | openai-chat, anthropic | Run the PoYo Claude Fable 5.1 model. |
 | `claude-haiku-4-5-20251001` | chat | openai-chat, anthropic | Run the PoYo claude-haiku-4-5-20251001 model. |
+| `claude-haiku-5-5` | chat | openai-chat, anthropic | Claude Haiku 5.5 with fixed token pricing; OpenAI Chat and Anthropic Messages. |
 | `claude-opus-4-5-20251101` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-5-20251101 model. |
 | `claude-opus-4-6` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-6 model. |
 | `claude-opus-4-7` | chat | openai-chat, anthropic | Run the PoYo claude-opus-4-7 model. |
@@ -26,6 +27,7 @@ Generated from PoYo Catalog `v1-9e5b7d818224`. Always call describe before execu
 | `gemini-3.5-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.5-flash model. |
 | `gemini-3.7-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.7-flash model. |
 | `gemini-3.8-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.8-flash model. |
+| `gemini-4-argon` | chat | openai-chat, gemini | Run the PoYo gemini-4-argon model. |
 | `gpt-5` | chat | openai-chat, openai-responses | Run the PoYo gpt-5 model. |
 | `gpt-5-6-luna` | chat | openai-responses | Run the PoYo gpt-5-6-luna model. |
 | `gpt-5-6-sol` | chat | openai-responses | Run the PoYo gpt-5-6-sol model. |
