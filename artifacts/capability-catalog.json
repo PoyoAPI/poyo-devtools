@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-267ae86937cf",
+  "schema_version": "v1-4f660808dfbf",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -22264,16 +22264,17 @@
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "description": "At least one of prompt or image_urls is required; both may be provided. Provide non-whitespace text or at least one HTTPS image URL.",
+        "description": "At least one of prompt or image_urls is required; both may be provided. Provide non-whitespace text or one HTTPS image URL. image_urls accepts at most one HTTPS image URL, and prompt may accompany the image.",
         "properties": {
           "prompt": {
             "type": "string",
-            "description": "Text to review. Optional when image_urls contains at least one image.",
+            "description": "Text to review. Optional when image_urls contains one image; may be provided together with the image.",
             "example": "A peaceful mountain landscape."
           },
           "image_urls": {
             "type": "array",
-            "description": "Images to review, as HTTPS URLs. Optional when prompt contains non-whitespace text.",
+            "maxItems": 1,
+            "description": "At most one HTTPS image URL to review. Optional when prompt contains non-whitespace text; prompt may accompany the image.",
             "items": {
               "type": "string",
               "format": "uri",
