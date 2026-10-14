@@ -2,6 +2,7 @@ import {readFile} from "node:fs/promises";
 import {checkGptImage25Contract} from "./check-gpt-image-2-5-contract.mjs";
 import {checkH3MaxContract} from "./check-h3-max-contract.mjs";
 import {checkSunoContract} from "./check-suno-contract.mjs";
+import {checkMediaModelsContract} from "./check-media-models-20261012-contract.mjs";
 
 const stable = (value) => {
   if (Array.isArray(value)) return value.map(stable);
@@ -36,6 +37,7 @@ for (const model of catalog.items) {
 checkSunoContract(catalog, equal);
 checkGptImage25Contract(catalog, equal);
 checkH3MaxContract(catalog, equal);
+checkMediaModelsContract(catalog, equal);
 
 const expectedSeedanceRates = {
   "seedance-2": {
