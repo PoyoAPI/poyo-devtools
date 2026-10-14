@@ -1,6 +1,6 @@
 ---
 name: poyo-ai-models
-description: Discover, price, and execute PoYo chat and media-generation models through PoYo MCP or CLI. Use when Codex needs to choose a PoYo model, inspect its input schema, run non-streaming chat, stream chat through the CLI, submit image/video/audio/3D generation, poll a task, or report credits and failures.
+description: Discover, price, and execute PoYo chat, media-generation, and content-moderation models through PoYo MCP or CLI. Use when Codex needs to choose a PoYo model, inspect its input schema, run non-streaming chat, stream chat through the CLI, submit image/video/audio/3D generation or content moderation, poll a task, or report credits and failures.
 ---
 
 # PoYo AI Models
@@ -25,11 +25,13 @@ Inspect `tools/list` on the selected connection before calling a tool. A filtere
 2. Search the catalog and inspect the selected model's schema and pricing.
 3. Validate every input against that schema.
 4. For chat, use the model-specific tool on a filtered connection or `poyo_chat` on the unfiltered connection; use CLI `poyo chat MODEL --stream` only when incremental output is required.
-5. For generation on a filtered connection, call the model-specific tool with `_wait_seconds: 0` for video, 3D, music, or other long work. On the unfiltered connection, use `poyo_submit_job` for long work or `poyo_run_model` for short generation. Never call a generic execution tool that is absent from `tools/list`.
+5. For generation or moderation on a filtered connection, call the model-specific tool with `_wait_seconds: 0` for video, 3D, music, or other long work. On the unfiltered connection, use `poyo_submit_job` for long work or `poyo_run_model` for short generation. Never call a generic execution tool that is absent from `tools/list`.
 6. Treat queued and running as incomplete. Poll with `poyo_check_job` until succeeded or failed.
-7. Report model ID, final status, credits, output URLs, and any partial or failed result.
+7. Report model ID, final status, credits, output URLs or structured output, and any partial or failed result.
 
 Read the generated reference matching the requested category when it exists in `references/`.
+For Omni Moderation, read `references/moderation.md`. Reviews run in the background and cost 0 credits. Provide a non-empty `prompt`, at least one HTTPS image URL in `image_urls`, or both; Base64 and data URLs are unsupported. On filtered MCP, use `poyo_omni_moderation_latest` with `_wait_seconds: 0` for multiple images, then poll `poyo_check_job`. On unfiltered MCP, use `poyo_run_model` for short waits or `poyo_submit_job` with optional top-level `callback_url`. For CLI polling, use `poyo run omni-moderation-latest --prompt "Text to review" --format json --request-source skill`; for callbacks, use `poyo submit omni-moderation-latest --prompt "Text to review" --callback-url "https://example.com/moderation-callback" --format json --request-source skill`. Keep `callback_url` outside model input; filtered tools and `poyo_run_model` continue through polling. Use JSON input for multiple image URLs. Read the complete OpenAI moderation response from `output`; a flagged result is a successful review. Report category flags and scores. Streaming is unsupported.
+
 For every Suno model or workflow, also read `references/suno.md` before validating inputs or submitting a task.
 
 For GPT Image 2.5 Flare or Sunburst, also read `references/gpt-image-2-5.md` for single-image inputs, aspect-ratio versus exact-pixel sizes, and mask editing examples.

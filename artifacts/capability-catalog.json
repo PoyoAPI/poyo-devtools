@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-1e16c64482ce",
+  "schema_version": "v1-267ae86937cf",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -22248,6 +22248,224 @@
         },
         "input_credits": null,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "omni-moderation-latest",
+      "tool_name": "poyo_omni_moderation_latest",
+      "service_type": "generate",
+      "category": "moderation",
+      "title": "Omni Moderation",
+      "description": "Omni Moderation reviews text and HTTPS images asynchronously through OpenAI. FREE (0 credits). Submit through the unified generation API and poll task status or receive a callback with the complete OpenAI response in output. Streaming is not supported.",
+      "tags": [
+        "moderation"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "At least one of prompt or image_urls is required; both may be provided. Provide non-whitespace text or at least one HTTPS image URL.",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text to review. Optional when image_urls contains at least one image.",
+            "example": "A peaceful mountain landscape."
+          },
+          "image_urls": {
+            "type": "array",
+            "description": "Images to review, as HTTPS URLs. Optional when prompt contains non-whitespace text.",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://",
+              "description": "HTTPS URL of an image to review."
+            },
+            "example": [
+              "https://example.com/image.jpg"
+            ]
+          }
+        },
+        "not": {
+          "properties": {
+            "prompt": {
+              "not": {
+                "pattern": "\\S"
+              }
+            },
+            "image_urls": {
+              "maxItems": 0
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "credits_amount",
+              "files",
+              "created_time",
+              "progress"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "description": "finished means the review completed, including when results[].flagged is true."
+              },
+              "credits_amount": {
+                "type": "number",
+                "const": 0,
+                "description": "FREE: Omni Moderation charges 0 credits."
+              },
+              "files": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "object"
+                },
+                "description": "Always empty for Omni Moderation. Read the structured review from output."
+              },
+              "output": {
+                "type": "object",
+                "description": "Complete OpenAI response, available when the review has finished.",
+                "required": [
+                  "id",
+                  "model",
+                  "results"
+                ],
+                "additionalProperties": true,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "OpenAI moderation response identifier."
+                  },
+                  "model": {
+                    "type": "string",
+                    "description": "Model identifier returned by OpenAI; it may resolve to a dated model version."
+                  },
+                  "results": {
+                    "type": "array",
+                    "description": "Moderation classifications returned by OpenAI.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "flagged",
+                        "categories",
+                        "category_scores",
+                        "category_applied_input_types"
+                      ],
+                      "additionalProperties": true,
+                      "properties": {
+                        "flagged": {
+                          "type": "boolean",
+                          "description": "Whether OpenAI classified the reviewed content as flagged. true is a completed review, not a task failure."
+                        },
+                        "categories": {
+                          "type": "object",
+                          "description": "OpenAI category names mapped to classification booleans.",
+                          "additionalProperties": {
+                            "type": "boolean"
+                          }
+                        },
+                        "category_scores": {
+                          "type": "object",
+                          "description": "OpenAI category names mapped to confidence scores.",
+                          "additionalProperties": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1
+                          }
+                        },
+                        "category_applied_input_types": {
+                          "type": "object",
+                          "description": "Input modalities used for each category.",
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "text",
+                                "image"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "progress": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "error_message": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Task execution error, if the request failed. Content flagged by a completed review is not an execution error."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A peaceful mountain landscape."
+        },
+        {
+          "image_urls": [
+            "https://example.com/image.jpg"
+          ]
+        },
+        {
+          "prompt": "A mountain view at sunset.",
+          "image_urls": [
+            "https://example.com/image.jpg"
+          ]
+        },
+        {
+          "prompt": "A peaceful mountain landscape."
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "request",
+        "credits": 0,
+        "input_credits": null,
+        "output_credits": null,
+        "display": "FREE"
       },
       "status": "stable"
     },
