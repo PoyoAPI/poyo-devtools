@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-43d07e877be2`. Always call describe before execution.
+Generated from PoYo Catalog `v1-f0ec27615112`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -44,7 +44,7 @@ Generated from PoYo Catalog `v1-43d07e877be2`. Always call describe before execu
 | `veo3.1-fast-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
 | `veo3.1-lite-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
 | `veo3.1-quality-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
-| `vidu-q4` | generate |  | Generate video from text, one starting frame, or reference images and audio. |
+| `vidu-q4` | generate |  | Generate video from one starting frame or reference images, with optional reference audio. |
 | `wan2.2-image-to-video-fast` | generate |  | Fast image-to-video generation with Alibaba Wan 2.2 Fast |
 | `wan2.2-text-to-video-fast` | generate |  | Fast text-to-video generation with Alibaba Wan 2.2 Fast |
 | `wan2.5-image-to-video` | generate |  | Image-to-video generation with Alibaba Wan 2.5 |

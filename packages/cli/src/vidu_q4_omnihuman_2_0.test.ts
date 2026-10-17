@@ -15,15 +15,23 @@ describe("Vidu Q4 与 OmniHuman 2.0 的动态 CLI 合同", () => {
     }
   });
 
-  it("Vidu 的文本、首帧、参考模式只发送用户选择字段", async () => {
+  it("Vidu 的首帧、参考图模式只发送用户选择字段", async () => {
     const model = capability("vidu-q4");
-    await expect(buildInput(model, {prompt: "A fox"})).resolves.toEqual({prompt: "A fox"});
     await expect(buildInput(model, {"image-urls": "https://example.com/start.png", duration: "6"}))
       .resolves.toEqual({image_urls: ["https://example.com/start.png"], duration: 6});
     await expect(buildInput(model, {prompt: "A character", "reference-image-urls": "https://example.com/a.png,https://example.com/b.png",
       "reference-audio-urls": "https://example.com/mood.mp3", "generate-audio": "true", "enable-safety-checker": "false"}))
       .resolves.toEqual({prompt: "A character", reference_image_urls: ["https://example.com/a.png", "https://example.com/b.png"],
         reference_audio_urls: ["https://example.com/mood.mp3"], generate_audio: true, enable_safety_checker: false});
+  });
+
+  it("Vidu 公开示例必须带图，参考音频必须附参考图", () => {
+    for (const example of capability("vidu-q4").examples) {
+      const hasStartingFrame = Array.isArray(example.image_urls) && example.image_urls.length === 1;
+      const hasReferences = Array.isArray(example.reference_image_urls) && example.reference_image_urls.length > 0;
+      expect(hasStartingFrame !== hasReferences).toBe(true);
+      if (example.reference_audio_urls) expect(hasReferences).toBe(true);
+    }
   });
 
   it("公开媒体地址合同拒绝 data URI", () => {

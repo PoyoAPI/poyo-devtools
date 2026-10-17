@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-43d07e877be2",
+  "schema_version": "v1-f0ec27615112",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -35920,7 +35920,7 @@
       "service_type": "generate",
       "category": "video",
       "title": "Vidu Q4",
-      "description": "Generate video from text, one starting frame, or reference images and audio.",
+      "description": "Generate video from one starting frame or reference images, with optional reference audio.",
       "tags": [
         "video"
       ],
@@ -35931,7 +35931,7 @@
           "prompt": {
             "type": "string",
             "maxLength": 5000,
-            "description": "Video instructions, up to 5,000 characters. Required and non-empty for text-to-video and reference-to-video; optional for image-to-video."
+            "description": "Video instructions, up to 5,000 characters. Required and non-empty for reference-to-video; optional for image-to-video."
           },
           "image_urls": {
             "type": "array",
@@ -35951,7 +35951,7 @@
             },
             "minItems": 1,
             "maxItems": 12,
-            "description": "Reference images for reference-to-video. Supports up to 12 images. Use publicly accessible HTTP or HTTPS URLs."
+            "description": "Required for reference-to-video. Provide 1-12 reference images. Cannot be combined with image_urls. Use publicly accessible HTTP or HTTPS URLs."
           },
           "reference_audio_urls": {
             "type": "array",
@@ -35961,7 +35961,7 @@
             },
             "minItems": 1,
             "maxItems": 3,
-            "description": "Reference audio for reference-to-video. Supports up to 3 MP3 files, each 3–12 seconds long. Use publicly accessible HTTP or HTTPS URLs."
+            "description": "Optional reference audio accompanying reference_image_urls. Supports up to 3 MP3 files, each 3-12 seconds long. Audio cannot be used without reference images. Use publicly accessible HTTP or HTTPS URLs."
           },
           "duration": {
             "type": "integer",
@@ -35992,17 +35992,28 @@
               "1:1"
             ],
             "default": "16:9",
-            "description": "Output aspect ratio for text-to-video and reference-to-video. Do not send this field for image-to-video."
+            "description": "Output aspect ratio for reference-to-video. Do not send this field for image-to-video."
           },
           "generate_audio": {
             "type": "boolean",
             "default": false,
-            "description": "Generate an audio track for text-to-video or reference-to-video. Do not send this field for image-to-video."
+            "description": "Generate an audio track for reference-to-video. Do not send this field for image-to-video."
           },
           "enable_safety_checker": {
             "type": "boolean",
             "default": true,
             "description": "Enable content safety checks."
+          }
+        },
+        "description": "Provide one image_urls starting frame, or a prompt with 1-12 reference_image_urls. Reference audio is optional and requires reference images.",
+        "not": {
+          "properties": {
+            "image_urls": {
+              "maxItems": 0
+            },
+            "reference_image_urls": {
+              "maxItems": 0
+            }
           }
         }
       },
@@ -36046,13 +36057,6 @@
         }
       },
       "examples": [
-        {
-          "prompt": "A slow cinematic tracking shot through a sunlit forest.",
-          "duration": 5,
-          "resolution": "720p",
-          "aspect_ratio": "16:9",
-          "generate_audio": false
-        },
         {
           "image_urls": [
             "https://example.com/start-frame.png"
