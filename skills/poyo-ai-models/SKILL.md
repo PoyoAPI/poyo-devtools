@@ -52,6 +52,8 @@ For ElevenLabs V4, V4 Turbo, or Gemini 3.8 speech, read `references/speech-v4-ge
 
 For Meshy 7.1, read `references/meshy-7-1.md` for text/image/multi-image selection, topology limits, and rigging requirements. Omit optional values unless the user chooses them.
 
+For Vidu Q4, read `references/vidu-q4.md` for text, starting-frame, and reference-media modes. For OmniHuman 2.0, read `references/omnihuman-2-0.md` for image/audio inputs and final output-duration billing. Supply only user-selected fields; omit seed and internal timing or billing fields.
+
 ## Guardrails
 
 - Check account credits before expensive or repeated generation.

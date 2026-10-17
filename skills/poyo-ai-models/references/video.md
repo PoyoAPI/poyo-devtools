@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-0a63fdea0316`. Always call describe before execution.
+Generated from PoYo Catalog `v1-43d07e877be2`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -32,6 +32,7 @@ Generated from PoYo Catalog `v1-0a63fdea0316`. Always call describe before execu
 | `kling-o3/pro` | generate |  | Next-generation video generation with Kling O3 standard and pro |
 | `kling-o3/standard` | generate |  | Next-generation video generation with Kling O3 standard and pro |
 | `omni-flash` | generate |  | Text, image, and video input generation with Omni Flash |
+| `omnihuman-2.0` | generate |  | Animate one character image with a driving audio track. |
 | `poyo-ai/video-background-removal` | generate |  | Remove or replace the background of a video. |
 | `poyo-ai/video-upscaler` | generate |  | Upscale a video by a configurable scale factor. |
 | `runway-gen-4.5` | generate |  | Text-to-video generation with optional reference image, 5s and 10s durations |
@@ -43,6 +44,7 @@ Generated from PoYo Catalog `v1-0a63fdea0316`. Always call describe before execu
 | `veo3.1-fast-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
 | `veo3.1-lite-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
 | `veo3.1-quality-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
+| `vidu-q4` | generate |  | Generate video from text, one starting frame, or reference images and audio. |
 | `wan2.2-image-to-video-fast` | generate |  | Fast image-to-video generation with Alibaba Wan 2.2 Fast |
 | `wan2.2-text-to-video-fast` | generate |  | Fast text-to-video generation with Alibaba Wan 2.2 Fast |
 | `wan2.5-image-to-video` | generate |  | Image-to-video generation with Alibaba Wan 2.5 |

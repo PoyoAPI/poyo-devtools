@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-0a63fdea0316",
+  "schema_version": "v1-43d07e877be2",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -34106,6 +34106,111 @@
       "status": "stable"
     },
     {
+      "service_type": "generate",
+      "category": "video",
+      "title": "OmniHuman 2.0",
+      "description": "Animate one character image with a driving audio track.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "image_urls",
+          "audio_url"
+        ],
+        "properties": {
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "minItems": 1,
+            "maxItems": 1,
+            "description": "Exactly one character image to animate. Use publicly accessible HTTP or HTTPS URLs."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Driving audio URL. Audio must be 4–300 seconds long and no larger than 15 MB."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional instructions for the character's motion and performance."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792190000-example"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-17T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "image_urls": [
+            "https://example.com/character.png"
+          ],
+          "audio_url": "https://example.com/speech.mp3"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "model_id": "omnihuman-2.0",
+      "tool_name": "poyo_omnihuman_2_0",
+      "billing": {
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "output_duration * credits_per_second",
+        "credits_per_second": 21,
+        "parameters": {
+          "output_duration": "Generated video duration returned by the service, including fractional seconds; no rounding up. Audio duration is only a submission estimate."
+        }
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "poyo-ai/video-background-removal",
       "tool_name": "poyo_poyo_ai_video_background_removal",
       "service_type": "generate",
@@ -35808,6 +35913,187 @@
         },
         "input_credits": null,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "service_type": "generate",
+      "category": "video",
+      "title": "Vidu Q4",
+      "description": "Generate video from text, one starting frame, or reference images and audio.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "description": "Video instructions, up to 5,000 characters. Required and non-empty for text-to-video and reference-to-video; optional for image-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "minItems": 1,
+            "maxItems": 1,
+            "description": "Exactly one starting-frame image for image-to-video. Cannot be combined with reference_image_urls or reference_audio_urls. Use publicly accessible HTTP or HTTPS URLs."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "minItems": 1,
+            "maxItems": 12,
+            "description": "Reference images for reference-to-video. Supports up to 12 images. Use publicly accessible HTTP or HTTPS URLs."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "minItems": 1,
+            "maxItems": 3,
+            "description": "Reference audio for reference-to-video. Supports up to 3 MP3 files, each 3–12 seconds long. Use publicly accessible HTTP or HTTPS URLs."
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 3,
+            "maximum": 16,
+            "default": 5,
+            "description": "Output duration in whole seconds."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "540p",
+              "720p",
+              "1080p",
+              "2k",
+              "4k"
+            ],
+            "default": "720p",
+            "description": "Output video resolution."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "1:1"
+            ],
+            "default": "16:9",
+            "description": "Output aspect ratio for text-to-video and reference-to-video. Do not send this field for image-to-video."
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "default": false,
+            "description": "Generate an audio track for text-to-video or reference-to-video. Do not send this field for image-to-video."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable content safety checks."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792190000-example"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "not_started"
+                ],
+                "example": "not_started"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-17T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A slow cinematic tracking shot through a sunlit forest.",
+          "duration": 5,
+          "resolution": "720p",
+          "aspect_ratio": "16:9",
+          "generate_audio": false
+        },
+        {
+          "image_urls": [
+            "https://example.com/start-frame.png"
+          ]
+        },
+        {
+          "prompt": "Animate the character from the reference image with movement guided by the reference audio.",
+          "reference_image_urls": [
+            "https://example.com/character.png"
+          ],
+          "reference_audio_urls": [
+            "https://example.com/reference.mp3"
+          ],
+          "duration": 5,
+          "resolution": "720p"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "model_id": "vidu-q4",
+      "tool_name": "poyo_vidu_q4",
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "input_credits": null,
+        "output_credits": null,
+        "formula": "duration * resolution_credits_per_second[resolution]",
+        "resolution_credits_per_second": {
+          "540p": 9,
+          "720p": 19,
+          "1080p": 24,
+          "2k": 38,
+          "4k": 78
+        },
+        "parameters": {
+          "duration": "Requested output seconds; defaults to 5",
+          "resolution": "Defaults to 720p"
+        }
       },
       "status": "stable"
     },
