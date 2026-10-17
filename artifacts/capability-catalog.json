@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-f0ec27615112",
+  "schema_version": "v1-5922390f5158",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -15639,39 +15639,41 @@
         "type": "parameterized",
         "unit": "image",
         "credits": null,
-        "formula": "price_table[resolution][quality]",
+        "formula": "price_table[billing_resolution][quality] + len(image_urls) * input_image_credits",
         "parameters": {
           "quality": "Defaults to high. Supported: low, medium, high, xhigh, max.",
-          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K."
+          "image_urls": "Reference image count, including repeated URLs. Defaults to an empty array; at most 16 images.",
+          "resolution": "Defaults to 1K. Supported: 1K, 2K, 4K; auto size only supports 1K.",
+          "billing_resolution": "Uses resolution, except custom WIDTHxHEIGHT at 2K with more than 4194304 pixels is billed at 4K. Preset aspect ratios use the requested tier."
         },
         "price_table": {
           "1K": {
             "low": 1.31,
-            "max": 47.11,
-            "high": 11.78,
-            "xhigh": 20.93,
+            "max": 42.18,
+            "high": 10.58,
+            "xhigh": 18.76,
             "medium": 2.95
           },
           "2K": {
-            "low": 2.65,
-            "max": 95.74,
-            "high": 23.94,
-            "xhigh": 42.55,
-            "medium": 5.99
+            "low": 3.5,
+            "max": 85.66,
+            "high": 21.48,
+            "xhigh": 38.1,
+            "medium": 6.5
           },
           "4K": {
-            "low": 2.47,
-            "max": 89.51,
-            "high": 22.39,
-            "xhigh": 39.78,
-            "medium": 5.81
+            "low": 5.5,
+            "max": 142.34,
+            "high": 35.64,
+            "xhigh": 63.28,
+            "medium": 10.5
           }
         },
         "mask_credits": 0,
         "input_credits": null,
         "output_images": 1,
         "output_credits": null,
-        "input_image_credits": 0
+        "input_image_credits": 2.5
       },
       "status": "stable"
     },
@@ -15850,39 +15852,41 @@
         "type": "parameterized",
         "unit": "image",
         "credits": null,
-        "formula": "price_table[resolution][quality]",
+        "formula": "price_table[billing_resolution][quality] + len(image_urls) * input_image_credits",
         "parameters": {
           "quality": "Defaults to high. Supported: low, medium, high, xhigh, max.",
-          "resolution": "Defaults to 1K. Uses the requested resolution tier; auto size only supports 1K."
+          "image_urls": "Reference image count, including repeated URLs. Defaults to an empty array; at most 16 images.",
+          "resolution": "Defaults to 1K. Supported: 1K, 2K, 4K; auto size only supports 1K.",
+          "billing_resolution": "Uses resolution, except custom WIDTHxHEIGHT at 2K with more than 4194304 pixels is billed at 4K. Preset aspect ratios use the requested tier."
         },
         "price_table": {
           "1K": {
             "low": 1.31,
-            "max": 47.11,
-            "high": 11.78,
-            "xhigh": 20.93,
+            "max": 42.18,
+            "high": 10.58,
+            "xhigh": 18.76,
             "medium": 2.95
           },
           "2K": {
-            "low": 2.65,
-            "max": 95.74,
-            "high": 23.94,
-            "xhigh": 42.55,
-            "medium": 5.99
+            "low": 3.5,
+            "max": 85.66,
+            "high": 21.48,
+            "xhigh": 38.1,
+            "medium": 6.5
           },
           "4K": {
-            "low": 2.47,
-            "max": 89.51,
-            "high": 22.39,
-            "xhigh": 39.78,
-            "medium": 5.81
+            "low": 5.5,
+            "max": 142.34,
+            "high": 35.64,
+            "xhigh": 63.28,
+            "medium": 10.5
           }
         },
         "mask_credits": 0,
         "input_credits": null,
         "output_images": 1,
         "output_credits": null,
-        "input_image_credits": 0
+        "input_image_credits": 2.5
       },
       "status": "stable"
     },
@@ -34106,6 +34110,8 @@
       "status": "stable"
     },
     {
+      "model_id": "omnihuman-2.0",
+      "tool_name": "poyo_omnihuman_2_0",
       "service_type": "generate",
       "category": "video",
       "title": "OmniHuman 2.0",
@@ -34115,21 +34121,14 @@
       ],
       "input_schema": {
         "type": "object",
-        "additionalProperties": false,
         "required": [
           "image_urls",
           "audio_url"
         ],
         "properties": {
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^https?://"
-            },
-            "minItems": 1,
-            "maxItems": 1,
-            "description": "Exactly one character image to animate. Use publicly accessible HTTP or HTTPS URLs."
+          "prompt": {
+            "type": "string",
+            "description": "Optional instructions for the character's motion and performance."
           },
           "audio_url": {
             "type": "string",
@@ -34137,11 +34136,18 @@
             "pattern": "^https?://",
             "description": "Driving audio URL. Audio must be 4–300 seconds long and no larger than 15 MB."
           },
-          "prompt": {
-            "type": "string",
-            "description": "Optional instructions for the character's motion and performance."
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one character image to animate. Use publicly accessible HTTP or HTTPS URLs."
           }
-        }
+        },
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -34162,16 +34168,16 @@
               "created_time"
             ],
             "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1792190000-example"
-              },
               "status": {
-                "type": "string",
                 "enum": [
                   "not_started"
                 ],
+                "type": "string",
                 "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792190000-example"
               },
               "created_time": {
                 "type": "string",
@@ -34184,29 +34190,27 @@
       },
       "examples": [
         {
+          "audio_url": "https://example.com/speech.mp3",
           "image_urls": [
             "https://example.com/character.png"
-          ],
-          "audio_url": "https://example.com/speech.mp3"
+          ]
         }
       ],
       "supported_protocols": [],
       "execution_mode": "async",
       "supports_streaming": false,
       "supports_callback": true,
-      "model_id": "omnihuman-2.0",
-      "tool_name": "poyo_omnihuman_2_0",
       "billing": {
         "type": "parameterized",
         "unit": "second",
         "credits": null,
-        "input_credits": null,
-        "output_credits": null,
         "formula": "output_duration * credits_per_second",
-        "credits_per_second": 21,
         "parameters": {
           "output_duration": "Generated video duration returned by the service, including fractional seconds; no rounding up. Audio duration is only a submission estimate."
-        }
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "credits_per_second": 21
       },
       "status": "stable"
     },
@@ -35917,6 +35921,8 @@
       "status": "stable"
     },
     {
+      "model_id": "vidu-q4",
+      "tool_name": "poyo_vidu_q4",
       "service_type": "generate",
       "category": "video",
       "title": "Vidu Q4",
@@ -35925,87 +35931,6 @@
         "video"
       ],
       "input_schema": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "maxLength": 5000,
-            "description": "Video instructions, up to 5,000 characters. Required and non-empty for reference-to-video; optional for image-to-video."
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^https?://"
-            },
-            "minItems": 1,
-            "maxItems": 1,
-            "description": "Exactly one starting-frame image for image-to-video. Cannot be combined with reference_image_urls or reference_audio_urls. Use publicly accessible HTTP or HTTPS URLs."
-          },
-          "reference_image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^https?://"
-            },
-            "minItems": 1,
-            "maxItems": 12,
-            "description": "Required for reference-to-video. Provide 1-12 reference images. Cannot be combined with image_urls. Use publicly accessible HTTP or HTTPS URLs."
-          },
-          "reference_audio_urls": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^https?://"
-            },
-            "minItems": 1,
-            "maxItems": 3,
-            "description": "Optional reference audio accompanying reference_image_urls. Supports up to 3 MP3 files, each 3-12 seconds long. Audio cannot be used without reference images. Use publicly accessible HTTP or HTTPS URLs."
-          },
-          "duration": {
-            "type": "integer",
-            "minimum": 3,
-            "maximum": 16,
-            "default": 5,
-            "description": "Output duration in whole seconds."
-          },
-          "resolution": {
-            "type": "string",
-            "enum": [
-              "540p",
-              "720p",
-              "1080p",
-              "2k",
-              "4k"
-            ],
-            "default": "720p",
-            "description": "Output video resolution."
-          },
-          "aspect_ratio": {
-            "type": "string",
-            "enum": [
-              "16:9",
-              "9:16",
-              "4:3",
-              "3:4",
-              "1:1"
-            ],
-            "default": "16:9",
-            "description": "Output aspect ratio for reference-to-video. Do not send this field for image-to-video."
-          },
-          "generate_audio": {
-            "type": "boolean",
-            "default": false,
-            "description": "Generate an audio track for reference-to-video. Do not send this field for image-to-video."
-          },
-          "enable_safety_checker": {
-            "type": "boolean",
-            "default": true,
-            "description": "Enable content safety checks."
-          }
-        },
-        "description": "Provide one image_urls starting frame, or a prompt with 1-12 reference_image_urls. Reference audio is optional and requires reference images.",
         "not": {
           "properties": {
             "image_urls": {
@@ -36015,7 +35940,88 @@
               "maxItems": 0
             }
           }
-        }
+        },
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "description": "Video instructions, up to 5,000 characters. Required and non-empty for reference-to-video; optional for image-to-video."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 16,
+            "minimum": 3,
+            "description": "Output duration in whole seconds."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one starting-frame image for image-to-video. Cannot be combined with reference_image_urls or reference_audio_urls. Use publicly accessible HTTP or HTTPS URLs."
+          },
+          "resolution": {
+            "enum": [
+              "540p",
+              "720p",
+              "1080p",
+              "2k",
+              "4k"
+            ],
+            "type": "string",
+            "default": "720p",
+            "description": "Output video resolution."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "1:1"
+            ],
+            "type": "string",
+            "default": "16:9",
+            "description": "Output aspect ratio for reference-to-video. Do not send this field for image-to-video."
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "default": false,
+            "description": "Generate an audio track for reference-to-video. Do not send this field for image-to-video."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Optional reference audio accompanying reference_image_urls. Supports up to 3 MP3 files, each 3-12 seconds long. Audio cannot be used without reference images. Use publicly accessible HTTP or HTTPS URLs."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "description": "Required for reference-to-video. Provide 1-12 reference images. Cannot be combined with image_urls. Use publicly accessible HTTP or HTTPS URLs."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable content safety checks."
+          }
+        },
+        "description": "Provide one image_urls starting frame, or a prompt with 1-12 reference_image_urls. Reference audio is optional and requires reference images.",
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -36036,16 +36042,16 @@
               "created_time"
             ],
             "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1792190000-example"
-              },
               "status": {
-                "type": "string",
                 "enum": [
                   "not_started"
                 ],
+                "type": "string",
                 "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792190000-example"
               },
               "created_time": {
                 "type": "string",
@@ -36064,39 +36070,37 @@
         },
         {
           "prompt": "Animate the character from the reference image with movement guided by the reference audio.",
-          "reference_image_urls": [
-            "https://example.com/character.png"
-          ],
+          "duration": 5,
+          "resolution": "720p",
           "reference_audio_urls": [
             "https://example.com/reference.mp3"
           ],
-          "duration": 5,
-          "resolution": "720p"
+          "reference_image_urls": [
+            "https://example.com/character.png"
+          ]
         }
       ],
       "supported_protocols": [],
       "execution_mode": "async",
       "supports_streaming": false,
       "supports_callback": true,
-      "model_id": "vidu-q4",
-      "tool_name": "poyo_vidu_q4",
       "billing": {
         "type": "tiered",
         "unit": "second",
         "credits": null,
-        "input_credits": null,
-        "output_credits": null,
         "formula": "duration * resolution_credits_per_second[resolution]",
-        "resolution_credits_per_second": {
-          "540p": 9,
-          "720p": 19,
-          "1080p": 24,
-          "2k": 38,
-          "4k": 78
-        },
         "parameters": {
           "duration": "Requested output seconds; defaults to 5",
           "resolution": "Defaults to 720p"
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits_per_second": {
+          "2k": 38,
+          "4k": 78,
+          "540p": 9,
+          "720p": 19,
+          "1080p": 24
         }
       },
       "status": "stable"

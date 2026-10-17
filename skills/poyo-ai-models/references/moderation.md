@@ -1,6 +1,6 @@
 # moderation
 
-Generated from PoYo Catalog `v1-0a63fdea0316`. Always call describe before execution.
+Generated from PoYo Catalog `v1-5922390f5158`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|

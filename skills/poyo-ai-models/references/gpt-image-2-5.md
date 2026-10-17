@@ -9,7 +9,7 @@ Use `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst`. Inspect the selected mode
 - Transparent backgrounds require `png` or `webp`. `jpeg` supports opaque or automatic backgrounds.
 - Use `size=auto` only at `1K`. At `2K` or `4K`, select an aspect ratio or custom size; omitted size selects a square.
 - Custom `WIDTHxHEIGHT` requires `2K` or `4K`, dimensions divisible by 16, max edge 3840, ratio at most 3:1, and 655360–8294400 pixels. A 3840-pixel edge requires `4K`. For aspect ratios, actual pixels may vary by model and generation; inspect the returned image. Use a custom size for exact pixels.
-- Inspect the catalog for current quality/resolution pricing. Input images and masks have no additional charge for these models.
+- Inspect the catalog for current quality/resolution pricing. Each reference image adds 2.5 credits, including repeated URLs; masks have no additional charge. Custom `WIDTHxHEIGHT` at `2K` with more than 4194304 pixels is billed at the `4K` tier. Preset aspect ratios use the requested resolution tier.
 
 ```bash
 poyo describe gpt-image-2.5-flare

@@ -5,9 +5,9 @@ export function checkGptImage25Contract(catalog, equal) {
     "background", "output_format", "mask_url",
   ].sort();
   const prices = {
-    "1K": {low: 1.31, medium: 2.95, high: 11.78, xhigh: 20.93, max: 47.11},
-    "2K": {low: 2.65, medium: 5.99, high: 23.94, xhigh: 42.55, max: 95.74},
-    "4K": {low: 2.47, medium: 5.81, high: 22.39, xhigh: 39.78, max: 89.51},
+    "1K": {low: 1.31, medium: 2.95, high: 10.58, xhigh: 18.76, max: 42.18},
+    "2K": {low: 3.5, medium: 6.5, high: 21.48, xhigh: 38.1, max: 85.66},
+    "4K": {low: 5.5, medium: 10.5, high: 35.64, xhigh: 63.28, max: 142.34},
   };
   for (const variant of ["flare", "sunburst"]) {
     const id = `gpt-image-2.5-${variant}`;
@@ -28,9 +28,11 @@ export function checkGptImage25Contract(catalog, equal) {
       || !equal(properties.background.enum, ["auto", "transparent", "opaque"])
       || !equal(properties.output_format.enum, ["png", "jpeg", "webp"])
       || model.billing.type !== "parameterized" || model.billing.unit !== "image"
-      || model.billing.formula !== "price_table[resolution][quality]"
+      || model.billing.formula !== "price_table[billing_resolution][quality] + len(image_urls) * input_image_credits"
+      || model.billing.parameters?.billing_resolution !== "Uses resolution, except custom WIDTHxHEIGHT at 2K with more than 4194304 pixels is billed at 4K. Preset aspect ratios use the requested tier."
+      || model.billing.parameters?.image_urls !== "Reference image count, including repeated URLs. Defaults to an empty array; at most 16 images."
       || !equal(model.billing.price_table, prices)
-      || model.billing.output_images !== 1 || model.billing.input_image_credits !== 0
+      || model.billing.output_images !== 1 || model.billing.input_image_credits !== 2.5
       || model.billing.mask_credits !== 0
       || !model.examples.some((input) => input.mask_url && input.image_urls?.length)
       || !model.examples.some((input) => input.background === "transparent")
