@@ -1,9 +1,11 @@
 # image
 
-Generated from PoYo Catalog `v1-5922390f5158`. Always call describe before execution.
+Generated from PoYo Catalog `v1-868a28781bd5`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
+| `flux-3-klein` | generate |  | Generate 1-4 images from text with 1K, 2K, or 4K output. |
+| `flux-3-klein-edit` | generate |  | Edit or compose 1-10 reference images with 1K, 2K, or 4K output. |
 | `flux-dev` | generate |  | Flux Dev image generation and single-image editing API |
 | `flux-schnell` | generate |  | Flux Schnell fast text-to-image generation API |
 | `gpt-image-1-edit-official` | generate |  | GPT Image 1.5 Generation and Editing |

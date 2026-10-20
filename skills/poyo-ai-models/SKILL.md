@@ -30,6 +30,9 @@ Inspect `tools/list` on the selected connection before calling a tool. A filtere
 7. Report model ID, final status, credits, output URLs or structured output, and any partial or failed result.
 
 Read the generated reference matching the requested category when it exists in `references/`.
+
+For Flux 3 Klein generation or editing, also read `references/flux-3-klein.md` for reference images, resolution tiers, exact pixel sizes, and safety checking. For Flux 3 Max, read `references/flux-3-max.md` to select text, starting/ending-image, or positioned-keyframe video generation. Submit only user-selected fields; do not inject defaults.
+
 For Omni Moderation, read `references/moderation.md`. Reviews run in the background and cost 0 credits. Provide a non-empty `prompt`, one HTTPS image URL in `image_urls`, or both. `image_urls` remains an array with at most one image; submit additional images as separate tasks. Base64 and data URLs are unsupported. On filtered MCP, use `poyo_omni_moderation_latest` with `_wait_seconds: 0`, then poll `poyo_check_job`. On unfiltered MCP, use `poyo_run_model` for short waits or `poyo_submit_job` with optional top-level `callback_url`. For CLI polling, use `poyo run omni-moderation-latest --prompt "Text to review" --format json --request-source skill`; for callbacks, use `poyo submit omni-moderation-latest --prompt "Text to review" --callback-url "https://example.com/moderation-callback" --format json --request-source skill`. Keep `callback_url` outside model input; filtered tools and `poyo_run_model` continue through polling. Keep the single image URL inside the `image_urls` array. Read the complete OpenAI moderation response from `output`; a flagged result is a successful review. Report category flags and scores. Streaming is unsupported.
 
 For every Suno model or workflow, also read `references/suno.md` before validating inputs or submitting a task.

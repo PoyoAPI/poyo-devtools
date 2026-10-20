@@ -1,9 +1,12 @@
 # video
 
-Generated from PoYo Catalog `v1-5922390f5158`. Always call describe before execution.
+Generated from PoYo Catalog `v1-868a28781bd5`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
+| `flux-3-max/image-to-video` | generate |  | Generate a 5-20 second video from one starting image and an optional ending image, with optional audio. |
+| `flux-3-max/keyframes-to-video` | generate |  | Generate a 5-20 second video using 1-10 keyframe images at unique positions on a 24 fps timeline, with optional audio. |
+| `flux-3-max/text-to-video` | generate |  | Generate a 5-20 second video from text with optional audio. Does not accept media input. |
 | `flux-3/extend-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `flux-3/first-last-frame-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `flux-3/image-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
