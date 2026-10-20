@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-868a28781bd5`. Always call describe before execution.
+Generated from PoYo Catalog `v1-0c2b58499e58`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -12,6 +12,7 @@ Generated from PoYo Catalog `v1-868a28781bd5`. Always call describe before execu
 | `gpt-image-1-official` | generate |  | GPT Image 1.5 Generation and Editing |
 | `gpt-image-1.5-edit-official` | generate |  | GPT Image 1.5 Generation and Editing |
 | `gpt-image-1.5-official` | generate |  | GPT Image 1.5 Generation and Editing |
+| `gpt-image-2.5-fixed` | generate |  | GPT Image 2.5 single-image generation with Flare or Sunburst, billed per image by resolution. |
 | `gpt-image-2.5-flare` | generate |  | GPT Image 2.5 Flare single-image generation and reference-image editing with background, format, and mask controls. |
 | `gpt-image-2.5-sunburst` | generate |  | GPT Image 2.5 Sunburst single-image generation and reference-image editing with background, format, and mask controls. |
 | `grok-imagine-image-2.0` | generate |  | Grok Imagine Image 2.0 generation and editing with selectable quality and resolution |

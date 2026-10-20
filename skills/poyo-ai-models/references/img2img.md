@@ -1,6 +1,6 @@
 # img2img
 
-Generated from PoYo Catalog `v1-868a28781bd5`. Always call describe before execution.
+Generated from PoYo Catalog `v1-0c2b58499e58`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
