@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-0c2b58499e58`. Always call describe before execution.
+Generated from PoYo Catalog `v1-16506ce9e1dc`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -29,6 +29,7 @@ Generated from PoYo Catalog `v1-0c2b58499e58`. Always call describe before execu
 | `kling-3.0-turbo/pro` | generate |  | Fast video generation with Kling 3.0 Turbo standard and pro models |
 | `kling-3.0-turbo/standard` | generate |  | Fast video generation with Kling 3.0 Turbo standard and pro models |
 | `kling-3.0/4K` | generate |  | Native 4K Video Generation with Kling 3.0/4K |
+| `kling-4.0` | generate |  | Generate videos from text, reference images, reference videos, and named subjects. |
 | `kling-avatar-2.0/pro` | generate |  | Audio-driven avatar video generation with Kling Avatar 2.0 Standard and Pro |
 | `kling-avatar-2.0/standard` | generate |  | Audio-driven avatar video generation with Kling Avatar 2.0 Standard and Pro |
 | `kling-o3/4K` | generate |  | Native 4K video generation with Kling O3/4K |
