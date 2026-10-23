@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-16506ce9e1dc",
+  "schema_version": "v1-5b40a30bb206",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -33852,7 +33852,7 @@
       "service_type": "generate",
       "category": "video",
       "title": "Kling 4.0",
-      "description": "Generate videos from text, reference images, reference videos, and named subjects.",
+      "description": "Generate videos from text, reference images, and reference videos.",
       "tags": [
         "video"
       ],
@@ -33862,14 +33862,14 @@
         "required": [
           "prompt"
         ],
-        "description": "Text instructions with optional reference images, reference videos, and named subjects. Reference images, reference videos, and subjects combined must not exceed 15. Across reference videos and video subjects, at most 5 videos with a total duration of at most 30 seconds are allowed.",
+        "description": "Text instructions with optional reference images and reference videos. Reference videos are limited to 5 clips with a total duration of at most 30 seconds.",
         "properties": {
           "prompt": {
             "type": "string",
             "minLength": 1,
             "maxLength": 8000,
             "pattern": "\\S",
-            "description": "Video instructions. Use @image_1 and @video_1 to reference the first item in the corresponding reference array, or @name to reference a named subject. Reference indexes start at 1."
+            "description": "Video instructions. Use @image_1 and @video_1 to reference the first item in the corresponding reference array. Reference indexes start at 1."
           },
           "duration": {
             "type": "integer",
@@ -33920,66 +33920,7 @@
               "format": "uri",
               "pattern": "^https?://"
             },
-            "description": "Publicly accessible HTTP or HTTPS reference videos, each lasting 3-30 seconds. Reference them as @video_1, @video_2, and so on, in array order. Together with video-based subjects, at most 5 videos with a combined duration of at most 30 seconds are allowed."
-          },
-          "kling_elements": {
-            "type": "array",
-            "maxItems": 7,
-            "description": "Up to 7 named subjects, at most 3 of which may use video inputs. Names must be unique without regard to case. Each subject counts as one material toward the combined limit of 15 reference images, reference videos, and subjects; images within a subject do not count separately.",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "name"
-              ],
-              "oneOf": [
-                {
-                  "required": [
-                    "element_input_urls"
-                  ]
-                },
-                {
-                  "required": [
-                    "element_input_video_urls"
-                  ]
-                }
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 20,
-                  "pattern": "^[A-Za-z0-9_一-鿿]+$",
-                  "description": "Subject name, using Chinese characters, English letters, digits, or underscores. Reference it as @name in the prompt. Names must be unique without regard to case. Reserved names image_N, video_N, keyframe_N, object_N, audio_N (for any numbered index), first_frame, and last_frame are prohibited in every letter case."
-                },
-                "element_input_urls": {
-                  "type": "array",
-                  "minItems": 2,
-                  "maxItems": 4,
-                  "items": {
-                    "type": "string",
-                    "format": "uri",
-                    "pattern": "^https?://"
-                  },
-                  "description": "2-4 publicly accessible HTTP or HTTPS images of this subject. Provide exactly one of element_input_urls and element_input_video_urls."
-                },
-                "element_input_video_urls": {
-                  "type": "array",
-                  "minItems": 1,
-                  "maxItems": 1,
-                  "x-video-duration-seconds": {
-                    "minimum": 3,
-                    "maximum": 8
-                  },
-                  "items": {
-                    "type": "string",
-                    "format": "uri",
-                    "pattern": "^https?://"
-                  },
-                  "description": "Exactly one publicly accessible HTTP or HTTPS video of this subject, lasting 3-8 seconds. Provide exactly one of element_input_urls and element_input_video_urls. Subject videos count toward the shared 5-video and 30-second limits."
-                }
-              }
-            }
+            "description": "Publicly accessible HTTP or HTTPS reference videos, each lasting 3-30 seconds. Reference them as @video_1, @video_2, and so on, in array order. At most 5 videos with a combined duration of at most 30 seconds are allowed."
           }
         }
       },
@@ -34041,22 +33982,6 @@
             "https://example.com/camera-motion.mp4"
           ],
           "duration": 10
-        },
-        {
-          "prompt": "@hero crosses a city square with the camera movement from @video_1.",
-          "reference_video_urls": [
-            "https://example.com/camera-motion.mp4"
-          ],
-          "kling_elements": [
-            {
-              "name": "hero",
-              "element_input_urls": [
-                "https://example.com/hero-front.png",
-                "https://example.com/hero-side.png"
-              ]
-            }
-          ],
-          "duration": 10
         }
       ],
       "supported_protocols": [],
@@ -34070,8 +33995,8 @@
         "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
         "parameters": {
           "billed_seconds": "duration without video input; otherwise max(2 * duration, input_video_duration + duration)",
-          "input_video_duration": "Sum of server-probed durations from reference_video_urls and kling_elements[].element_input_video_urls",
-          "video_input_mode": "with_video when reference_video_urls or any kling_elements[].element_input_video_urls is non-empty; otherwise without_video"
+          "input_video_duration": "Ceiling of the sum of server-probed durations from reference_video_urls; round up only after summing all videos",
+          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video"
         },
         "credit_rules": {
           "720p": {

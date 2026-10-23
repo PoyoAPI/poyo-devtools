@@ -1,6 +1,6 @@
 # text2audio
 
-Generated from PoYo Catalog `v1-16506ce9e1dc`. Always call describe before execution.
+Generated from PoYo Catalog `v1-5b40a30bb206`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|

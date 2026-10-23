@@ -57,7 +57,7 @@ For Meshy 7.1, read `references/meshy-7-1.md` for text/image/multi-image selecti
 
 For Vidu Q4, read `references/vidu-q4.md` for starting-frame and reference-image modes; images are required, and reference audio must accompany reference images. For OmniHuman 2.0, read `references/omnihuman-2-0.md` for image/audio inputs and final output-duration billing. Supply only user-selected fields; omit seed and internal timing or billing fields.
 
-For Kling 4.0, read `references/kling-4-0.md` for reference images, reference videos, named subjects, and video-duration billing. Use only the public reference fields; submit only user-selected values and let the server probe video durations.
+For Kling 4.0, read `references/kling-4-0.md` for reference images, reference videos, and video-duration billing. Use only the public reference fields; submit only user-selected values and let the server probe video durations.
 
 ## Guardrails
 
