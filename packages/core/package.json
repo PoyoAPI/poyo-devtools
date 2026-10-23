@@ -1,6 +1,6 @@
 {
   "name": "@poyoapi/core",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "Catalog-driven client for the PoYo Agent API",
   "license": "MIT",
   "repository": {

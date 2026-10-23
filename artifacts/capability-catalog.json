@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-5b40a30bb206",
+  "schema_version": "v1-8c5c7f9800ac",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -8361,6 +8361,17 @@
             "minimum": -2,
             "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
           },
+          "reasoning_effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "high"
+          },
           "frequency_penalty": {
             "type": "number",
             "example": 0,
@@ -8551,6 +8562,17 @@
           "max_tokens": {
             "type": "integer",
             "minimum": 1
+          },
+          "reasoning_effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "medium"
           },
           "max_completion_tokens": {
             "type": "integer",
@@ -13624,6 +13646,16 @@
             "minimum": -2,
             "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
           },
+          "reasoning_effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string"
+          },
           "frequency_penalty": {
             "type": "number",
             "example": 0,
@@ -13840,6 +13872,18 @@
           "instructions": {
             "type": "string"
           },
+          "reasoning_effort": {
+            "enum": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "medium"
+          },
           "max_output_tokens": {
             "type": "integer",
             "minimum": 1
@@ -14033,6 +14077,251 @@
         },
         {
           "input": "What is 2 + 2?"
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 320,
+        "output_credits": 1600
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-6.1-sol",
+      "tool_name": "poyo_gpt_6_1_sol",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gpt-6.1-sol",
+      "description": "Run the PoYo GPT-6.1 Sol model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "reasoning_effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "medium"
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "model": "gpt-6.1-sol",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Hello"
+            }
+          ]
         }
       ],
       "supported_protocols": [
@@ -33858,37 +34147,34 @@
       ],
       "input_schema": {
         "type": "object",
-        "additionalProperties": false,
         "required": [
           "prompt"
         ],
-        "description": "Text instructions with optional reference images and reference videos. Reference videos are limited to 5 clips with a total duration of at most 30 seconds.",
         "properties": {
           "prompt": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 8000,
             "pattern": "\\S",
+            "maxLength": 8000,
+            "minLength": 1,
             "description": "Video instructions. Use @image_1 and @video_1 to reference the first item in the corresponding reference array. Reference indexes start at 1."
           },
           "duration": {
             "type": "integer",
-            "minimum": 3,
-            "maximum": 30,
             "default": 5,
+            "maximum": 30,
+            "minimum": 3,
             "description": "Output duration in whole seconds."
           },
           "resolution": {
-            "type": "string",
             "enum": [
               "720p",
               "1080p"
             ],
+            "type": "string",
             "default": "720p",
             "description": "Output video resolution."
           },
           "aspect_ratio": {
-            "type": "string",
             "enum": [
               "auto",
               "16:9",
@@ -33896,33 +34182,36 @@
               "1:1",
               "21:9"
             ],
+            "type": "string",
             "description": "Output aspect ratio. When omitted, adapts to supplied materials; without materials, defaults to 16:9."
           },
           "reference_image_urls": {
             "type": "array",
-            "maxItems": 10,
             "items": {
               "type": "string",
               "format": "uri",
               "pattern": "^https?://"
             },
+            "maxItems": 10,
             "description": "Up to 10 publicly accessible HTTP or HTTPS reference image URLs. Reference them as @image_1, @image_2, and so on, in array order."
           },
           "reference_video_urls": {
             "type": "array",
-            "maxItems": 5,
-            "x-video-duration-seconds": {
-              "minimum": 3,
-              "maximum": 30
-            },
             "items": {
               "type": "string",
               "format": "uri",
               "pattern": "^https?://"
             },
-            "description": "Publicly accessible HTTP or HTTPS reference videos, each lasting 3-30 seconds. Reference them as @video_1, @video_2, and so on, in array order. At most 5 videos with a combined duration of at most 30 seconds are allowed."
+            "maxItems": 5,
+            "description": "Publicly accessible HTTP or HTTPS reference videos, each lasting 3-30 seconds. Reference them as @video_1, @video_2, and so on, in array order. At most 5 videos with a combined duration of at most 30 seconds are allowed.",
+            "x-video-duration-seconds": {
+              "maximum": 30,
+              "minimum": 3
+            }
           }
-        }
+        },
+        "description": "Text instructions with optional reference images and reference videos. Reference videos are limited to 5 clips with a total duration of at most 30 seconds.",
+        "additionalProperties": false
       },
       "output_schema": {
         "type": "object",
@@ -33943,16 +34232,16 @@
               "created_time"
             ],
             "properties": {
-              "task_id": {
-                "type": "string",
-                "example": "task-unified-1792741800-example"
-              },
               "status": {
-                "type": "string",
                 "enum": [
                   "not_started"
                 ],
+                "type": "string",
                 "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792741800-example"
               },
               "created_time": {
                 "type": "string",
@@ -33969,19 +34258,19 @@
         },
         {
           "prompt": "The character in @image_1 walks along a sunlit forest trail.",
-          "reference_image_urls": [
-            "https://example.com/character.png"
-          ],
           "duration": 10,
           "resolution": "1080p",
-          "aspect_ratio": "16:9"
+          "aspect_ratio": "16:9",
+          "reference_image_urls": [
+            "https://example.com/character.png"
+          ]
         },
         {
           "prompt": "Recreate the camera movement from @video_1 in a snowy mountain landscape.",
+          "duration": 10,
           "reference_video_urls": [
             "https://example.com/camera-motion.mp4"
-          ],
-          "duration": 10
+          ]
         }
       ],
       "supported_protocols": [],
@@ -33995,17 +34284,17 @@
         "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
         "parameters": {
           "billed_seconds": "duration without video input; otherwise max(2 * duration, input_video_duration + duration)",
-          "input_video_duration": "Ceiling of the sum of server-probed durations from reference_video_urls; round up only after summing all videos",
-          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video"
+          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video",
+          "input_video_duration": "Ceiling of the sum of server-probed durations from reference_video_urls; round up only after summing all videos"
         },
         "credit_rules": {
           "720p": {
-            "without_video": 28.5,
-            "with_video": 17
+            "with_video": 17,
+            "without_video": 28.5
           },
           "1080p": {
-            "without_video": 42.5,
-            "with_video": 25.5
+            "with_video": 25.5,
+            "without_video": 42.5
           }
         },
         "input_credits": null,
