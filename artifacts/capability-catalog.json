@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-8c5c7f9800ac",
+  "schema_version": "v1-5bc1c3f780a1",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -34141,29 +34141,204 @@
       "service_type": "generate",
       "category": "video",
       "title": "Kling 4.0",
-      "description": "Generate videos from text, reference images, and reference videos.",
+      "description": "Generate videos from text, first and last frames, or visual references, and edit an existing video.",
       "tags": [
         "video"
       ],
       "input_schema": {
         "type": "object",
-        "required": [
-          "prompt"
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "video_url"
+              ]
+            },
+            "else": {
+              "allOf": [
+                {
+                  "if": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "reference_image_urls"
+                        ],
+                        "properties": {
+                          "reference_image_urls": {
+                            "minItems": 1
+                          }
+                        }
+                      },
+                      {
+                        "required": [
+                          "reference_video_urls"
+                        ],
+                        "properties": {
+                          "reference_video_urls": {
+                            "minItems": 1
+                          }
+                        }
+                      },
+                      {
+                        "required": [
+                          "kling_elements"
+                        ],
+                        "properties": {
+                          "kling_elements": {
+                            "minItems": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "else": {
+                    "if": {
+                      "required": [
+                        "image_urls"
+                      ],
+                      "properties": {
+                        "image_urls": {
+                          "minItems": 1
+                        }
+                      }
+                    },
+                    "then": {
+                      "not": {
+                        "required": [
+                          "aspect_ratio"
+                        ]
+                      }
+                    }
+                  },
+                  "then": {
+                    "allOf": [
+                      {
+                        "if": {
+                          "required": [
+                            "image_urls"
+                          ],
+                          "properties": {
+                            "image_urls": {
+                              "minItems": 1
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "reference_image_urls": {
+                              "maxItems": 9
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "image_urls": {
+                        "maxItems": 1
+                      }
+                    }
+                  }
+                }
+              ],
+              "oneOf": [
+                {
+                  "not": {
+                    "required": [
+                      "multi_prompt"
+                    ]
+                  },
+                  "required": [
+                    "prompt"
+                  ]
+                },
+                {
+                  "not": {
+                    "required": [
+                      "prompt"
+                    ]
+                  },
+                  "required": [
+                    "multi_prompt"
+                  ]
+                }
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "image_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "reference_video_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "multi_prompt"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "aspect_ratio"
+                    ]
+                  }
+                ]
+              },
+              "required": [
+                "prompt"
+              ],
+              "properties": {
+                "kling_elements": {
+                  "items": {
+                    "not": {
+                      "required": [
+                        "element_input_video_urls"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
         ],
         "properties": {
           "prompt": {
             "type": "string",
             "pattern": "\\S",
-            "maxLength": 8000,
+            "maxLength": 26000,
             "minLength": 1,
-            "description": "Video instructions. Use @image_1 and @video_1 to reference the first item in the corresponding reference array. Reference indexes start at 1."
+            "description": "Video instructions. Use @Image1, @Video1, and @Element1 to reference inputs. Legacy @image_1 and @video_1 references are also accepted. Required for video editing; for generation, provide exactly one of prompt or multi_prompt."
           },
           "duration": {
             "type": "integer",
-            "default": 5,
             "maximum": 30,
             "minimum": 3,
-            "description": "Output duration in whole seconds."
+            "description": "Requested output seconds. Generation defaults to 5 seconds, or the sum of multi_prompt shot durations. When provided with multi_prompt, must equal that sum. Editing defaults to the source video length; billing rounds that source duration up while leaving duration omitted in the upstream request."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Source video to edit, lasting 3-30 seconds. Refer to it as @Video1. Selects editing ahead of other generation modes.",
+            "x-video-duration-seconds": {
+              "maximum": 30,
+              "minimum": 3
+            }
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 2,
+            "minItems": 1,
+            "description": "Ordered first and optional last frame. Reference generation allows only one first frame; editing does not accept this field."
           },
           "resolution": {
             "enum": [
@@ -34183,7 +34358,102 @@
               "21:9"
             ],
             "type": "string",
-            "description": "Output aspect ratio. When omitted, adapts to supplied materials; without materials, defaults to 16:9."
+            "description": "Output aspect ratio for text or reference generation only. Text defaults to 16:9 and treats auto as 16:9; reference generation defaults to auto. Unsupported for first/last-frame generation and editing."
+          },
+          "multi_prompt": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "prompt"
+              ],
+              "properties": {
+                "prompt": {
+                  "type": "string",
+                  "pattern": "\\S",
+                  "maxLength": 512,
+                  "minLength": 1,
+                  "description": "Instructions for this shot."
+                },
+                "duration": {
+                  "type": "integer",
+                  "default": 5,
+                  "maximum": 30,
+                  "minimum": 1,
+                  "description": "Shot duration in seconds."
+                }
+              },
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "description": "Generation shot prompts. Shot durations sum to 3-30 seconds; an explicit top-level duration must match the sum. Mutually exclusive with prompt and unsupported for editing."
+          },
+          "kling_elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "not": {
+                    "required": [
+                      "element_input_video_urls"
+                    ]
+                  },
+                  "required": [
+                    "element_input_urls"
+                  ]
+                },
+                {
+                  "not": {
+                    "required": [
+                      "element_input_urls"
+                    ]
+                  },
+                  "required": [
+                    "element_input_video_urls"
+                  ]
+                }
+              ],
+              "properties": {
+                "element_input_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https?://"
+                  },
+                  "maxItems": 4,
+                  "minItems": 2,
+                  "description": "Two to four images of the same subject: a frontal view followed by additional views."
+                },
+                "element_input_video_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https?://"
+                  },
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "description": "One subject video lasting 3-30 seconds.",
+                  "x-video-duration-seconds": {
+                    "maximum": 30,
+                    "minimum": 3
+                  }
+                }
+              },
+              "description": "A subject defined by images or one video. Reference subjects as @Element1, @Element2, and so on, in array order.",
+              "additionalProperties": false
+            },
+            "contains": {
+              "required": [
+                "element_input_video_urls"
+              ]
+            },
+            "maxItems": 7,
+            "description": "Up to 7 position-based image or video subjects, at most 3 defined by video. Editing accepts image subjects only. Reference them as @Element1, @Element2, and so on.",
+            "maxContains": 3,
+            "minContains": 0
           },
           "reference_image_urls": {
             "type": "array",
@@ -34193,7 +34463,7 @@
               "pattern": "^https?://"
             },
             "maxItems": 10,
-            "description": "Up to 10 publicly accessible HTTP or HTTPS reference image URLs. Reference them as @image_1, @image_2, and so on, in array order."
+            "description": "Reference images, referenced as @Image1, @Image2, and so on, in array order. A first-frame image also counts toward the 10-image limit."
           },
           "reference_video_urls": {
             "type": "array",
@@ -34203,14 +34473,28 @@
               "pattern": "^https?://"
             },
             "maxItems": 5,
-            "description": "Publicly accessible HTTP or HTTPS reference videos, each lasting 3-30 seconds. Reference them as @video_1, @video_2, and so on, in array order. At most 5 videos with a combined duration of at most 30 seconds are allowed.",
+            "description": "Reference videos, each lasting 3-30 seconds. Reference them as @Video1, @Video2, and so on. Reference and subject videos together must not exceed 30 seconds.",
             "x-video-duration-seconds": {
               "maximum": 30,
               "minimum": 3
             }
           }
         },
-        "description": "Text instructions with optional reference images and reference videos. Reference videos are limited to 5 clips with a total duration of at most 30 seconds.",
+        "description": "Generate from text, first/last frames, or references, or edit one source video. Mode priority is source video, non-empty references or subjects, first/last frames, then text. Video duration and cross-field limits are checked by the server.",
+        "x-server-validation": {
+          "image_count": "First frame and reference_image_urls together must total at most 10 images.",
+          "multi_prompt": "Sum effective shot durations (default 5 per shot); require 3-30 seconds and equality with an explicit duration.",
+          "mode_priority": [
+            "video_url",
+            "reference_image_urls/reference_video_urls/kling_elements",
+            "image_urls",
+            "text"
+          ],
+          "video_duration": "Probe every source/reference/subject video; each must be 3-30 real seconds. Sum reference and subject video durations as Decimal before validating the 30-second total. Do not round validation durations.",
+          "billing_duration": "Round up only the combined probed video duration for billing. When edit duration is absent, separately use the ceiling of the source duration as output billing seconds.",
+          "reference_assets": "First frame + reference_image_urls + reference_video_urls + kling_elements must total at most 15 assets. Count a subject once without counting its internal images again.",
+          "unsupported_fields": "Reject all unsupported top-level, shot, and subject properties, including explicit null."
+        },
         "additionalProperties": false
       },
       "output_schema": {
@@ -34271,6 +34555,54 @@
           "reference_video_urls": [
             "https://example.com/camera-motion.mp4"
           ]
+        },
+        {
+          "prompt": "The camera moves from the sunlit garden to the lantern-lit courtyard.",
+          "image_urls": [
+            "https://example.com/start.png",
+            "https://example.com/end.png"
+          ]
+        },
+        {
+          "duration": 10,
+          "multi_prompt": [
+            {
+              "prompt": "A paper boat passes beneath a bridge.",
+              "duration": 4
+            },
+            {
+              "prompt": "The camera rises above the river.",
+              "duration": 6
+            }
+          ]
+        },
+        {
+          "prompt": "@Element1 walks through the city square shown in @Image1.",
+          "kling_elements": [
+            {
+              "element_input_urls": [
+                "https://example.com/character-front.png",
+                "https://example.com/character-side.png"
+              ]
+            }
+          ],
+          "reference_image_urls": [
+            "https://example.com/square.png"
+          ]
+        },
+        {
+          "prompt": "@Element1 walks through a snowy forest.",
+          "kling_elements": [
+            {
+              "element_input_video_urls": [
+                "https://example.com/character.mp4"
+              ]
+            }
+          ]
+        },
+        {
+          "prompt": "Replace the background with a snowy mountain landscape while keeping the camera movement.",
+          "video_url": "https://example.com/source.mp4"
         }
       ],
       "supported_protocols": [],
@@ -34283,9 +34615,12 @@
         "credits": null,
         "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
         "parameters": {
+          "duration": "Explicit output duration, otherwise the sum of multi_prompt shot durations or 5 for generation. For editing without duration, use the ceiling of the server-probed source video duration for billing only; omit duration in the upstream request.",
+          "resolution": "Defaults to 720p.",
+          "validation": "Validate each video at 3-30 real seconds and reference plus subject videos at 30 real seconds in total before billing rounding.",
           "billed_seconds": "duration without video input; otherwise max(2 * duration, input_video_duration + duration)",
-          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video",
-          "input_video_duration": "Ceiling of the sum of server-probed durations from reference_video_urls; round up only after summing all videos"
+          "video_input_mode": "with_video when video_url, reference_video_urls, or kling_elements[].element_input_video_urls supplies video input; otherwise without_video",
+          "input_video_duration": "Ceiling of the sum of server-probed durations from video_url, reference_video_urls, and kling_elements[].element_input_video_urls; round up only after summing all input videos. Editing accepts only its source video; reference generation sums reference and subject videos."
         },
         "credit_rules": {
           "720p": {
