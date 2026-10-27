@@ -29,5 +29,5 @@ export async function clearConfig(): Promise<void> {
 
 export function maskApiKey(value?: string): string {
   if (!value) return "not configured";
-  return value.length <= 12 ? "********" : `${value.slice(0, 6)}鈥?{value.slice(-4)}`;
+  return value.length <= 12 ? "********" : `${value.slice(0, 6)}...${value.slice(-4)}`;
 }
