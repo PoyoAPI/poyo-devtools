@@ -12,10 +12,10 @@ Use the production Capability Catalog as the source of truth. Never invent model
 1. Prefer hosted MCP at `https://api.poyo.ai/mcp`.
 2. After discovery, prefer `?models=MODEL_A,MODEL_B` when a small strongly typed tool set is useful. Use `?categories=...` only for bounded exploration, and never combine both filters.
 3. Use `npx @poyoapi/mcp` for clients that only support stdio.
-4. Use `npx @poyoapi/cli` for chat SSE or when MCP is unavailable.
+4. Use `npx @poyoapi/cli` for chat SSE or when MCP is unavailable. On Windows shells, inline `--input '{...}'` JSON is often broken by quoting; pass schema fields as flags such as `--prompt "..." --resolution 1K`, or write the JSON to a file and use `--input-file`.
 5. Mark Skill executions with `_request_source: "skill"` in MCP or `--request-source skill` in CLI.
 
-Keep `POYO_API_KEY` in the environment or system keyring. Never put it in prompts, query strings, committed files, or retained shell history.
+Keep `POYO_API_KEY` in the environment or system keyring. Never put it in prompts, query strings, committed files, or retained shell history. If the CLI reports an invalid key, run `npx @poyoapi/cli auth status`: an environment `POYO_API_KEY` takes priority over the key saved by `auth login`.
 
 Inspect `tools/list` on the selected connection before calling a tool. A filtered connection exposes model-specific tools and `poyo_check_job`; generic execution tools such as `poyo_submit_job` are available on the unfiltered `/mcp` connection. The same rule applies to stdio `--models` and `--categories` filters.
 
