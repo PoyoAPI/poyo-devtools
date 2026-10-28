@@ -55,6 +55,8 @@ For ElevenLabs V4, V4 Turbo, or Gemini 3.8 speech, read `references/speech-v4-ge
 
 For Meshy 7.1, read `references/meshy-7-1.md` for text/image/multi-image selection, topology limits, and rigging requirements. Omit optional values unless the user chooses them.
 
+For PixVerse V6 Max, read `references/pixverse-v6-max.md` for text-to-video and single-image modes. Submit only user-selected fields, and do not send `aspect_ratio` with an image.
+
 For Vidu Q4, read `references/vidu-q4.md` for starting-frame and reference-image modes; images are required, and reference audio must accompany reference images. For OmniHuman 2.0, read `references/omnihuman-2-0.md` for image/audio inputs and final output-duration billing. Supply only user-selected fields; omit seed and internal timing or billing fields.
 
 For Kling 4.0, read `references/kling-4-0.md` for automatic text, image, reference, or editing mode selection, positional subjects, and multi-shot inputs. Send complex arrays through JSON or CLI `--input-file`; submit only user-selected values and let the server probe video durations.
