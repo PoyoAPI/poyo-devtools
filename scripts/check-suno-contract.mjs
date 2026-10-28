@@ -50,14 +50,28 @@ export function checkSunoContract(catalog, equal) {
     || uploadCover.prompt?.maxLength !== 5000
     || uploadCover.style?.maxLength !== 1000
     || uploadCover.title?.maxLength !== 100
-    || !equal(schema("extend-music").required, ["audio_id"])
-    || !equal(schema("upload-and-extend-audio").required, ["upload_url"])
+    || !equal(schema("extend-music").required, ["audio_id", "mv"])
+    || !equal(schema("upload-and-extend-audio").required, ["upload_url", "mv", "style", "title", "continue_at"])
+    || !props("upload-and-extend-audio").default_param_flag?.enum?.includes(true)
+    || props("upload-and-extend-audio").default_param_flag?.enum?.includes(false)
+    || !equal(schema("generate-mashup").required, ["upload_url_list", "mv", "style", "title"])
+    || !props("generate-mashup").mv?.enum?.includes("V6")
+    || !props("generate-sounds").mv?.enum?.includes("V6")
+    || !props("generate-sounds").mv?.enum?.includes("V6_WILD")
     || !hasCustomRequired("extend-music", ["mv", "style", "title", "continue_at"])
     || !hasConditionalPrompt("extend-music")
     || !hasCustomRequired("upload-and-extend-audio", ["mv", "style", "title", "continue_at"])
+    || !generateMusic.properties?.mv?.enum?.includes("V6")
+    || !generateMusic.properties?.mv?.enum?.includes("V6_MINI")
+    || !generateMusic.properties?.mv?.enum?.includes("V6_WILD")
+    || generateMusic.properties?.lyrics?.maxLength !== 5000
+    || generateMusic.properties?.variety?.maximum !== 4
     || !generateMusic.allOf?.some((rule) => (
       rule.if?.properties?.custom_mode?.const === false
       && rule.then?.properties?.prompt?.maxLength === 3000
+    ))
+    || !generateMusic.allOf?.some((rule) => (
+      rule.then?.anyOf?.some((item) => item.required?.includes("lyrics"))
     ))
     || props("generate-persona").name?.pattern !== "\\S"
     || props("generate-persona").task_id?.description !== "Unique identifier of a completed Generate Music or Extend Music task."
