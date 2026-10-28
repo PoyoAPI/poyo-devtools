@@ -39,6 +39,7 @@ Generated from PoYo Catalog `v1-5bc1c3f780a1`. Always call describe before execu
 | `omnihuman-2.0` | generate |  | Animate one character image with a driving audio track. |
 | `poyo-ai/video-background-removal` | generate |  | Remove or replace the background of a video. |
 | `poyo-ai/video-upscaler` | generate |  | Upscale a video by a configurable scale factor. |
+| `pixverse-v6-max` | generate |  | Generate a 1-15 second video from text or one image, with optional native audio. |
 | `runway-gen-4.5` | generate |  | Text-to-video generation with optional reference image, 5s and 10s durations |
 | `seedance-2` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
 | `seedance-2-fast` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
