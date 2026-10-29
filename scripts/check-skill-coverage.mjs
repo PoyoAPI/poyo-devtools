@@ -166,7 +166,7 @@ const generatePersona = catalog.items.find((item) => item.model_id === "generate
 const hasPersonaCustomRule = (schema, modeField) => schema.allOf?.some((rule) => (
   rule.if?.required?.includes("persona_id")
   && rule.then?.properties?.[modeField]?.const === true
-  && equal(rule.then?.properties?.mv?.enum, ["V5", "V5_5"])
+  && equal(rule.then?.properties?.mv?.enum, ["V5", "V5_5", "V6", "V6_MINI", "V6_WILD"])
 ));
 const hasCustomRequiredRule = (schema, modeField, required) => schema.allOf?.some((rule) => (
   rule.if?.properties?.[modeField]?.const === true
@@ -191,7 +191,7 @@ const expectedSoundKeys = [
   "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm",
   "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
 ];
-const expectedMashupModels = ["V4", "V4_5", "V4_5ALL", "V4_5PLUS", "V5", "V5_5"];
+const expectedMashupModels = ["V4", "V4_5", "V4_5ALL", "V4_5PLUS", "V5", "V5_5", "V6", "V6_MINI", "V6_WILD"];
 if (
   mashup.upload_url_list?.minItems !== 2 || mashup.upload_url_list?.maxItems !== 2
   || mashup.upload_url_list?.items?.pattern !== "^https?://"
@@ -227,8 +227,8 @@ if (
   || !hasCustomRequiredRule(extendMusic, "default_param_flag", ["mv", "style", "title", "continue_at"])
   || !hasInstrumentalPromptRule(extendMusic, "default_param_flag")
   || !hasCustomRequiredRule(uploadExtend, "default_param_flag", ["mv", "style", "title", "continue_at"])
-  || !equal(extendMusic.required, ["audio_id"])
-  || !equal(uploadExtend.required, ["upload_url"])
+  || !equal(extendMusic.required, ["audio_id", "mv"])
+  || !equal(uploadExtend.required, ["upload_url", "mv", "style", "title", "continue_at"])
   || generateMusic.properties?.custom_mode?.default !== true
   || generateMusic.properties?.instrumental?.default !== true
   || extendMusic.properties?.default_param_flag?.default !== true
