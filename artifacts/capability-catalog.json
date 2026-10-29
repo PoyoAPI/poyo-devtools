@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-5bc1c3f780a1",
+  "schema_version": "v1-7db98fd3f29d",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -4824,11 +4824,14 @@
             "enum": [
               "V4_5PLUS",
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string",
             "example": "V5_5",
-            "description": "AI model version for instrumental generation.\n\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V5**: Superior musical expressiveness with faster generation\n- **V4_5PLUS**: Enhanced tonal richness with new creative approaches\n\nDefault: V4_5PLUS"
+            "description": "AI model version for instrumental generation.\n\n- **V6**: Greater musical expression with more natural vocals.\n- **V6_MINI**: Lightweight and fast.\n- **V6_WILD**: Bolder, more distinctive musical expression.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V5**: Superior musical expressiveness with faster generation\n- **V4_5PLUS**: Enhanced tonal richness with new creative approaches\n\nDefault: V4_5PLUS"
           },
           "tags": {
             "type": "string",
@@ -4984,11 +4987,14 @@
             "enum": [
               "V4_5PLUS",
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string",
             "example": "V5_5",
-            "description": "AI model version for vocal generation.\n\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V5**: Superior musical expressiveness with faster generation\n- **V4_5PLUS**: Enhanced tonal richness with new creative approaches\n\nDefault: V4_5PLUS"
+            "description": "AI model version for vocal generation.\n\n- **V6**: Greater musical expression with more natural vocals.\n- **V6_MINI**: Lightweight and fast.\n- **V6_WILD**: Bolder, more distinctive musical expression.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V5**: Superior musical expressiveness with faster generation\n- **V4_5PLUS**: Enhanced tonal richness with new creative approaches\n\nDefault: V4_5PLUS"
           },
           "style": {
             "type": "string",
@@ -5143,60 +5149,6 @@
         "allOf": [
           {
             "if": {
-              "properties": {
-                "custom_mode": {
-                  "const": true
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "style",
-                "title"
-              ]
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "custom_mode"
-              ],
-              "properties": {
-                "custom_mode": {
-                  "const": false
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "prompt"
-              ],
-              "properties": {
-                "prompt": {
-                  "maxLength": 500
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "instrumental"
-              ],
-              "properties": {
-                "instrumental": {
-                  "const": false
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "prompt"
-              ]
-            }
-          },
-          {
-            "if": {
               "required": [
                 "duration"
               ]
@@ -5204,10 +5156,32 @@
             "then": {
               "properties": {
                 "mv": {
-                  "const": "V5_5"
-                },
-                "custom_mode": {
-                  "const": true
+                  "enum": [
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "persona_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "mv": {
+                  "enum": [
+                    "V5",
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
+                  ]
                 }
               }
             }
@@ -5241,13 +5215,7 @@
             "if": {
               "properties": {
                 "mv": {
-                  "enum": [
-                    "V4_5",
-                    "V4_5ALL",
-                    "V4_5PLUS",
-                    "V5",
-                    "V5_5"
-                  ]
+                  "const": "V4_5ALL"
                 },
                 "custom_mode": {
                   "const": true
@@ -5267,11 +5235,46 @@
                 }
               }
             }
+          },
+          {
+            "if": {
+              "properties": {
+                "mv": {
+                  "enum": [
+                    "V4_5",
+                    "V4_5PLUS",
+                    "V5",
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
+                  ]
+                },
+                "custom_mode": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "style": {
+                  "maxLength": 1000
+                },
+                "title": {
+                  "maxLength": 100
+                },
+                "prompt": {
+                  "maxLength": 5000
+                }
+              }
+            }
           }
         ],
         "required": [
           "upload_url_list",
-          "mv"
+          "mv",
+          "style",
+          "title"
         ],
         "properties": {
           "mv": {
@@ -5281,7 +5284,10 @@
               "V4_5ALL",
               "V4_5PLUS",
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string"
           },
@@ -5293,14 +5299,26 @@
             "type": "string",
             "minLength": 1
           },
+          "lyrics": {
+            "type": "string",
+            "maxLength": 5000
+          },
           "prompt": {
             "type": "string",
             "minLength": 1
+          },
+          "variety": {
+            "type": "integer",
+            "maximum": 4,
+            "minimum": 0
           },
           "duration": {
             "type": "integer",
             "maximum": 360,
             "minimum": 10
+          },
+          "persona_id": {
+            "type": "string"
           },
           "custom_mode": {
             "type": "boolean",
@@ -5326,6 +5344,13 @@
             "enum": [
               "m",
               "f"
+            ],
+            "type": "string"
+          },
+          "persona_model": {
+            "enum": [
+              "style_persona",
+              "voice_persona"
             ],
             "type": "string"
           },
@@ -14337,6 +14362,252 @@
         "credits": null,
         "input_credits": 320,
         "output_credits": 1600
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-6.1-terra",
+      "tool_name": "poyo_gpt_6_1_terra",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gpt-6.1-terra",
+      "description": "Run the PoYo GPT-6.1 Terra model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "reasoning_effort": {
+            "enum": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "medium"
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "model": "gpt-6.1-terra",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Hello"
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 160,
+        "output_credits": 800
       },
       "status": "stable"
     },
@@ -25991,7 +26262,10 @@
                 "mv": {
                   "enum": [
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "default_param_flag": {
@@ -26058,7 +26332,10 @@
                     "V4_5",
                     "V4_5PLUS",
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "default_param_flag": {
@@ -26082,7 +26359,8 @@
           }
         ],
         "required": [
-          "audio_id"
+          "audio_id",
+          "mv"
         ],
         "properties": {
           "mv": {
@@ -26092,29 +26370,32 @@
               "V4_5ALL",
               "V4_5PLUS",
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string",
             "example": "V5_5",
-            "description": "AI model version for music extension.\n\n- **V5**: Superior musical expressiveness with faster generation\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: Enhanced tonal richness with new creative approaches, max 8 min duration\n- **V4_5**: Improved prompt intelligence and faster generation, max 8 min duration\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min duration\n- **V4**: Improved vocal quality, max 4 min duration"
+            "description": "AI model version for music extension.\n\n- **V5**: Superior musical expressiveness with faster generation\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: Enhanced tonal richness with new creative approaches, max 8 min duration\n- **V4_5**: Improved prompt intelligence and faster generation, max 8 min duration\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min duration\n- **V4**: Improved vocal quality, max 4 min duration\n- **V6**: Greater musical expression with more natural vocals.\n- **V6_MINI**: Lightweight and fast.\n- **V6_WILD**: Bolder, more distinctive musical expression."
           },
           "style": {
             "type": "string",
             "example": "Pop, Upbeat",
             "maxLength": 1000,
-            "description": "Music style specification for the extended section.\n\nRequired when `default_param_flag` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters"
+            "description": "Music style specification for the extended section.\n\nRequired when `default_param_flag` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 1000 characters"
           },
           "title": {
             "type": "string",
             "example": "Summer Vibes Extended",
             "maxLength": 100,
-            "description": "Title for the extended track.\n\nRequired when `default_param_flag` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 80 characters\n- **V4_5 & V4_5PLUS**: Maximum 100 characters\n- **V4_5ALL**: Maximum 80 characters\n- **V5**: Maximum 100 characters\n- **V5_5**: Maximum 100 characters"
+            "description": "Title for the extended track.\n\nRequired when `default_param_flag` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 80 characters\n- **V4_5 & V4_5PLUS**: Maximum 100 characters\n- **V4_5ALL**: Maximum 80 characters\n- **V5**: Maximum 100 characters\n- **V5_5**: Maximum 100 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 100 characters"
           },
           "prompt": {
             "type": "string",
             "example": "Continue with an energetic chorus section",
             "maxLength": 5000,
-            "description": "Description of how you want to extend the music.\n\nRequired when `default_param_flag` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 3000 characters\n- **V4_5 & V4_5PLUS**: Maximum 5000 characters\n- **V4_5ALL**: Maximum 5000 characters\n- **V5**: Maximum 5000 characters\n- **V5_5**: Maximum 5000 characters"
+            "description": "Description of how you want to extend the music.\n\nRequired for vocal extensions when `default_param_flag` is `true`. It is not sent when `instrumental` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 3000 characters\n- **V4_5 & V4_5PLUS**: Maximum 5000 characters\n- **V4_5ALL**: Maximum 5000 characters\n- **V5**: Maximum 5000 characters\n- **V5_5**: Maximum 5000 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 5000 characters"
           },
           "audio_id": {
             "type": "string",
@@ -26172,13 +26453,13 @@
               "voice_persona"
             ],
             "type": "string",
-            "description": "Persona type; requires persona_id, default_param_flag=true, and V5/V5_5."
+            "description": "Persona type; requires persona_id, default_param_flag=true, and V5, V5_5, V6, V6_MINI, or V6_WILD."
           },
           "default_param_flag": {
             "type": "boolean",
             "default": true,
             "example": true,
-            "description": "Controls whether to use custom parameters or inherit from the source audio.\n\n- When `true`: Enables custom parameter mode. `prompt`, `style`, `title`, and `continue_at` become required.\n\n- When `false`: Only `audio_id` and `mv` are required."
+            "description": "Controls whether to use custom parameters or inherit from the source audio.\n\n- When `true`: Enables custom parameter mode. `mv`, `style`, `title`, and `continue_at` become required. `prompt` is additionally required for vocal extensions.\n\n- When `false`: `audio_id` and `mv` are required."
           },
           "weirdness_constraint": {
             "type": "number",
@@ -26376,17 +26657,30 @@
               }
             },
             "then": {
+              "anyOf": [
+                {
+                  "required": [
+                    "style"
+                  ]
+                },
+                {
+                  "required": [
+                    "lyrics"
+                  ]
+                },
+                {
+                  "required": [
+                    "negative_tags"
+                  ]
+                }
+              ],
               "required": [
-                "style",
                 "title"
               ]
             }
           },
           {
             "if": {
-              "required": [
-                "custom_mode"
-              ],
               "properties": {
                 "custom_mode": {
                   "const": false
@@ -26394,8 +26688,37 @@
               }
             },
             "then": {
-              "required": [
-                "prompt"
+              "anyOf": [
+                {
+                  "required": [
+                    "prompt"
+                  ]
+                },
+                {
+                  "required": [
+                    "style"
+                  ]
+                },
+                {
+                  "required": [
+                    "lyrics"
+                  ]
+                },
+                {
+                  "required": [
+                    "image_urls"
+                  ]
+                },
+                {
+                  "required": [
+                    "video_urls"
+                  ]
+                },
+                {
+                  "required": [
+                    "audio_urls"
+                  ]
+                }
               ],
               "properties": {
                 "prompt": {
@@ -26407,30 +26730,18 @@
           {
             "if": {
               "required": [
-                "instrumental"
-              ],
-              "properties": {
-                "instrumental": {
-                  "const": false
-                }
-              }
-            },
-            "then": {
-              "required": [
-                "prompt"
-              ]
-            }
-          },
-          {
-            "if": {
-              "required": [
                 "duration"
               ]
             },
             "then": {
               "properties": {
                 "mv": {
-                  "const": "V5_5"
+                  "enum": [
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
+                  ]
                 },
                 "custom_mode": {
                   "const": true
@@ -26466,7 +26777,10 @@
                 "mv": {
                   "enum": [
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "custom_mode": {
@@ -26509,7 +26823,10 @@
                     "V4_5ALL",
                     "V4_5PLUS",
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "custom_mode": {
@@ -26543,17 +26860,20 @@
               "V4_5ALL",
               "V4_5PLUS",
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string",
             "example": "V5_5",
-            "description": "AI model version for music generation.\n\n- **V5**: Superior musical expression, faster generation.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: V4_5PLUS delivers richer sound, new ways to create, max 8 min.\n- **V4_5**: V4_5 enables smarter prompts, faster generations, max 8 min.\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min.\n- **V4**: V4 improves vocal quality, max 4 min."
+            "description": "AI model version for music generation.\n\n- **V5**: Superior musical expression, faster generation.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: V4_5PLUS delivers richer sound, new ways to create, max 8 min.\n- **V4_5**: V4_5 enables smarter prompts, faster generations, max 8 min.\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min.\n- **V4**: V4 improves vocal quality, max 4 min.\n- **V6**: Greater musical expression with more natural vocals.\n- **V6_MINI**: Lightweight and fast.\n- **V6_WILD**: Bolder, more distinctive musical expression."
           },
           "style": {
             "type": "string",
             "example": "Classical",
             "maxLength": 1000,
-            "description": "Music style specification defining genre, mood, or artistic direction.\n\nRequired when `custom_mode` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters"
+            "description": "Music style specification defining genre, mood, or artistic direction.\n\nIn custom mode, provide `style`, `lyrics`, or `negative_tags`. `style` itself is optional when one of the other two is present.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 1000 characters"
           },
           "title": {
             "type": "string",
@@ -26561,22 +26881,59 @@
             "maxLength": 80,
             "description": "Track title displayed in player and used for file naming.\n\nRequired when `custom_mode` is `true`.\n\nMaximum 80 characters."
           },
+          "lyrics": {
+            "type": "string",
+            "maxLength": 5000,
+            "description": "Lyrics for the generated track. In custom mode, lyrics take priority over prompt. In non-custom mode, lyrics can be sent together with prompt. Maximum 5000 characters."
+          },
           "prompt": {
             "type": "string",
             "example": "A calm and relaxing piano track with soft melodies",
             "maxLength": 5000,
-            "description": "A description of the desired audio content.\n\n- In Custom Mode ( `custom_mode: true` ): Required if `instrumental` is `false`. The prompt will be strictly used as the lyrics and sung in the generated track.\n  Character limits by model:\n  - **V4**: Maximum 3000 characters\n  - **V4_5 & V4_5PLUS**: Maximum 5000 characters\n  - **V4_5ALL**: Maximum 5000 characters\n  - **V5**: Maximum 5000 characters\n- **V5_5**: Maximum 5000 characters\n\n- In Non-custom Mode ( `custom_mode: false` ): Always required. The prompt serves as the core idea, and lyrics will be automatically generated based on it (not strictly matching the input). Maximum 500 characters.\n  Example: \"A short relaxing piano tune\""
+            "description": "A description of the desired audio content.\n\n- In Custom Mode ( `custom_mode: true` ): Optional when `lyrics` is provided. Otherwise the prompt is used as lyrics when `instrumental` is `false`.\n  Character limits by model:\n  - **V4**: Maximum 3000 characters\n  - **V4_5 & V4_5PLUS**: Maximum 5000 characters\n  - **V4_5ALL**: Maximum 5000 characters\n  - **V5**: Maximum 5000 characters\n  - **V5_5, V6, V6_MINI, and V6_WILD**: Maximum 5000 characters\n\n- In Non-custom Mode ( `custom_mode: false` ): The prompt serves as the core idea. Maximum 3000 characters. A request may instead provide style, lyrics, or reference media.\n  Example: \"A short relaxing piano tune\""
+          },
+          "variety": {
+            "type": "integer",
+            "maximum": 4,
+            "minimum": 0,
+            "description": "Result diversity from 0 to 4. Only applied when custom_mode is true. Default is 1."
           },
           "duration": {
             "type": "integer",
             "maximum": 360,
             "minimum": 10,
-            "description": "Only with custom_mode=true and mv=V5_5."
+            "description": "Only with custom_mode=true and mv set to V5_5, V6, V6_MINI, or V6_WILD."
+          },
+          "audio_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Audio references. Only when custom_mode is false. HTTP(S) URLs."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 5,
+            "description": "Image references. Only when custom_mode is false. Up to 5 HTTP(S) URLs."
           },
           "persona_id": {
             "type": "string",
             "example": "persona_123",
-            "description": "Persona ID to apply to the generated music.\n\nUse this to apply a specific persona style to your music generation. Persona IDs are obtained through the persona creation endpoint.\n\nOnly available when Custom Mode is enabled.\n\nHow to generate persona_id, visit [generate-persona](/api-manual/music-series/generate-persona)."
+            "description": "Persona ID to apply to the generated music.\n\nUse this to apply a specific persona style to your music generation. Persona IDs are obtained through the persona creation endpoint.\n\nOnly available in custom mode with mv set to V5, V5_5, V6, V6_MINI, or V6_WILD.\n\nHow to generate persona_id, visit [generate-persona](/api-manual/music-series/generate-persona)."
+          },
+          "video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 1,
+            "description": "Video reference. Only when custom_mode is false. Up to 1 HTTP(S) URL."
           },
           "custom_mode": {
             "type": "boolean",
@@ -26626,7 +26983,7 @@
               "voice_persona"
             ],
             "type": "string",
-            "description": "Persona type; requires persona_id, custom_mode=true, and V5/V5_5."
+            "description": "Persona type; requires persona_id, custom_mode=true, and V5, V5_5, V6, V6_MINI, or V6_WILD."
           },
           "weirdness_constraint": {
             "type": "number",
@@ -26827,7 +27184,10 @@
           "mv": {
             "enum": [
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string"
           },
@@ -27337,6 +27697,21 @@
         "type": "object",
         "allOf": [
           {
+            "anyOf": [
+              {
+                "required": [
+                  "upload_url"
+                ]
+              },
+              {
+                "required": [
+                  "task_id",
+                  "audio_id"
+                ]
+              }
+            ]
+          },
+          {
             "if": {
               "properties": {
                 "custom_mode": {
@@ -27399,7 +27774,12 @@
             "then": {
               "properties": {
                 "mv": {
-                  "const": "V5_5"
+                  "enum": [
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
+                  ]
                 },
                 "custom_mode": {
                   "const": true
@@ -27435,7 +27815,10 @@
                 "mv": {
                   "enum": [
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "custom_mode": {
@@ -27502,7 +27885,10 @@
                     "V4_5",
                     "V4_5PLUS",
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "custom_mode": {
@@ -27526,7 +27912,6 @@
           }
         ],
         "required": [
-          "upload_url",
           "mv"
         ],
         "properties": {
@@ -27537,35 +27922,46 @@
               "V4_5ALL",
               "V4_5PLUS",
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string",
             "example": "V5_5",
-            "description": "AI model version for audio cover generation.\n\n- **V5**: Superior musical expression, faster generation.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: V4_5PLUS delivers richer sound, new ways to create, max 8 min.\n- **V4_5**: V4_5 enables smarter prompts, faster generations, max 8 min.\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min.\n- **V4**: V4 improves vocal quality, max 4 min."
+            "description": "AI model version for audio cover generation.\n\n- **V5**: Superior musical expression, faster generation.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: V4_5PLUS delivers richer sound, new ways to create, max 8 min.\n- **V4_5**: V4_5 enables smarter prompts, faster generations, max 8 min.\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min.\n- **V4**: V4 improves vocal quality, max 4 min.\n- **V6**: Greater musical expression with more natural vocals.\n- **V6_MINI**: Lightweight and fast.\n- **V6_WILD**: Bolder, more distinctive musical expression."
           },
           "style": {
             "type": "string",
             "example": "EDM, Electronic",
             "maxLength": 1000,
-            "description": "Music style specification for the cover version.\n\nRequired when `custom_mode` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters"
+            "description": "Music style specification for the cover version.\n\nRequired when `custom_mode` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 1000 characters"
           },
           "title": {
             "type": "string",
             "example": "Dance Remix",
             "maxLength": 100,
-            "description": "Title for the covered track.\n\nRequired when `custom_mode` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 80 characters\n- **V4_5 & V4_5PLUS**: Maximum 100 characters\n- **V4_5ALL**: Maximum 80 characters\n- **V5**: Maximum 100 characters\n- **V5_5**: Maximum 100 characters"
+            "description": "Title for the covered track.\n\nRequired when `custom_mode` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 80 characters\n- **V4_5 & V4_5PLUS**: Maximum 100 characters\n- **V4_5ALL**: Maximum 80 characters\n- **V5**: Maximum 100 characters\n- **V5_5**: Maximum 100 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 100 characters"
           },
           "prompt": {
             "type": "string",
             "example": "Transform into an upbeat electronic dance version",
             "maxLength": 5000,
-            "description": "Description of the desired style transformation.\n\n- In Custom Mode ( `custom_mode: true` ): Required if `instrumental` is `false`. The prompt will be used as the lyrics content.\n\n- In Non-custom Mode ( `custom_mode: false` ): Always required. The prompt serves as the core idea for transformation. Maximum 500 characters.\n\nCharacter limits by model in Custom Mode:\n- **V4**: Maximum 3000 characters\n- **V4_5 & V4_5PLUS**: Maximum 5000 characters\n- **V4_5ALL**: Maximum 5000 characters\n- **V5**: Maximum 5000 characters\n- **V5_5**: Maximum 5000 characters"
+            "description": "Description of the desired style transformation.\n\n- In Custom Mode ( `custom_mode: true` ): Required if `instrumental` is `false`. The prompt will be used as the lyrics content.\n\n- In Non-custom Mode ( `custom_mode: false` ): Always required. The prompt serves as the core idea for transformation. Maximum 500 characters.\n\nCharacter limits by model in Custom Mode:\n- **V4**: Maximum 3000 characters\n- **V4_5 & V4_5PLUS**: Maximum 5000 characters\n- **V4_5ALL**: Maximum 5000 characters\n- **V5**: Maximum 5000 characters\n- **V5_5**: Maximum 5000 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 5000 characters"
+          },
+          "task_id": {
+            "type": "string",
+            "description": "Parent music task ID. Use together with audio_id instead of upload_url."
+          },
+          "audio_id": {
+            "type": "string",
+            "description": "Audio ID from the parent music task. Use together with task_id instead of upload_url."
           },
           "duration": {
             "type": "integer",
             "maximum": 360,
             "minimum": 10,
-            "description": "Only with custom_mode=true and mv=V5_5."
+            "description": "Only with custom_mode=true and mv set to V5_5, V6, V6_MINI, or V6_WILD."
           },
           "persona_id": {
             "type": "string",
@@ -27627,7 +28023,7 @@
               "voice_persona"
             ],
             "type": "string",
-            "description": "Persona type; requires persona_id, custom_mode=true, and V5/V5_5."
+            "description": "Persona type; requires persona_id, custom_mode=true, and V5, V5_5, V6, V6_MINI, or V6_WILD."
           },
           "weirdness_constraint": {
             "type": "number",
@@ -27783,30 +28179,14 @@
                 "mv": {
                   "enum": [
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "default_param_flag": {
                   "const": true
-                }
-              }
-            }
-          },
-          {
-            "if": {
-              "required": [
-                "default_param_flag"
-              ],
-              "properties": {
-                "default_param_flag": {
-                  "const": false
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "prompt": {
-                  "maxLength": 500
                 }
               }
             }
@@ -27869,7 +28249,10 @@
                     "V4_5",
                     "V4_5PLUS",
                     "V5",
-                    "V5_5"
+                    "V5_5",
+                    "V6",
+                    "V6_MINI",
+                    "V6_WILD"
                   ]
                 },
                 "default_param_flag": {
@@ -27893,7 +28276,11 @@
           }
         ],
         "required": [
-          "upload_url"
+          "upload_url",
+          "mv",
+          "style",
+          "title",
+          "continue_at"
         ],
         "properties": {
           "mv": {
@@ -27903,34 +28290,37 @@
               "V4_5ALL",
               "V4_5PLUS",
               "V5",
-              "V5_5"
+              "V5_5",
+              "V6",
+              "V6_MINI",
+              "V6_WILD"
             ],
             "type": "string",
             "example": "V5_5",
-            "description": "AI model version for audio extension.\n\n- **V5**: Superior musical expression, faster generation.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: V4_5PLUS delivers richer sound, new ways to create, max 8 min.\n- **V4_5**: V4_5 enables smarter prompts, faster generations, max 8 min.\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min.\n- **V4**: V4 improves vocal quality, max 4 min."
+            "description": "AI model version for audio extension.\n\n- **V5**: Superior musical expression, faster generation.\n- **V5_5**: Personalized model tuned to your unique taste.\n- **V4_5PLUS**: V4_5PLUS delivers richer sound, new ways to create, max 8 min.\n- **V4_5**: V4_5 enables smarter prompts, faster generations, max 8 min.\n- **V4_5ALL**: V4_5ALL enables smarter prompts, faster generations, max 8 min.\n- **V4**: V4 improves vocal quality, max 4 min.\n- **V6**: Greater musical expression with more natural vocals.\n- **V6_MINI**: Lightweight and fast.\n- **V6_WILD**: Bolder, more distinctive musical expression."
           },
           "style": {
             "type": "string",
             "example": "Classical",
             "maxLength": 1000,
-            "description": "Music style specification defining genre, mood, or artistic direction.\n\nRequired when `default_param_flag` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters"
+            "description": "Music style specification defining genre, mood, or artistic direction.\n\nRequired when `default_param_flag` is `true`.\n\nCharacter limits by model:\n- **V4**: Maximum 200 characters\n- **V4_5 & V4_5PLUS**: Maximum 1000 characters\n- **V4_5ALL**: Maximum 1000 characters\n- **V5**: Maximum 1000 characters\n- **V5_5**: Maximum 1000 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 1000 characters"
           },
           "title": {
             "type": "string",
             "example": "Peaceful Piano Extended",
             "maxLength": 100,
-            "description": "Track title displayed in player and used for file naming.\n\nCharacter limits by model:\n- **V4**: Maximum 80 characters\n- **V4_5 & V4_5PLUS**: Maximum 100 characters\n- **V4_5ALL**: Maximum 80 characters\n- **V5**: Maximum 100 characters\n- **V5_5**: Maximum 100 characters"
+            "description": "Track title displayed in player and used for file naming.\n\nCharacter limits by model:\n- **V4**: Maximum 80 characters\n- **V4_5 & V4_5PLUS**: Maximum 100 characters\n- **V4_5ALL**: Maximum 80 characters\n- **V5**: Maximum 100 characters\n- **V5_5**: Maximum 100 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 100 characters"
           },
           "prompt": {
             "type": "string",
             "example": "Extend the music with more relaxing notes",
             "maxLength": 5000,
-            "description": "Optional description or lyrics. If omitted for vocal output, lyrics are generated automatically."
+            "description": "Optional description or lyrics for the extended audio. If omitted for vocal output, lyrics are generated automatically.\n\nCharacter limits by model:\n- **V4**: Maximum 3000 characters\n- **V4_5 & V4_5PLUS**: Maximum 5000 characters\n- **V4_5ALL**: Maximum 5000 characters\n- **V5**: Maximum 5000 characters\n- **V5_5**: Maximum 5000 characters\n- **V6, V6_MINI, and V6_WILD**: Maximum 5000 characters"
           },
           "persona_id": {
             "type": "string",
             "example": "persona_123",
-            "description": "Persona ID to apply. Only available when default_param_flag=true with V5/V5_5."
+            "description": "Persona ID to apply to the generated music.\n\nOnly available when `default_param_flag: true` with V5, V5_5, V6, V6_MINI, or V6_WILD.\n\nHow to generate persona_id, visit [generate-persona](/api-manual/music-series/generate-persona)."
           },
           "upload_url": {
             "type": "string",
@@ -27942,7 +28332,7 @@
           "continue_at": {
             "type": "number",
             "example": 60,
-            "description": "Required when default_param_flag=true. Must be greater than 0 and less than the uploaded audio duration.",
+            "description": "The timestamp (in seconds) from which to start extending the audio. Required when `default_param_flag` is `true` and must be greater than 0.\n\nThis defines where the original audio ends and the AI-generated extension begins.",
             "exclusiveMinimum": 0
           },
           "audio_weight": {
@@ -27957,7 +28347,7 @@
             "type": "boolean",
             "default": true,
             "example": true,
-            "description": "Controls instrumental output. In custom mode, prompt remains optional for vocal output."
+            "description": "Determines whether the audio is instrumental (without lyrics). Defaults to `true`.\n\nThis endpoint is always custom mode. `style`, `title`, `continue_at`, `upload_url`, and `mv` are required. For vocal output, `prompt` is optional. `default_param_flag: false` is rejected."
           },
           "style_weight": {
             "type": "number",
@@ -27987,13 +28377,16 @@
               "voice_persona"
             ],
             "type": "string",
-            "description": "Persona type; requires persona_id, default_param_flag=true, and V5/V5_5."
+            "description": "Persona type; requires persona_id, default_param_flag=true, and V5, V5_5, V6, V6_MINI, or V6_WILD."
           },
           "default_param_flag": {
+            "enum": [
+              true
+            ],
             "type": "boolean",
             "default": true,
             "example": true,
-            "description": "Enable custom parameter mode. When true, mv, style, title, and continue_at are required. When false, only upload_url is required and prompt is optional."
+            "description": "This endpoint is always custom mode. Omit this field or set it to `true`. `false` is rejected.\n\nWhen enabled, `upload_url`, `mv`, `style`, `title`, and `continue_at` are required."
           },
           "weirdness_constraint": {
             "type": "number",
@@ -35947,6 +36340,132 @@
         "input_credits": null,
         "output_credits": null,
         "credits_per_second": 21
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "pixverse-v6-max",
+      "tool_name": "poyo_pixverse_v6_max",
+      "service_type": "generate",
+      "category": "video",
+      "title": "PixVerse V6 Max",
+      "description": "Generate a 1-15 second video from text or one image, with optional native audio.",
+      "tags": [
+        "video",
+        "text-to-video",
+        "image-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "type": "boolean",
+            "default": false,
+            "description": "Generate a native audio track. Defaults to silent."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "description": "Required for text-to-video, up to 5000 characters. Optional for image-to-video, up to 2048 characters. Cannot be blank."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "maximum": 15,
+            "minimum": 1
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one public HTTP or HTTPS image URL for image-to-video. JPEG, PNG, or WebP."
+          },
+          "resolution": {
+            "enum": [
+              "360p",
+              "540p",
+              "720p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "540p"
+          },
+          "aspect_ratio": {
+            "enum": [
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "1:1",
+              "2:3",
+              "3:2",
+              "21:9"
+            ],
+            "type": "string",
+            "default": "16:9",
+            "description": "Text-to-video only. Image-to-video follows the image."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "examples": [
+        {
+          "prompt": "A blue glass marble rolls across a clean white table in warm morning light",
+          "duration": 5,
+          "resolution": "540p",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "prompt": "Animate this product with gentle movement",
+          "duration": 5,
+          "image_urls": [
+            "https://example.com/product.jpg"
+          ],
+          "resolution": "540p"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "duration * audio_resolution_credits_per_second[resolution][silent|audio]",
+        "parameters": {
+          "audio": "false is silent, true is native audio; defaults to false",
+          "duration": "Requested seconds from 1 to 15; defaults to 5",
+          "resolution": "360p, 540p, 720p, or 1080p; defaults to 540p"
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "audio_resolution_credits_per_second": {
+          "360p": {
+            "audio": 7.2,
+            "silent": 4.8
+          },
+          "540p": {
+            "audio": 8.8,
+            "silent": 7.2
+          },
+          "720p": {
+            "audio": 12,
+            "silent": 8.8
+          },
+          "1080p": {
+            "audio": 22.4,
+            "silent": 17.6
+          }
+        }
       },
       "status": "stable"
     },
