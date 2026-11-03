@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-7db98fd3f29d",
+  "schema_version": "v1-d8b53be791d6",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -17606,6 +17606,271 @@
           "medium": 12,
           "very_low": 1.6
         }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "ideogram-vector-1.0/image-to-vector",
+      "tool_name": "poyo_ideogram_vector_1_0_image_to_vector",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Ideogram Vector 1.0 Image to Vector",
+      "description": "Convert one image into an SVG.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "image_urls"
+        ],
+        "properties": {
+          "mode": {
+            "enum": [
+              "default",
+              "simple"
+            ],
+            "type": "string",
+            "default": "default",
+            "description": "default keeps finer detail; simple uses fewer shapes."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one HTTP(S) image URL or image data URI. JPEG, PNG, or WebP, up to 50 MB."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792468800-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-03T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "mode": "simple",
+          "image_urls": [
+            "https://example.com/source.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "edit_credits once",
+        "parameters": {
+          "mode": "default or simple. Defaults to default.",
+          "image_urls": "Exactly one image. Charges edit_credits once."
+        },
+        "edit_credits": 20,
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "ideogram-vector-1.0/text-to-vector",
+      "tool_name": "poyo_ideogram_vector_1_0_text_to_vector",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Ideogram Vector 1.0 Text to Vector",
+      "description": "Generate SVG vector graphics from a prompt, with up to five reference images.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "default": 1,
+            "maximum": 8,
+            "minimum": 1,
+            "description": "Output count, from 1 to 8. Defaults to 1."
+          },
+          "size": {
+            "enum": [
+              "auto",
+              "1:1",
+              "1:4",
+              "1:3",
+              "1:2",
+              "9:16",
+              "10:16",
+              "2:3",
+              "3:4",
+              "4:5",
+              "5:4",
+              "4:3",
+              "3:2",
+              "16:10",
+              "16:9",
+              "2:1",
+              "3:1",
+              "4:1"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Aspect ratio. Defaults to auto."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 9500,
+            "minLength": 1,
+            "description": "Required. Describe the SVG. Must contain 1-9500 characters and non-whitespace text."
+          },
+          "quality": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string",
+            "default": "medium",
+            "description": "Output quality. Defaults to medium."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "description": "Optional reference images, 1-5 HTTP(S) URLs or image data URIs. The first image is the primary reference. JPEG, PNG, or WebP, up to 10 MB each."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792468800-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-03T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A playful cat logo with bold outlines and flat colors"
+        },
+        {
+          "n": 2,
+          "size": "16:9",
+          "prompt": "A flat mountain travel poster",
+          "quality": "high",
+          "image_urls": [
+            "https://example.com/style.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "n * quality_credits[quality]; high quality with image_urls uses high_reference_credits",
+        "parameters": {
+          "n": "Integer 1-8; defaults to 1.",
+          "quality": "Defaults to medium.",
+          "image_urls": "Optional 1-5 reference images. High quality uses high_reference_credits per SVG; low and medium stay on quality_credits."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "quality_credits": {
+          "low": 26,
+          "high": 40,
+          "medium": 32
+        },
+        "high_reference_credits": 64
       },
       "status": "stable"
     },
