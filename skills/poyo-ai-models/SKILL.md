@@ -51,7 +51,7 @@ For Nano Banana 2.1, also read `references/nano-banana-2-1.md` for its shared im
 
 For Ideogram V4.5 generation or editing, read `references/ideogram-v4-5.md` for primary images, references, mask limits, and precision-dependent sizes.
 
-For Ideogram Vector 1.0, read `references/ideogram-vector-1.0.md`. Omit `image_urls` for text-to-vector and put reference images in `reference_image_urls`. A non-empty `image_urls` converts exactly one image and rejects the prompt and reference images.
+For Ideogram Vector 1.0, read `references/ideogram-vector-1.0.md`. Use `ideogram-vector-1.0/text-to-vector` for prompt generation; its `image_urls` are optional reference images. Use `ideogram-vector-1.0/image-to-vector` when `image_urls` contains exactly one image to convert.
 
 For ElevenLabs V4, V4 Turbo, or Gemini 3.8 speech, read `references/speech-v4-gemini-3-8.md` for original audio formats and mutually exclusive transcript/dialogue inputs. Send structured dialogue arrays through JSON or CLI `--input-file`.
 

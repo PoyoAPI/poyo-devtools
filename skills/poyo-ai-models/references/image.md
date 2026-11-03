@@ -19,7 +19,8 @@ Generated from PoYo Catalog `v1-7db98fd3f29d`. Always call describe before execu
 | `grok-imagine-image-quality` | generate |  | High-quality Grok Imagine Image generation with text-to-image and image editing support |
 | `ideogram-v4.5` | generate |  | Generate images from a prompt with quality and size controls. |
 | `ideogram-v4.5-edit` | generate |  | Edit exactly one primary image with references, optional masks, and precision controls. |
-| `ideogram-vector-1.0` | generate |  | Generate SVG vector graphics from a prompt, with up to five reference images, or convert one image into an SVG. |
+| `ideogram-vector-1.0/image-to-vector` | generate |  | Convert exactly one image into an SVG. |
+| `ideogram-vector-1.0/text-to-vector` | generate |  | Generate SVG vector graphics from a prompt, with up to five reference images. |
 | `kling-o1-image-edit` | generate |  | A high-consistency image generation model optimized for precise reference alignment and fine detail control, ideal for character and product-focused use cases |
 | `kling-o3-image` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
 | `kling-o3-image-edit` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
