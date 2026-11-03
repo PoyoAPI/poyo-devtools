@@ -61,8 +61,8 @@ jobs:
           pnpm --filter @poyoapi/mcp pack --pack-destination "$GITHUB_WORKSPACE/release"
           pnpm --filter @poyoapi/cli pack --pack-destination "$GITHUB_WORKSPACE/release"
       - name: Publish @poyoapi/core
-        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-core-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
+        run: node scripts/publish-package.mjs "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-core-*.tgz' -print -quit)" "${{ inputs.dist_tag }}"
       - name: Publish @poyoapi/mcp
-        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-mcp-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
+        run: node scripts/publish-package.mjs "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-mcp-*.tgz' -print -quit)" "${{ inputs.dist_tag }}"
       - name: Publish @poyoapi/cli
-        run: npm publish "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-cli-*.tgz' -print -quit)" --access public --tag "${{ inputs.dist_tag }}" --provenance
+        run: node scripts/publish-package.mjs "$(find "$GITHUB_WORKSPACE/release" -maxdepth 1 -name 'poyoapi-cli-*.tgz' -print -quit)" "${{ inputs.dist_tag }}"
