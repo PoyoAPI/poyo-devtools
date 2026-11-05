@@ -15,6 +15,8 @@ Generated from PoYo Catalog `v1-d8b53be791d6`. Always call describe before execu
 | `gpt-image-2.5-fixed` | generate |  | GPT Image 2.5 single-image generation with Flare or Sunburst, billed per image by resolution. |
 | `gpt-image-2.5-flare` | generate |  | GPT Image 2.5 Flare single-image generation and reference-image editing with background, format, and mask controls. |
 | `gpt-image-2.5-sunburst` | generate |  | GPT Image 2.5 Sunburst single-image generation and reference-image editing with background, format, and mask controls. |
+| `gpt-image-2.6-fixed` | generate |  | GPT Image 2.6 Fixed single-image generation and reference-image editing. Faster option with the same inputs as GPT Image 2.5. |
+| `gpt-image-2.6-sunburst` | generate |  | GPT Image 2.6 Sunburst single-image generation and reference-image editing. Detail-focused option with the same inputs as GPT Image 2.5. |
 | `grok-imagine-image-2.0` | generate |  | Grok Imagine Image 2.0 generation and editing with selectable quality and resolution |
 | `grok-imagine-image-quality` | generate |  | High-quality Grok Imagine Image generation with text-to-image and image editing support |
 | `ideogram-v4.5` | generate |  | Generate images from a prompt with quality and size controls. |
