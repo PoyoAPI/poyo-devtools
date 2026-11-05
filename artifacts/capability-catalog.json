@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-d8b53be791d6",
+  "schema_version": "v1-79ff27921c86",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -16937,6 +16937,160 @@
           "output": 4800,
           "image_input": 1280
         }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-image-2.6-fixed",
+      "tool_name": "poyo_gpt_image_2_6_fixed",
+      "service_type": "generate",
+      "category": "image",
+      "title": "GPT Image 2.6 Fixed",
+      "description": "GPT Image 2.6 Fixed generates one image or edits up to 16 reference images.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "auto",
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "5:4",
+              "4:5",
+              "21:9"
+            ],
+            "type": "string",
+            "default": "1:1",
+            "description": "Output aspect ratio, or auto."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit."
+          },
+          "version": {
+            "enum": [
+              "flare",
+              "sunburst"
+            ],
+            "type": "string",
+            "default": "flare",
+            "description": "Model variant. Available options: flare, sunburst."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 16,
+            "description": "Optional reference image URLs. A non-empty array selects editing."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier. Defaults to 1K."
+          }
+        },
+        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792468800-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-05T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "3:2",
+          "prompt": "A silver espresso machine in a bright studio",
+          "resolution": "1K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "Keep the product and replace the background with soft gray",
+          "image_urls": [
+            "https://example.com/product.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "price_table[resolution]",
+        "parameters": {
+          "size": "Defaults to 1:1. Supported: auto, 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, 2:3, 5:4, 4:5, 21:9.",
+          "version": "Defaults to flare. Supported: flare, sunburst. Version does not change the credit price.",
+          "image_urls": "Optional reference image URLs, at most 16. A non-empty list selects editing and is not charged.",
+          "resolution": "Defaults to 1K. Supported: 1K, 2K, 4K."
+        },
+        "price_table": {
+          "1K": 1.7,
+          "2K": 6,
+          "4K": 8
+        },
+        "input_credits": null,
+        "output_images": 1,
+        "output_credits": null
       },
       "status": "stable"
     },
