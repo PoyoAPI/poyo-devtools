@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-79ff27921c86",
+  "schema_version": "v1-6820cd0f5ba6",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -16523,7 +16523,7 @@
             "default": "1:1",
             "example": "1:1",
             "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
-            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K."
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1 for text-to-image; when editing without size, the output follows the first reference image's aspect ratio (closest supported ratio at the selected resolution). auto lets the model choose the size at any resolution and is billed at 1K. Custom sizes work at any resolution and need dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400; they are billed at the tier matching total pixels (up to 1572864 is 1K, up to 4194304 is 2K, larger is 4K), or the selected resolution if it is higher."
           },
           "prompt": {
             "type": "string",
@@ -16742,7 +16742,7 @@
             "default": "1:1",
             "example": "1:1",
             "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
-            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1. auto is available only at 1K. Custom sizes require resolution 2K or 4K, dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400. A custom 3840-pixel edge requires 4K."
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1 for text-to-image; when editing without size, the output follows the first reference image's aspect ratio (closest supported ratio at the selected resolution). auto lets the model choose the size at any resolution and is billed at 1K. Custom sizes work at any resolution and need dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400; they are billed at the tier matching total pixels (up to 1572864 is 1K, up to 4194304 is 2K, larger is 4K), or the selected resolution if it is higher."
           },
           "prompt": {
             "type": "string",
@@ -17091,6 +17091,504 @@
         "input_credits": null,
         "output_images": 1,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-image-2.6-flare",
+      "tool_name": "poyo_gpt_image_2_6_flare",
+      "service_type": "generate",
+      "category": "image",
+      "title": "GPT Image 2.6 Flare",
+      "description": "GPT Image 2.6 Flare single-image generation and reference-image editing with background, format, compression, moderation, complexity, and mask controls.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "example": "1:1",
+            "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1 for text-to-image; when editing without size, the output follows the first reference image's aspect ratio (closest supported ratio at the selected resolution). auto lets the model choose the size at any resolution and is billed at 1K. Custom sizes work at any resolution and need dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400; they are billed at the tier matching total pixels (up to 1572864 is 1K, up to 4194304 is 2K, larger is 4K), or the selected resolution if it is higher."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit."
+          },
+          "quality": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "high",
+            "description": "Output quality level."
+          },
+          "mask_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Optional mask image URL identifying the area to edit. Requires non-empty image_urls."
+          },
+          "background": {
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Background mode. transparent requires png or webp output."
+          },
+          "complexity": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string",
+            "description": "Optional planning effort. Omit to use the default (high). Does not change the price."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 16,
+            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
+          },
+          "moderation": {
+            "enum": [
+              "auto",
+              "low"
+            ],
+            "type": "string",
+            "description": "Optional content moderation strictness. Omit to use the default (auto)."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier. For aspect ratios, actual pixel dimensions may vary by model and generation; inspect the returned image for exact dimensions. Custom WIDTHxHEIGHT specifies exact dimensions."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
+          },
+          "output_compression": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "description": "Optional compression level from 0 to 100. Requires output_format jpeg or webp."
+          }
+        },
+        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1786751400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-09-09T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
+          "quality": "medium",
+          "resolution": "2K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "Keep the product and replace the background with a warm modern studio",
+          "quality": "high",
+          "image_urls": [
+            "https://example.com/product.png"
+          ]
+        },
+        {
+          "size": "auto",
+          "prompt": "Replace only the masked area with a small vase of flowers",
+          "mask_url": "https://example.com/mask.png",
+          "image_urls": [
+            "https://example.com/room.png"
+          ]
+        },
+        {
+          "size": "1:1",
+          "prompt": "A clean cutout of a small silver robot",
+          "quality": "xhigh",
+          "background": "transparent",
+          "resolution": "4K",
+          "output_format": "webp"
+        },
+        {
+          "size": "3:2",
+          "prompt": "A ceramic coffee cup on a linen tablecloth, soft window light",
+          "quality": "medium",
+          "output_format": "jpeg",
+          "output_compression": 80
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "price_table[billing_resolution][quality] + len(image_urls) * input_image_credits",
+        "parameters": {
+          "quality": "Defaults to high. Supported: low, medium, high, xhigh, max.",
+          "image_urls": "Reference image count, including repeated URLs. Defaults to an empty array; at most 16 images.",
+          "resolution": "Defaults to 1K. Supported: 1K, 2K, 4K; auto size only supports 1K.",
+          "billing_resolution": "Uses resolution, except custom WIDTHxHEIGHT at 2K with more than 4194304 pixels is billed at 4K. Preset aspect ratios use the requested tier."
+        },
+        "settlement": "The quoted price_table amount is reserved and is the maximum charge. On success the charge is the lower of that amount and the upstream usage priced at token_credits_per_1m; cached tokens use uncached prices.",
+        "price_table": {
+          "1K": {
+            "low": 5.5,
+            "max": 42.18,
+            "high": 10.58,
+            "xhigh": 18.76,
+            "medium": 9.5
+          },
+          "2K": {
+            "low": 10.5,
+            "max": 85.66,
+            "high": 21.48,
+            "xhigh": 38.1,
+            "medium": 18.5
+          },
+          "4K": {
+            "low": 17.5,
+            "max": 142.34,
+            "high": 35.64,
+            "xhigh": 63.28,
+            "medium": 30.5
+          }
+        },
+        "mask_credits": 0,
+        "input_credits": null,
+        "output_images": 1,
+        "output_credits": null,
+        "input_image_credits": 2.5,
+        "token_credits_per_1m": {
+          "input": 800,
+          "output": 4800,
+          "image_input": 1280
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-image-2.6-sunburst",
+      "tool_name": "poyo_gpt_image_2_6_sunburst",
+      "service_type": "generate",
+      "category": "image",
+      "title": "GPT Image 2.6 Sunburst",
+      "description": "GPT Image 2.6 Sunburst single-image generation and reference-image editing with background, format, compression, moderation, complexity, and mask controls.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "example": "1:1",
+            "pattern": "^(?:auto|1:1|2:3|3:2|4:3|3:4|4:5|5:4|16:9|9:16|21:9|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: auto, 1:1, 2:3, 3:2, 4:3, 3:4, 4:5, 5:4, 16:9, 9:16, 21:9, or WIDTHxHEIGHT. Defaults to 1:1 for text-to-image; when editing without size, the output follows the first reference image's aspect ratio (closest supported ratio at the selected resolution). auto lets the model choose the size at any resolution and is billed at 1K. Custom sizes work at any resolution and need dimensions divisible by 16, max edge 3840, aspect ratio at most 3:1, and total pixels 655360–8294400; they are billed at the tier matching total pixels (up to 1572864 is 1K, up to 4194304 is 2K, larger is 4K), or the selected resolution if it is higher."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit."
+          },
+          "quality": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "high",
+            "description": "Output quality level."
+          },
+          "mask_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Optional mask image URL identifying the area to edit. Requires non-empty image_urls."
+          },
+          "background": {
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Background mode. transparent requires png or webp output."
+          },
+          "complexity": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string",
+            "description": "Optional planning effort. Omit to use the default (high). Does not change the price."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 16,
+            "description": "Optional reference image URLs. A non-empty array selects editing; an omitted or empty array selects text-to-image generation."
+          },
+          "moderation": {
+            "enum": [
+              "auto",
+              "low"
+            ],
+            "type": "string",
+            "description": "Optional content moderation strictness. Omit to use the default (auto)."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier. For aspect ratios, actual pixel dimensions may vary by model and generation; inspect the returned image for exact dimensions. Custom WIDTHxHEIGHT specifies exact dimensions."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
+          },
+          "output_compression": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "description": "Optional compression level from 0 to 100. Requires output_format jpeg or webp."
+          }
+        },
+        "description": "Generate one image, or edit reference images when image_urls is non-empty.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1786751400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-09-09T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A premium product photo of a silver espresso machine in a bright studio",
+          "quality": "medium",
+          "resolution": "2K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "Keep the product and replace the background with a warm modern studio",
+          "quality": "high",
+          "image_urls": [
+            "https://example.com/product.png"
+          ]
+        },
+        {
+          "size": "auto",
+          "prompt": "Replace only the masked area with a small vase of flowers",
+          "mask_url": "https://example.com/mask.png",
+          "image_urls": [
+            "https://example.com/room.png"
+          ]
+        },
+        {
+          "size": "1:1",
+          "prompt": "A clean cutout of a small silver robot",
+          "quality": "xhigh",
+          "background": "transparent",
+          "resolution": "4K",
+          "output_format": "webp"
+        },
+        {
+          "size": "3:2",
+          "prompt": "A ceramic coffee cup on a linen tablecloth, soft window light",
+          "quality": "medium",
+          "output_format": "jpeg",
+          "output_compression": 80
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "price_table[billing_resolution][quality] + len(image_urls) * input_image_credits",
+        "parameters": {
+          "quality": "Defaults to high. Supported: low, medium, high, xhigh, max.",
+          "image_urls": "Reference image count, including repeated URLs. Defaults to an empty array; at most 16 images.",
+          "resolution": "Defaults to 1K. Supported: 1K, 2K, 4K; auto size only supports 1K.",
+          "billing_resolution": "Uses resolution, except custom WIDTHxHEIGHT at 2K with more than 4194304 pixels is billed at 4K. Preset aspect ratios use the requested tier."
+        },
+        "settlement": "The quoted price_table amount is reserved and is the maximum charge. On success the charge is the lower of that amount and the upstream usage priced at token_credits_per_1m; cached tokens use uncached prices.",
+        "price_table": {
+          "1K": {
+            "low": 5.5,
+            "max": 42.18,
+            "high": 10.58,
+            "xhigh": 18.76,
+            "medium": 9.5
+          },
+          "2K": {
+            "low": 10.5,
+            "max": 85.66,
+            "high": 21.48,
+            "xhigh": 38.1,
+            "medium": 18.5
+          },
+          "4K": {
+            "low": 17.5,
+            "max": 142.34,
+            "high": 35.64,
+            "xhigh": 63.28,
+            "medium": 30.5
+          }
+        },
+        "mask_credits": 0,
+        "input_credits": null,
+        "output_images": 1,
+        "output_credits": null,
+        "input_image_credits": 2.5,
+        "token_credits_per_1m": {
+          "input": 800,
+          "output": 4800,
+          "image_input": 1280
+        }
       },
       "status": "stable"
     },
@@ -32228,6 +32726,292 @@
       "status": "stable"
     },
     {
+      "model_id": "gemini-omni-1.2-flash",
+      "tool_name": "poyo_gemini_omni_1_2_flash",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Gemini Omni 1.2 Flash",
+      "description": "Generate 3-15 second videos from text, first and last frames, or reference images and videos, and edit an existing video, at 360p to 4K.",
+      "tags": [
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "reference-to-video",
+        "video-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "video_url"
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "image_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "reference_image_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "reference_video_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "duration"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "aspect_ratio"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "image_urls",
+                "reference_image_urls"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "image_urls",
+                "reference_video_urls"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "image_urls"
+              ],
+              "properties": {
+                "image_urls": {
+                  "minItems": 2
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "duration": {
+                  "maximum": 10
+                }
+              }
+            }
+          }
+        ],
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 20000,
+            "minLength": 1,
+            "description": "Text prompt describing the video, or the edit instruction when video_url is provided."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 8,
+            "maximum": 15,
+            "minimum": 3,
+            "description": "Output duration in seconds. At most 10 when a last frame is provided. Not accepted for video editing, where the output follows the source video length."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Source video to edit, at most 15 seconds long. Selects video editing; only prompt and resolution can be combined with it.",
+            "x-video-duration-seconds": {
+              "maximum": 15
+            }
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 2,
+            "minItems": 1,
+            "description": "First frame and optional last frame, in order. Cannot be combined with reference_image_urls or reference_video_urls."
+          },
+          "resolution": {
+            "enum": [
+              "360p",
+              "720p",
+              "1080p",
+              "4k"
+            ],
+            "type": "string",
+            "default": "720p",
+            "description": "Output video resolution."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "16:9",
+            "description": "Output aspect ratio. Not accepted for video editing."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 10,
+            "minItems": 1,
+            "description": "Up to 10 reference images. Can be combined with reference_video_urls."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Up to 3 reference videos, each at most 15 seconds long.",
+            "x-video-duration-seconds": {
+              "maximum": 15
+            }
+          }
+        },
+        "description": "Generate from text, first/last frames, or references, or edit one source video. Mode priority is video_url, then reference_image_urls/reference_video_urls, then image_urls, then text. Input video durations are checked by the server.",
+        "x-server-validation": {
+          "empty_values": "Empty arrays and empty strings are treated as omitted.",
+          "mode_priority": [
+            "video_url",
+            "reference_image_urls/reference_video_urls",
+            "image_urls",
+            "text"
+          ],
+          "video_duration": "Probe video_url and every reference video; each must be at most 15 real seconds.",
+          "billing_duration": "Generation bills the requested duration. Editing bills the ceiling of the probed video_url duration.",
+          "unsupported_fields": "Reject unsupported top-level properties."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792741800-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-06T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A cinematic night city with neon reflections and a slow camera push-in.",
+          "duration": 8,
+          "resolution": "720p",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "prompt": "Create a smooth cinematic transition between the opening and closing frames.",
+          "duration": 8,
+          "image_urls": [
+            "https://example.com/first-frame.png",
+            "https://example.com/last-frame.png"
+          ],
+          "resolution": "1080p"
+        },
+        {
+          "prompt": "Use the product image and the motion reference to create a polished studio campaign video.",
+          "duration": 10,
+          "aspect_ratio": "9:16",
+          "reference_image_urls": [
+            "https://example.com/product.png"
+          ],
+          "reference_video_urls": [
+            "https://example.com/motion.mp4"
+          ]
+        },
+        {
+          "prompt": "Turn the scene into a watercolor painting while keeping the camera movement.",
+          "video_url": "https://example.com/source.mp4",
+          "resolution": "720p"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "billed_seconds * resolution_credits_per_second[resolution]",
+        "parameters": {
+          "resolution": "Defaults to 720p",
+          "billed_seconds": "duration for generation (defaults to 8); for video editing, the ceiling of the server-probed video_url duration"
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits_per_second": {
+          "4k": 49.14,
+          "360p": 5.46,
+          "720p": 16.38,
+          "1080p": 24.58
+        }
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "grok-imagine-video-1.5",
       "tool_name": "poyo_grok_imagine_video_1_5",
       "service_type": "generate",
@@ -35450,6 +36234,390 @@
       "status": "stable"
     },
     {
+      "model_id": "kling-4.0-flash",
+      "tool_name": "poyo_kling_4_0_flash",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Kling 4.0 Flash",
+      "description": "Generate fast 720p videos from text, a start frame, or visual references, and edit an existing video.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "video_url"
+              ]
+            },
+            "else": {
+              "if": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "reference_image_urls"
+                    ],
+                    "properties": {
+                      "reference_image_urls": {
+                        "minItems": 1
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "reference_video_urls"
+                    ],
+                    "properties": {
+                      "reference_video_urls": {
+                        "minItems": 1
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "kling_elements"
+                    ],
+                    "properties": {
+                      "kling_elements": {
+                        "minItems": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              "else": {
+                "if": {
+                  "required": [
+                    "image_urls"
+                  ],
+                  "properties": {
+                    "image_urls": {
+                      "minItems": 1
+                    }
+                  }
+                },
+                "else": {
+                  "required": [
+                    "prompt"
+                  ]
+                },
+                "then": {
+                  "not": {
+                    "required": [
+                      "aspect_ratio"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "prompt"
+                ]
+              }
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "image_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "aspect_ratio"
+                    ]
+                  }
+                ]
+              },
+              "required": [
+                "prompt"
+              ],
+              "properties": {
+                "reference_video_urls": {
+                  "maxItems": 4
+                }
+              }
+            }
+          }
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 26000,
+            "minLength": 1,
+            "description": "Video instructions. Required except for image-to-video, where it is optional. Use @Image1, @Video1, and @Element1 to reference inputs; legacy @image_1 and @video_1 are also accepted. In editing, the source video is @Video1 and reference videos start at @Video2."
+          },
+          "duration": {
+            "type": "integer",
+            "maximum": 20,
+            "minimum": 3,
+            "description": "Requested output seconds. Generation defaults to 5. Editing defaults to the source video length; billing rounds that source duration up while leaving duration omitted in the upstream request."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Source video to edit, lasting 3-20 seconds. Refer to it as @Video1. Selects editing ahead of other modes.",
+            "x-video-duration-seconds": {
+              "maximum": 20,
+              "minimum": 3
+            }
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Start frame for image-to-video or reference generation. Flash does not accept an end frame. In reference generation, the start frame counts toward the 10-image limit. Unsupported in editing."
+          },
+          "resolution": {
+            "enum": [
+              "720p"
+            ],
+            "type": "string",
+            "default": "720p",
+            "description": "Output video resolution. Flash supports 720p only."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "16:9",
+              "9:16",
+              "1:1",
+              "21:9"
+            ],
+            "type": "string",
+            "default": "16:9",
+            "description": "Output aspect ratio for text or reference generation only. Defaults to 16:9. In text-to-video, auto is treated as 16:9; in reference generation, auto adapts to the references. Unsupported for image-to-video and editing."
+          },
+          "kling_elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "not": {
+                    "required": [
+                      "element_input_video_urls"
+                    ]
+                  },
+                  "required": [
+                    "element_input_urls"
+                  ]
+                },
+                {
+                  "not": {
+                    "required": [
+                      "element_input_urls"
+                    ]
+                  },
+                  "required": [
+                    "element_input_video_urls"
+                  ]
+                }
+              ],
+              "properties": {
+                "element_input_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https?://"
+                  },
+                  "maxItems": 4,
+                  "minItems": 2,
+                  "description": "Two to four images of the same subject: a frontal view followed by 1-3 additional views."
+                },
+                "element_input_video_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https?://"
+                  },
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "description": "One subject video lasting 3-8 seconds.",
+                  "x-video-duration-seconds": {
+                    "maximum": 8,
+                    "minimum": 3
+                  }
+                }
+              },
+              "description": "A subject defined by images or one video. Reference subjects as @Element1, @Element2, and so on, in array order.",
+              "additionalProperties": false
+            },
+            "contains": {
+              "required": [
+                "element_input_video_urls"
+              ]
+            },
+            "maxItems": 7,
+            "description": "Up to 7 position-based image or video subjects, at most 3 defined by video. Supported in reference generation and editing.",
+            "maxContains": 3,
+            "minContains": 0
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 10,
+            "description": "Reference images, referenced as @Image1, @Image2, and so on, in array order. In reference generation, the start frame also counts toward the 10-image limit."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 5,
+            "description": "Reference videos, each lasting 3-20 seconds. Up to 5 in reference generation (@Video1, @Video2, ...) and up to 4 in editing (@Video2, @Video3, ...). All input videos together must not exceed 20 seconds.",
+            "x-video-duration-seconds": {
+              "maximum": 20,
+              "minimum": 3
+            }
+          }
+        },
+        "description": "Generate from text, a start frame, or references, or edit one source video. Mode priority is source video, non-empty references or subjects, start frame, then text. Video duration and cross-field limits are checked by the server.",
+        "x-server-validation": {
+          "image_count": "Reference generation: start frame and reference_image_urls together must total at most 10 images.",
+          "mode_priority": [
+            "video_url",
+            "reference_image_urls/reference_video_urls/kling_elements",
+            "image_urls",
+            "text"
+          ],
+          "video_duration": "Probe every source, reference and subject video. Source and reference videos must be 3-20 real seconds, subject videos 3-8 real seconds, and all input videos together at most 20 real seconds. Do not round validation durations.",
+          "billing_duration": "Round up only the combined probed input video duration for billing. When edit duration is absent, use the ceiling of the source duration as output billing seconds.",
+          "reference_assets": "Reference generation only: start frame + reference_image_urls + reference_video_urls + kling_elements must total at most 15 assets. Count a subject once without counting its internal images again.",
+          "unsupported_fields": "Reject properties that the selected mode does not support, and all unknown top-level and subject properties."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792741800-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-10-23T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A paper boat floats through a miniature city at sunset.",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "prompt": "The camera slowly pushes in as the lanterns flicker.",
+          "duration": 10,
+          "image_urls": [
+            "https://example.com/start.png"
+          ]
+        },
+        {
+          "prompt": "The character in @Image1 walks along a sunlit forest trail.",
+          "aspect_ratio": "9:16",
+          "reference_image_urls": [
+            "https://example.com/character.png"
+          ]
+        },
+        {
+          "prompt": "Recreate the camera movement from @Video1 in a snowy mountain landscape.",
+          "duration": 8,
+          "reference_video_urls": [
+            "https://example.com/camera-motion.mp4"
+          ]
+        },
+        {
+          "prompt": "@Element1 walks through the city square shown in @Image1.",
+          "kling_elements": [
+            {
+              "element_input_urls": [
+                "https://example.com/character-front.png",
+                "https://example.com/character-side.png"
+              ]
+            }
+          ],
+          "reference_image_urls": [
+            "https://example.com/square.png"
+          ]
+        },
+        {
+          "prompt": "Replace the background of @Video1 with a snowy mountain landscape while keeping the camera movement.",
+          "video_url": "https://example.com/source.mp4"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
+        "parameters": {
+          "duration": "Explicit output duration, otherwise 5 for generation. For editing without duration, use the ceiling of the server-probed source video duration for billing only; omit duration in the upstream request.",
+          "resolution": "720p only.",
+          "billed_seconds": "duration without video input; otherwise duration + max(duration, input_video_duration)",
+          "video_input_mode": "with_video when video_url, reference_video_urls, or kling_elements[].element_input_video_urls supplies video input; otherwise without_video",
+          "input_video_duration": "Ceiling of the sum of server-probed durations from video_url, reference_video_urls, and kling_elements[].element_input_video_urls; round up only after summing all input videos."
+        },
+        "credit_rules": {
+          "720p": {
+            "with_video": 12.6,
+            "without_video": 18.8
+          }
+        },
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "kling-avatar-2.0/pro",
       "tool_name": "poyo_kling_avatar_2_0_pro",
       "service_type": "generate",
@@ -36776,6 +37944,9 @@
       ],
       "input_schema": {
         "type": "object",
+        "required": [
+          "prompt"
+        ],
         "properties": {
           "audio": {
             "type": "boolean",
@@ -36785,7 +37956,7 @@
           "prompt": {
             "type": "string",
             "maxLength": 5000,
-            "description": "Required for text-to-video, up to 5000 characters. Optional for image-to-video, up to 2048 characters. Cannot be blank."
+            "description": "Required for both modes. Up to 5000 characters for text-to-video and 2048 characters for image-to-video. Cannot be blank."
           },
           "duration": {
             "type": "integer",

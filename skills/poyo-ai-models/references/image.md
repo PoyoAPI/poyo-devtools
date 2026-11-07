@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-79ff27921c86`. Always call describe before execution.
+Generated from PoYo Catalog `v1-6820cd0f5ba6`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -16,6 +16,8 @@ Generated from PoYo Catalog `v1-79ff27921c86`. Always call describe before execu
 | `gpt-image-2.5-flare` | generate |  | GPT Image 2.5 Flare single-image generation and reference-image editing with background, format, and mask controls. |
 | `gpt-image-2.5-sunburst` | generate |  | GPT Image 2.5 Sunburst single-image generation and reference-image editing with background, format, and mask controls. |
 | `gpt-image-2.6-fixed` | generate |  | GPT Image 2.6 Fixed generates one image or edits up to 16 reference images. |
+| `gpt-image-2.6-flare` | generate |  | GPT Image 2.6 Flare single-image generation and reference-image editing with background, format, compression, moderation, complexity, and mask controls. |
+| `gpt-image-2.6-sunburst` | generate |  | GPT Image 2.6 Sunburst single-image generation and reference-image editing with background, format, compression, moderation, complexity, and mask controls. |
 | `grok-imagine-image-2.0` | generate |  | Grok Imagine Image 2.0 generation and editing with selectable quality and resolution |
 | `grok-imagine-image-quality` | generate |  | High-quality Grok Imagine Image generation with text-to-image and image editing support |
 | `ideogram-v4.5` | generate |  | Generate images from a prompt with quality and size controls. |
