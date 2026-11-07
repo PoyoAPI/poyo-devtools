@@ -13,6 +13,7 @@ Generated from PoYo Catalog `v1-79ff27921c86`. Always call describe before execu
 | `flux-3/keyframes-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `flux-3/text-to-video` | generate |  | Create videos from text, images, first and last frames, source video, or positioned keyframes. |
 | `gemini-omni-1.1-flash` | generate |  | Generate videos from text, first and last frames, reference images, or a reference video. |
+| `gemini-omni-1.2-flash` | generate |  | Generate 3-15 second videos from text, first and last frames, or reference images and videos, and edit an existing video, at 360p to 4K. |
 | `grok-imagine-video-1.5` | generate |  | Text, image, and reference-to-video generation with Grok Imagine Video 1.5 |
 | `h3-max` | generate |  | Generate 5–15 second videos from text, keyframes, or image-led multimodal references. |
 | `h3-max-turbo` | generate |  | Generate videos from text, a first frame, or first and last frames |
