@@ -61,9 +61,13 @@ For Meshy 7.1, read `references/meshy-7-1.md` for text/image/multi-image selecti
 
 For PixVerse V6 Max, read `references/pixverse-v6-max.md` for text-to-video and single-image modes. Submit only user-selected fields, and do not send `aspect_ratio` with an image.
 
+For Gemini Omni 1.2 Flash, read `references/gemini-omni-1-2-flash.md` for automatic text, first/last-frame, reference, or editing mode selection and per-mode field limits. Submit only user-selected values and let the server probe video durations.
+
 For Vidu Q4, read `references/vidu-q4.md` for starting-frame and reference-image modes; images are required, and reference audio must accompany reference images. For OmniHuman 2.0, read `references/omnihuman-2-0.md` for image/audio inputs and final output-duration billing. Supply only user-selected fields; omit seed and internal timing or billing fields.
 
 For Kling 4.0, read `references/kling-4-0.md` for automatic text, image, reference, or editing mode selection, positional subjects, and multi-shot inputs. Send complex arrays through JSON or CLI `--input-file`; submit only user-selected values and let the server probe video durations.
+
+For Kling 4.0 Flash, read `references/kling-4-0-flash.md` for the same automatic mode selection at 720p with 3–20 second output, one starting frame, no `multi_prompt`, and editing that also accepts reference and subject videos. Submit only user-selected values and let the server probe video durations.
 
 ## Guardrails
 
