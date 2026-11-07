@@ -65,6 +65,8 @@ For Vidu Q4, read `references/vidu-q4.md` for starting-frame and reference-image
 
 For Kling 4.0, read `references/kling-4-0.md` for automatic text, image, reference, or editing mode selection, positional subjects, and multi-shot inputs. Send complex arrays through JSON or CLI `--input-file`; submit only user-selected values and let the server probe video durations.
 
+For Kling 4.0 Flash, read `references/kling-4-0-flash.md` for the same automatic mode selection at 720p with 3–20 second output, one starting frame, no `multi_prompt`, and editing that also accepts reference and subject videos. Submit only user-selected values and let the server probe video durations.
+
 ## Guardrails
 
 - Check account credits before expensive or repeated generation.
