@@ -49,6 +49,14 @@ For Qwen Image 2.1, also read `references/qwen-image-2-1.md` for reference image
 
 For Seedream 5.0 Flash, also read `references/seedream-5-0-flash.md` for text generation, editing references, and the `size` versus `resolution` mapping.
 
+For Seedream 5.5 or Seedream 5.5 Layerize, read `references/seedream-5-5.md`. `seedream-5.5` generates or edits one image with up to 10 references and supports transparent PNG backgrounds; `seedream-5.5-layerize` splits exactly one image into a base image and transparent PNG layers, and settles credits by the images actually returned.
+
+For MiniMax H3 Image, read `references/minimax-h3-image.md` for `<Picture N>` reference tags, aspect-ratio versus custom `WIDTHxHEIGHT` sizes, and custom-size billing tiers.
+
+For MAI Image 2.6 or MAI Image 2.6 Flash, read `references/mai-image-2-6.md` for text-to-image sizes, reference-image editing at about 1 megapixel, web search grounding, and token billing.
+
+In CLI flags, pass several array values as one comma-separated argument, for example `--image-urls https://example.com/a.png,https://example.com/b.png`, or use `--input-file`.
+
 For Nano Banana 2.1, also read `references/nano-banana-2-1.md` for its shared image parameters and single model ID for generation and editing.
 
 For Ideogram V4.5 generation or editing, read `references/ideogram-v4-5.md` for primary images, references, mask limits, and precision-dependent sizes.
@@ -68,6 +76,8 @@ For Vidu Q4, read `references/vidu-q4.md` for starting-frame and reference-image
 For Kling 4.0, read `references/kling-4-0.md` for automatic text, image, reference, or editing mode selection, positional subjects, and multi-shot inputs. Send complex arrays through JSON or CLI `--input-file`; submit only user-selected values and let the server probe video durations.
 
 For Kling 4.0 Flash, read `references/kling-4-0-flash.md` for the same automatic mode selection at 720p with 3–20 second output, one starting frame, no `multi_prompt`, and editing that also accepts reference and subject videos. Submit only user-selected values and let the server probe video durations.
+
+For Seedance 2.5 Flash, read `references/seedance-2-5-flash.md` for automatic text, first/last-frame, or multimodal reference mode selection at 480p or 720p with 4–30 second output, `@Image1`/`@Video1`/`@Audio1` roles, and per-second billing that adds reference video seconds. Submit only user-selected values and let the server check reference durations.
 
 ## Guardrails
 

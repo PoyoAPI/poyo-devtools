@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-6820cd0f5ba6",
+  "schema_version": "v1-830dcf86fc0a",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -6759,6 +6759,128 @@
       "status": "stable"
     },
     {
+      "model_id": "claude-fable-5-2",
+      "tool_name": "poyo_claude_fable_5_2",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "claude-fable-5-2",
+      "description": "Run the PoYo claude-fable-5-2 model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "anthropic"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "stream": {
+            "type": "boolean",
+            "default": false
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "max_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reasoning_effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "high"
+          },
+          "max_completion_tokens": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string",
+                "example": "claude-fable-5-2"
+              },
+              "usage": {
+                "type": "object"
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": "Reply with exactly OK."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "anthropic"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 1280,
+        "output_credits": 6400
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "claude-haiku-4-5-20251001",
       "tool_name": "poyo_claude_haiku_4_5_20251001",
       "service_type": "chat",
@@ -11497,6 +11619,243 @@
       "category": "chat",
       "title": "gemini-4-argon",
       "description": "Run the PoYo gemini-4-argon model.",
+      "tags": [
+        "chat",
+        "gemini",
+        "openai-chat",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "gemini"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 320,
+        "output_credits": 1600
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gemini-4-carbon",
+      "tool_name": "poyo_gemini_4_carbon",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gemini-4-carbon",
+      "description": "Run the PoYo gemini-4-carbon model.",
       "tags": [
         "chat",
         "gemini",
@@ -17193,11 +17552,12 @@
             "enum": [
               "png",
               "jpeg",
-              "webp"
+              "webp",
+              "gif"
             ],
             "type": "string",
             "default": "png",
-            "description": "Output image format."
+            "description": "Output image format. png (default), jpeg or webp; gif returns an animated GIF (9 frames, 512x512 each, looping). gif is text-to-image only and requires size 1:1, resolution 1K and background auto; it is billed at the 2K price tier."
           },
           "output_compression": {
             "type": "integer",
@@ -17442,11 +17802,12 @@
             "enum": [
               "png",
               "jpeg",
-              "webp"
+              "webp",
+              "gif"
             ],
             "type": "string",
             "default": "png",
-            "description": "Output image format."
+            "description": "Output image format. png (default), jpeg or webp; gif returns an animated GIF (9 frames, 512x512 each, looping). gif is text-to-image only and requires size 1:1, resolution 1K and background auto; it is billed at the 2K price tier."
           },
           "output_compression": {
             "type": "integer",
@@ -19114,6 +19475,526 @@
           "2K": 3.5,
           "4K": 7
         }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "mai-image-2.6",
+      "tool_name": "poyo_mai_image_2_6",
+      "service_type": "generate",
+      "category": "image",
+      "title": "MAI Image 2.6",
+      "description": "Microsoft MAI Image 2.6 text-to-image, single-image editing, and multi-image composition with up to 5 reference images and optional web search grounding.",
+      "tags": [
+        "image",
+        "text-to-image",
+        "image-to-image",
+        "image-edit"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "example": "16:9",
+            "pattern": "^(?:1:1|4:3|3:4|3:2|2:3|16:9|9:16|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT for text-to-image. Supported values: 1:1, 4:3, 3:4, 3:2, 2:3, 16:9, 9:16, or WIDTHxHEIGHT. Defaults to 1:1. Custom sizes need both sides divisible by 32, each side at least 768, and total pixels at most 2359296 (for example 1536x1536 or 3072x768); resolution does not apply to them. Ignored when image_urls is provided."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit. Put exact on-image text in quotes."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "description": "Optional 1-5 public reference image URLs (JPEG, PNG, WebP, or GIF). One image is edited, several are combined. The output is about 1 megapixel and follows the reference images; size and resolution are ignored. Images larger than 1 megapixel are downscaled first."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier for aspect-ratio sizes (1K about 1 megapixel, 2K about 2.3 megapixels). Ignored for custom WIDTHxHEIGHT sizes and when image_urls is provided."
+          },
+          "enable_web_search": {
+            "type": "boolean",
+            "default": false,
+            "description": "Look up real-time web information before generating, for current events and real places, products, or people. No extra charge."
+          }
+        },
+        "description": "Generate one PNG image. With image_urls, edit or combine the reference images.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1794383400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-11T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A university campus poster at dusk with the title \"Open Day 2026\", photorealistic, cinematic light",
+          "resolution": "2K"
+        },
+        {
+          "prompt": "Change the bicycle to blue and add a small dog next to it",
+          "image_urls": [
+            "https://example.com/bicycle.png"
+          ]
+        },
+        {
+          "size": "2:3",
+          "prompt": "A travel poster of the Eiffel Tower at night with the text \"Paris\"",
+          "enable_web_search": true
+        },
+        {
+          "size": "3072x768",
+          "prompt": "A wide panoramic banner of a mountain range at sunrise"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "formula": "(text_input_tokens * input + image_input_tokens * image_input + output_tokens * output) / 1000000",
+        "parameters": {
+          "size": "Text-to-image aspect ratio or custom WIDTHxHEIGHT; output tokens = width x height / 1024.",
+          "image_urls": "Each reference image adds up to 1024 image input tokens; edit output is about 1024 tokens.",
+          "resolution": "1K or 2K for aspect-ratio sizes.",
+          "enable_web_search": "No extra charge."
+        },
+        "settlement": "Billed by tokens. A maximum based on size, prompt length, and reference images is reserved at submission; on success the charge is the lower of that amount and the upstream usage priced at token_credits_per_1m. Output tokens = width x height / 1024. Reference images larger than 1 megapixel are downscaled first, so each counts at most 1024 image input tokens. Failed tasks are not charged.",
+        "input_credits": 800,
+        "output_credits": 6080,
+        "token_credits_per_1m": {
+          "input": 800,
+          "output": 6080,
+          "image_input": 1280
+        },
+        "estimated_output_credits": {
+          "1K": {
+            "1:1": 6.23,
+            "2:3": 6.17,
+            "3:2": 6.17,
+            "3:4": 5.91,
+            "4:3": 5.91,
+            "16:9": 6.13,
+            "9:16": 6.13
+          },
+          "2K": {
+            "1:1": 14.01,
+            "2:3": 13.75,
+            "3:2": 13.75,
+            "3:4": 13.71,
+            "4:3": 13.71,
+            "16:9": 14.01,
+            "9:16": 14.01
+          }
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "mai-image-2.6-flash",
+      "tool_name": "poyo_mai_image_2_6_flash",
+      "service_type": "generate",
+      "category": "image",
+      "title": "MAI Image 2.6 Flash",
+      "description": "Faster, lower-cost Microsoft MAI Image 2.6 Flash for text-to-image, image editing, and multi-image composition with up to 5 reference images and optional web search grounding.",
+      "tags": [
+        "image",
+        "text-to-image",
+        "image-to-image",
+        "image-edit"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "example": "16:9",
+            "pattern": "^(?:1:1|4:3|3:4|3:2|2:3|16:9|9:16|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT for text-to-image. Supported values: 1:1, 4:3, 3:4, 3:2, 2:3, 16:9, 9:16, or WIDTHxHEIGHT. Defaults to 1:1. Custom sizes need both sides divisible by 32, each side at least 768, and total pixels at most 2359296 (for example 1536x1536 or 3072x768); resolution does not apply to them. Ignored when image_urls is provided."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit. Put exact on-image text in quotes."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "description": "Optional 1-5 public reference image URLs (JPEG, PNG, WebP, or GIF). One image is edited, several are combined. The output is about 1 megapixel and follows the reference images; size and resolution are ignored. Images larger than 1 megapixel are downscaled first."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier for aspect-ratio sizes (1K about 1 megapixel, 2K about 2.3 megapixels). Ignored for custom WIDTHxHEIGHT sizes and when image_urls is provided."
+          },
+          "enable_web_search": {
+            "type": "boolean",
+            "default": false,
+            "description": "Look up real-time web information before generating, for current events and real places, products, or people. No extra charge."
+          }
+        },
+        "description": "Generate one PNG image. With image_urls, edit or combine the reference images.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1794383400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-11T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A university campus poster at dusk with the title \"Open Day 2026\", photorealistic, cinematic light",
+          "resolution": "2K"
+        },
+        {
+          "prompt": "Change the bicycle to blue and add a small dog next to it",
+          "image_urls": [
+            "https://example.com/bicycle.png"
+          ]
+        },
+        {
+          "size": "2:3",
+          "prompt": "A travel poster of the Eiffel Tower at night with the text \"Paris\"",
+          "enable_web_search": true
+        },
+        {
+          "size": "3072x768",
+          "prompt": "A wide panoramic banner of a mountain range at sunrise"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "formula": "(text_input_tokens * input + image_input_tokens * image_input + output_tokens * output) / 1000000",
+        "parameters": {
+          "size": "Text-to-image aspect ratio or custom WIDTHxHEIGHT; output tokens = width x height / 1024.",
+          "image_urls": "Each reference image adds up to 1024 image input tokens; edit output is about 1024 tokens.",
+          "resolution": "1K or 2K for aspect-ratio sizes.",
+          "enable_web_search": "No extra charge."
+        },
+        "settlement": "Billed by tokens. A maximum based on size, prompt length, and reference images is reserved at submission; on success the charge is the lower of that amount and the upstream usage priced at token_credits_per_1m. Output tokens = width x height / 1024. Reference images larger than 1 megapixel are downscaled first, so each counts at most 1024 image input tokens. Failed tasks are not charged.",
+        "input_credits": 280,
+        "output_credits": 3040,
+        "token_credits_per_1m": {
+          "input": 280,
+          "output": 3040,
+          "image_input": 400
+        },
+        "estimated_output_credits": {
+          "1K": {
+            "1:1": 3.11,
+            "2:3": 3.08,
+            "3:2": 3.08,
+            "3:4": 2.95,
+            "4:3": 2.95,
+            "16:9": 3.06,
+            "9:16": 3.06
+          },
+          "2K": {
+            "1:1": 7,
+            "2:3": 6.88,
+            "3:2": 6.88,
+            "3:4": 6.86,
+            "4:3": 6.86,
+            "16:9": 7,
+            "9:16": 7
+          }
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "minimax-h3-image",
+      "tool_name": "poyo_minimax_h3_image",
+      "service_type": "generate",
+      "category": "image",
+      "title": "MiniMax H3 Image",
+      "description": "The MiniMax H3 Image API generates an image from a prompt or edits up to 16 reference images. It supports 1K, 2K, and 4K output, ten aspect ratios, and custom sizes up to 20 megapixels.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "example": "16:9",
+            "description": "Aspect ratio, auto, or custom WIDTHxHEIGHT. Aspect ratios: 1:1, 5:4, 4:5, 4:3, 3:4, 3:2, 2:3, 16:9, 9:16, 21:9; their pixel size comes from resolution. auto applies to image editing and follows the aspect ratio of <Picture 1> at about the pixel area of the selected resolution tier. Custom WIDTHxHEIGHT uses integers with total pixels from 655360 to 20000000 and an aspect ratio between 1:3 and 3:1 (for example 2560x1440); the output has exactly the requested width and height. Defaults to 1:1 for text-to-image and auto for image editing."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit. Must contain non-whitespace text. Put exact on-image text in quotes and state where it goes. In image editing, refer to reference images as <Picture 1>, <Picture 2>, and so on."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/empty-room.png",
+              "https://example.com/sofa.png"
+            ],
+            "maxItems": 16,
+            "minItems": 1,
+            "description": "Optional 1–16 reference image URLs. Passing this field selects image editing. Must be an array, even for one image. Images are numbered by their order in the array: the first URL is <Picture 1>, the second is <Picture 2>, and so on; use these tags in the prompt to refer to each image. Each URL must be a publicly accessible HTTP or HTTPS URL pointing to a JPEG, PNG, or WEBP image of up to 20 MB, with each side between 128 and 8192 pixels."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K",
+              "4K"
+            ],
+            "type": "string",
+            "default": "2K",
+            "description": "Pixel tier for aspect-ratio sizes and auto. 1K: 1:1 1024x1024, 5:4 1152x928, 4:5 928x1152, 4:3 1184x896, 3:4 896x1184, 3:2 1248x832, 2:3 832x1248, 16:9 1376x768, 9:16 768x1376, 21:9 1568x672. 2K: 1:1 2048x2048, 5:4 2304x1824, 4:5 1824x2304, 4:3 2368x1760, 3:4 1760x2368, 3:2 2496x1664, 2:3 1664x2496, 16:9 2720x1536, 9:16 1536x2720, 21:9 3136x1344. 4K: 1:1 4096x4096, 5:4 4576x3648, 4:5 3648x4576, 4:3 4736x3552, 3:4 3552x4736, 3:2 5024x3360, 2:3 3360x5024, 16:9 5472x3072, 9:16 3072x5472, 21:9 6272x2688. A custom WIDTHxHEIGHT size sets the exact output pixels."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
+          },
+          "enable_prompt_expansion": {
+            "type": "boolean",
+            "default": true,
+            "description": "Expand the prompt into a detailed description of the whole image before generating. Applies to text-to-image requests. Image editing requests always expand the prompt."
+          }
+        },
+        "description": "Generate one image. With image_urls, edit or combine the reference images.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200,
+              400,
+              401,
+              402,
+              403,
+              404,
+              408,
+              429,
+              500,
+              502,
+              503
+            ],
+            "type": "integer",
+            "example": 200,
+            "description": "Business status code. `200` means success; any other value means the request failed. Always check this field: some validation errors return HTTP 200 with `code: 400` in the body.\n\n- `200`: Success\n- `400`: Invalid request parameters\n- `401`: Missing or invalid API key\n- `402`: Insufficient credits\n- `403`: Permission denied\n- `404`: Resource not found\n- `408`: Request timeout\n- `429`: Rate limit exceeded\n- `500`: Internal server error\n- `502`: Upstream service error\n- `503`: Service unavailable\n\nSee [Error Codes](/api-manual/error-codes) for details."
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Task status. Always `not_started` right after submission. Use [Query Task Status](/api-manual/task-management/status) or `callback_url` to get later states.\n\n- `not_started`: Queued, waiting to be processed\n- `running`: Being generated\n- `finished`: Completed; results are in `files` or `output`\n- `failed`: Failed; details are in `error_message`"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1794470400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A vintage travel poster for Kyoto, headline text 'KYOTO' in large bold serif letters and subtitle 'City of a Thousand Gates' below, red torii gates receding up a mossy hill, autumn maple leaves, 1960s screen-print style",
+          "resolution": "2K"
+        },
+        {
+          "prompt": "Place the sofa from <Picture 2> and the floor lamp from <Picture 3> in the empty living room in <Picture 1>. Keep the walls, windows, and daylight of <Picture 1> unchanged.",
+          "image_urls": [
+            "https://example.com/empty-room.png",
+            "https://example.com/sofa.png",
+            "https://example.com/floor-lamp.png"
+          ],
+          "resolution": "2K"
+        },
+        {
+          "size": "1920x1080",
+          "prompt": "Minimal presentation background, soft gradient from deep navy to teal, subtle geometric lines in the lower right, large empty area on the left for text",
+          "output_format": "jpeg",
+          "enable_prompt_expansion": false
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[billing_tier] + reference_image_count * input_image_credits",
+        "parameters": {
+          "billing_tier": "resolution (defaults to 2K) for ratio or auto size; custom WIDTHxHEIGHT up to 4,500,000 pixels bills as 2K, larger bills as 4K",
+          "reference_image_count": "number of image_urls (0 for text-to-image)"
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 3.2,
+          "2K": 3.2,
+          "4K": 11.2
+        },
+        "input_image_credits": 0.5
       },
       "status": "stable"
     },
@@ -21913,6 +22794,384 @@
         "credits": 15,
         "input_credits": null,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "seedream-5.5",
+      "tool_name": "poyo_seedream_5_5",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Seedream 5.5",
+      "description": "The Seedream 5.5 API generates an image from a prompt or edits up to 10 reference images. It supports 1K, 1.5K, and 2K output, eight aspect ratios, and transparent PNG backgrounds.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16",
+              "3:2",
+              "2:3",
+              "21:9",
+              "auto"
+            ],
+            "type": "string",
+            "example": "16:9",
+            "description": "Aspect ratio or auto. Aspect ratios: 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9; their pixel size comes from resolution. auto applies to image editing and follows the reference images at about the pixel area of the selected resolution. Defaults to 1:1 for text-to-image and auto for image editing."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 5,
+            "description": "Prompt describing the image or the requested edit, 5–5000 characters. For an edit, say what changes and what stays the same, and refer to reference images by their order (image 1, image 2, and so on)."
+          },
+          "background": {
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Background of the output image. auto lets the prompt and output format decide. transparent returns an RGBA image with an alpha channel (full or partial transparency) and needs output_format png. opaque returns an RGB image."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/living-room.png",
+              "https://example.com/handbag.png"
+            ],
+            "maxItems": 10,
+            "minItems": 1,
+            "description": "Optional 1–10 reference image URLs. Passing this field selects image editing. Pass it as an array, including for a single image. Each URL must be a publicly accessible HTTP or HTTPS URL pointing to a JPEG, PNG, or WEBP image of up to 10 MB."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "1.5K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "2K",
+            "description": "Pixel tier for the selected size. 1K: 1:1 1024x1024, 4:3 1152x864, 3:4 864x1152, 16:9 1424x800, 9:16 800x1424, 3:2 1248x832, 2:3 832x1248, 21:9 1568x672. 1.5K: 1:1 1536x1536, 4:3 1792x1344, 3:4 1344x1792, 16:9 2048x1152, 9:16 1152x2048, 3:2 1872x1248, 2:3 1248x1872, 21:9 2352x1008. 2K: 1:1 2048x2048, 4:3 2368x1776, 3:4 1776x2368, 16:9 2816x1584, 9:16 1584x2816, 3:2 2496x1664, 2:3 1664x2496, 21:9 3136x1344."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Content safety check."
+          }
+        },
+        "description": "Generate one image. With image_urls, edit or combine the reference images.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200,
+              400,
+              401,
+              402,
+              403,
+              404,
+              408,
+              429,
+              500,
+              502,
+              503
+            ],
+            "type": "integer",
+            "example": 200,
+            "description": "Business status code. `200` means success; any other value means the request failed. Always check this field: some validation errors return HTTP 200 with `code: 400` in the body.\n\n- `200`: Success\n- `400`: Invalid request parameters\n- `401`: Missing or invalid API key\n- `402`: Insufficient credits\n- `403`: Permission denied\n- `404`: Resource not found\n- `408`: Request timeout\n- `429`: Rate limit exceeded\n- `500`: Internal server error\n- `502`: Upstream service error\n- `503`: Service unavailable\n\nSee [Error Codes](/api-manual/error-codes) for details."
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Task status. Always `not_started` right after submission. Use [Query Task Status](/api-manual/task-management/status) or `callback_url` to get later states.\n\n- `not_started`: Queued, waiting to be processed\n- `running`: Being generated\n- `finished`: Completed; results are in `files` or `output`\n- `failed`: Failed; details are in `error_message`"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1794470400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A ceramic pour-over coffee set on a walnut counter, soft morning window light, steam rising from the cup, minimalist product photography",
+          "resolution": "2K"
+        },
+        {
+          "prompt": "Put the handbag from image 2 on the wooden table in image 1. Keep the lighting, background, and camera angle of image 1 unchanged.",
+          "image_urls": [
+            "https://example.com/living-room.png",
+            "https://example.com/handbag.png"
+          ],
+          "resolution": "2K"
+        },
+        {
+          "size": "1:1",
+          "prompt": "A red paper lantern with golden tassels, flat illustration sticker, isolated subject on a transparent background",
+          "background": "transparent",
+          "resolution": "1K",
+          "output_format": "png"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution] + reference_image_count * input_image_credits",
+        "parameters": {
+          "resolution": "1K, 1.5K or 2K (defaults to 2K)",
+          "reference_image_count": "number of image_urls (0 for text-to-image)"
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 4,
+          "2K": 7,
+          "1.5K": 4
+        },
+        "input_image_credits": 1.6
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "seedream-5.5-layerize",
+      "tool_name": "poyo_seedream_5_5_layerize",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Seedream 5.5 Layerize",
+      "description": "The Seedream 5.5 Layer Decomposition API splits one image into a base image and up to 99 transparent PNG layers, with layer positions, names, descriptions, and optional text OCR.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "image_urls"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Optional instruction for how to split the image, up to 2000 characters (for example, put each animal on its own layer and keep the rest in the base image). When the prompt is omitted, the model finds the main elements and puts each on its own layer."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/poster.png"
+            ],
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly 1 image URL to decompose. Must be an array. The URL must be a publicly accessible HTTP or HTTPS URL pointing to a JPEG or PNG image of up to 10 MB, from 512x512 to 6000x6000 pixels, with an aspect ratio between 1:16 and 16:1."
+          },
+          "max_images": {
+            "type": "integer",
+            "default": 30,
+            "maximum": 100,
+            "minimum": 2,
+            "description": "Maximum number of output images, including the base image (2–100). Larger values give finer decomposition. The number of returned images follows the image content, and credits are charged for the images actually returned."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "1.5K",
+              "2K",
+              "auto"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Output size tier. auto keeps the original size when it is between 1K and 2K, upscales smaller images to 1K, and downscales larger images to 2K; auto is billed as 2K. The base image keeps the aspect ratio of the input; each layer keeps its own aspect ratio at about the selected tier."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Format of the base image. Layers are always PNG with transparency."
+          },
+          "text_recognition": {
+            "type": "boolean",
+            "default": false,
+            "description": "Return OCR results for regular text layers in layer.text_recognition: the full text, line positions, and approximate styles (font, color, bold, italic, underline, strikethrough, shadow, translucency)."
+          },
+          "enable_safety_checker": {
+            "type": "boolean",
+            "default": true,
+            "description": "Content safety check."
+          }
+        },
+        "description": "Split one image into a base image and transparent PNG layers. The task returns one file per image, base image first; each file has a layer object.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200,
+              400,
+              401,
+              402,
+              403,
+              404,
+              408,
+              429,
+              500,
+              502,
+              503
+            ],
+            "type": "integer",
+            "example": 200,
+            "description": "Business status code. `200` means success; any other value means the request failed. Always check this field: some validation errors return HTTP 200 with `code: 400` in the body.\n\n- `200`: Success\n- `400`: Invalid request parameters\n- `401`: Missing or invalid API key\n- `402`: Insufficient credits\n- `403`: Permission denied\n- `404`: Resource not found\n- `408`: Request timeout\n- `429`: Rate limit exceeded\n- `500`: Internal server error\n- `502`: Upstream service error\n- `503`: Service unavailable\n\nSee [Error Codes](/api-manual/error-codes) for details."
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Task status. Always `not_started` right after submission. Use [Query Task Status](/api-manual/task-management/status) or `callback_url` to get later states.\n\n- `not_started`: Queued, waiting to be processed\n- `running`: Being generated\n- `finished`: Completed; results are in `files` or `output`\n- `failed`: Failed; details are in `error_message`"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1794470400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "image_urls": [
+            "https://example.com/poster.png"
+          ]
+        },
+        {
+          "prompt": "Put each animal on its own layer and keep the rest of the scene in the base image",
+          "image_urls": [
+            "https://example.com/animal-illustration.png"
+          ],
+          "max_images": 40,
+          "resolution": "2K"
+        },
+        {
+          "image_urls": [
+            "https://example.com/event-poster.png"
+          ],
+          "max_images": 15,
+          "resolution": "1K",
+          "output_format": "jpeg",
+          "text_recognition": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "resolution_credits[resolution] * output_image_count + input_image_credits",
+        "parameters": {
+          "resolution": "1K, 1.5K, 2K or auto (defaults to auto, billed as 2K)",
+          "output_image_count": "images returned including the base image; quoted at max_images on submit and settled by the actual count on success"
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits": {
+          "1K": 4,
+          "2K": 7,
+          "1.5K": 4,
+          "auto": 7
+        },
+        "input_image_credits": 1.6
       },
       "status": "stable"
     },
@@ -39133,6 +40392,227 @@
           "1080p": {
             "with_video": 68.5,
             "without_video": 114
+          }
+        },
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "seedance-2.5-flash",
+      "tool_name": "poyo_seedance_2_5_flash",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Seedance 2.5 Flash",
+      "description": "Generate 4-30 second videos with Seedance 2.5 Flash from text, first and last frames, or image, video, and audio references at 480p or 720p, with synchronized audio.",
+      "tags": [
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "reference-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt",
+          "duration"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "example": "A small orange cat walks across a sunlit wooden table, then looks at the camera and meows softly.",
+            "minLength": 1,
+            "description": "Text prompt describing the video. Refer to reference media in upload order as @Image1, @Video1, and @Audio1."
+          },
+          "duration": {
+            "type": "integer",
+            "example": 5,
+            "maximum": 30,
+            "minimum": 4,
+            "description": "Output duration in seconds, from 4 to 30."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/first.jpg",
+              "https://example.com/last.jpg"
+            ],
+            "maxItems": 2,
+            "minItems": 1,
+            "description": "First frame and optional last frame, in order. Publicly accessible HTTP or HTTPS JPEG, PNG, or WebP image URLs, each up to 30 MB. Use without reference_image_urls, reference_video_urls, and reference_audio_urls."
+          },
+          "resolution": {
+            "enum": [
+              "480p",
+              "720p"
+            ],
+            "type": "string",
+            "default": "720p",
+            "example": "720p",
+            "description": "Output resolution. Default is 720p."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "auto",
+            "example": "16:9",
+            "description": "Output aspect ratio. Default is auto, which lets the model choose. Use auto when image_urls is provided; the output then follows the aspect ratio of the first frame."
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "default": true,
+            "example": true,
+            "description": "Generates synchronized audio with the video. Default is true."
+          },
+          "reference_audio_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/reference.mp3"
+            ],
+            "maxItems": 5,
+            "minItems": 1,
+            "description": "Up to 5 reference audio clips, used together with reference_image_urls or reference_video_urls. Publicly accessible HTTP or HTTPS MP3 or WAV URLs, each 2–30 seconds and up to 15 MB, with a combined duration of at most 30 seconds. The server checks the combined duration at submission."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/reference.jpg"
+            ],
+            "maxItems": 10,
+            "minItems": 1,
+            "description": "Up to 10 reference images. Publicly accessible HTTP or HTTPS JPEG, PNG, or WebP image URLs, each up to 30 MB."
+          },
+          "reference_video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/reference.mp4"
+            ],
+            "maxItems": 5,
+            "minItems": 1,
+            "description": "Up to 5 reference videos. Publicly accessible HTTP or HTTPS MP4 or MOV URLs, each 2–30 seconds and up to 200 MB, with a combined duration of at most 30 seconds. The server checks the combined duration at submission."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1792741800-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-06T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "One continuous 30-second story of the same young woman in a yellow raincoat delivering a handwritten letter across a small seaside town at dawn. 0-6s: wide aerial shot of the sleepy harbor town, fishing boats rocking, soft morning light; she rides an old bicycle down a cobblestone hill. 6-12s: tracking shot beside her as she weaves past a fish market, seagulls lifting off, a vendor waves at her. 12-18s: low-angle shot as she climbs a steep stone staircase carrying the bicycle, breathing hard, the letter tucked in her pocket. 18-24s: she knocks on a blue door at the top; an elderly man opens it and she hands him the letter. 24-30s: close-up of the man reading, his eyes filling with tears; he smiles and says softly, \"She remembered.\" Camera slowly pulls back to reveal the sunrise over the sea. Natural ambient sound: waves, gulls, bicycle bell, footsteps, gentle piano music. No subtitles, no on-screen text.",
+          "duration": 30,
+          "resolution": "720p",
+          "aspect_ratio": "16:9",
+          "generate_audio": true
+        },
+        {
+          "prompt": "Locked-off time-lapse of the red lakeside cabin: start from the summer evening in the first frame, let snow gradually cover the shore and the wooden dock as the sky darkens, and end exactly on the snowy night with the aurora in the last frame. Soft wind and crackling ice.",
+          "duration": 5,
+          "image_urls": [
+            "https://example.com/first-frame.jpg",
+            "https://example.com/last-frame.jpg"
+          ],
+          "resolution": "720p",
+          "aspect_ratio": "auto"
+        },
+        {
+          "prompt": "@Image1 is the ginger cat. It wears the yellow knitted scarf from @Image2 and is inside the bookstore from @Image3. On a rainy night the cat walks along a bookshelf, jumps down beside a reading lamp, and looks at the camera. Match the slow, cozy rhythm of @Audio1. No subtitles.",
+          "duration": 6,
+          "resolution": "480p",
+          "aspect_ratio": "16:9",
+          "reference_audio_urls": [
+            "https://example.com/rhythm.mp3"
+          ],
+          "reference_image_urls": [
+            "https://example.com/cat.png",
+            "https://example.com/scarf.png",
+            "https://example.com/bookstore.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "second",
+        "credits": null,
+        "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
+        "parameters": {
+          "resolution": "Defaults to 720p",
+          "billed_seconds": "output duration plus the reference video duration (each clip floored to whole seconds) when reference_video_urls is provided",
+          "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video"
+        },
+        "credit_rules": {
+          "480p": {
+            "with_video": 11.5,
+            "without_video": 18.5
+          },
+          "720p": {
+            "with_video": 25.5,
+            "without_video": 41
           }
         },
         "input_credits": null,

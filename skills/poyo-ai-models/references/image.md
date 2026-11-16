@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-6820cd0f5ba6`. Always call describe before execution.
+Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -27,6 +27,9 @@ Generated from PoYo Catalog `v1-6820cd0f5ba6`. Always call describe before execu
 | `kling-o1-image-edit` | generate |  | A high-consistency image generation model optimized for precise reference alignment and fine detail control, ideal for character and product-focused use cases |
 | `kling-o3-image` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
 | `kling-o3-image-edit` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
+| `mai-image-2.6` | generate |  | Microsoft MAI Image 2.6 text-to-image, single-image editing, and multi-image composition with up to 5 reference images and optional web search grounding. |
+| `mai-image-2.6-flash` | generate |  | Faster, lower-cost Microsoft MAI Image 2.6 Flash for text-to-image, image editing, and multi-image composition with up to 5 reference images and optional web search grounding. |
+| `minimax-h3-image` | generate |  | The MiniMax H3 Image API generates an image from a prompt or edits up to 16 reference images. It supports 1K, 2K, and 4K output, ten aspect ratios, and custom sizes up to 20 megapixels. |
 | `nano-banana-2-lite` | generate |  | Nano Banana 2 Lite image generation and image editing API |
 | `nano-banana-2-lite-edit` | generate |  | Nano Banana 2 Lite image generation and image editing API |
 | `nano-banana-2-official` | generate |  | Next-generation AI image generation powered by Gemini 3.1 Flash Image Preview |
@@ -44,5 +47,7 @@ Generated from PoYo Catalog `v1-6820cd0f5ba6`. Always call describe before execu
 | `seedream-5.0-lite-edit` | generate |  | Advanced image generation model with support for text-to-image, image-to-image, and multi-image reference capabilities |
 | `seedream-5.0-pro` | generate |  | Flagship Seedream image generation and editing model with precise prompt following, layout control, and multi-image reference editing |
 | `seedream-5.0-pro-edit` | generate |  | Flagship Seedream image generation and editing model with precise prompt following, layout control, and multi-image reference editing |
+| `seedream-5.5` | generate |  | The Seedream 5.5 API generates an image from a prompt or edits up to 10 reference images. It supports 1K, 1.5K, and 2K output, eight aspect ratios, and transparent PNG backgrounds. |
+| `seedream-5.5-layerize` | generate |  | The Seedream 5.5 Layer Decomposition API splits one image into a base image and up to 99 transparent PNG layers, with layer positions, names, descriptions, and optional text OCR. |
 | `wan-2.7-image` | generate |  | Image generation model with unified text-to-image and image editing support, including custom image sizes |
 | `wan-2.7-image-pro` | generate |  | High-quality image generation model with unified text-to-image and image editing support, including custom image sizes |

@@ -11,7 +11,7 @@ Use `seedream-5.0-flash` for text-to-image or `seedream-5.0-flash-edit` for imag
 ```bash
 poyo describe seedream-5.0-flash
 poyo run seedream-5.0-flash --prompt "A colorful flower-shop poster" --size 3:4 --resolution 1.5K --request-source skill
-poyo submit seedream-5.0-flash-edit --prompt "Place the product on the table" --image-urls https://example.com/table.jpg https://example.com/product.png --size 4:3 --resolution 2K --request-source skill
+poyo submit seedream-5.0-flash-edit --prompt "Place the product on the table" --image-urls https://example.com/table.jpg,https://example.com/product.png --size 4:3 --resolution 2K --request-source skill
 ```
 
 Replace example URLs with accessible user-provided images. For typed MCP, select `?models=seedream-5.0-flash` or `?models=seedream-5.0-flash-edit` and call `poyo_seedream_5_0_flash` or `poyo_seedream_5_0_flash_edit` with `_request_source: "skill"`. Poll unfinished tasks with `poyo_check_job` without resubmitting them.

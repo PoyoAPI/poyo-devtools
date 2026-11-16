@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-6820cd0f5ba6`. Always call describe before execution.
+Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -47,6 +47,7 @@ Generated from PoYo Catalog `v1-6820cd0f5ba6`. Always call describe before execu
 | `seedance-2-fast` | generate |  | Video generation with Seedance 2 and Seedance 2 Fast |
 | `seedance-2-mini` | generate |  | Fast video generation with Seedance 2 Mini |
 | `seedance-2.5` | generate |  | Generate videos with Seedance 2.5 from text, frames, or multimodal references |
+| `seedance-2.5-flash` | generate |  | Generate 4-30 second videos with Seedance 2.5 Flash from text, first and last frames, or image, video, and audio references at 480p or 720p, with synchronized audio. |
 | `veo3.1-extend` | generate |  | Extend an existing video with Veo 3.1. |
 | `veo3.1-fast-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
 | `veo3.1-lite-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |

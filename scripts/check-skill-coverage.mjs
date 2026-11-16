@@ -316,5 +316,100 @@ if (
 ) {
   throw new Error("Grok Imagine Image Quality capability is out of sync");
 }
+const findModel = (modelId) => catalog.items.find((item) => item.model_id === modelId);
+
+const fable52 = findModel("claude-fable-5-2");
+if (
+  fable52?.tool_name !== "poyo_claude_fable_5_2"
+  || fable52.billing?.type !== "token"
+  || fable52.billing.input_credits !== 1280
+  || fable52.billing.output_credits !== 6400
+) {
+  throw new Error("Claude Fable 5.2 capability is out of sync");
+}
+
+const h3Image = findModel("minimax-h3-image");
+const h3ImageProperties = h3Image?.input_schema?.properties ?? {};
+if (
+  h3Image?.tool_name !== "poyo_minimax_h3_image"
+  || h3Image.input_schema?.additionalProperties !== false
+  || !equal(h3Image.billing?.resolution_credits, {"1K": 3.2, "2K": 3.2, "4K": 11.2})
+  || h3Image.billing?.input_image_credits !== 0.5
+  || !equal(h3ImageProperties.resolution?.enum, ["1K", "2K", "4K"])
+  || h3ImageProperties.image_urls?.maxItems !== 16
+  || h3ImageProperties.prompt?.maxLength !== 5000
+) {
+  throw new Error("MiniMax H3 Image capability is out of sync");
+}
+
+const seedream55 = findModel("seedream-5.5");
+const seedream55Properties = seedream55?.input_schema?.properties ?? {};
+if (
+  seedream55?.tool_name !== "poyo_seedream_5_5"
+  || seedream55.input_schema?.additionalProperties !== false
+  || !equal(seedream55.billing?.resolution_credits, {"1K": 4, "1.5K": 4, "2K": 7})
+  || seedream55.billing?.input_image_credits !== 1.6
+  || !equal(seedream55Properties.resolution?.enum, ["1K", "1.5K", "2K"])
+  || !equal(seedream55Properties.background?.enum, ["auto", "transparent", "opaque"])
+  || seedream55Properties.image_urls?.maxItems !== 10
+) {
+  throw new Error("Seedream 5.5 capability is out of sync");
+}
+
+const seedream55Layerize = findModel("seedream-5.5-layerize");
+const seedream55LayerizeProperties = seedream55Layerize?.input_schema?.properties ?? {};
+if (
+  seedream55Layerize?.tool_name !== "poyo_seedream_5_5_layerize"
+  || seedream55Layerize.input_schema?.additionalProperties !== false
+  || !equal(seedream55Layerize.billing?.resolution_credits, {"1K": 4, "1.5K": 4, "2K": 7, auto: 7})
+  || seedream55Layerize.billing?.input_image_credits !== 1.6
+  || seedream55LayerizeProperties.image_urls?.minItems !== 1
+  || seedream55LayerizeProperties.image_urls?.maxItems !== 1
+  || seedream55LayerizeProperties.max_images?.minimum !== 2
+  || seedream55LayerizeProperties.max_images?.maximum !== 100
+) {
+  throw new Error("Seedream 5.5 Layerize capability is out of sync");
+}
+
+const expectedMaiImageTokenPrices = {
+  "mai-image-2.6": {input: 800, image_input: 1280, output: 6080},
+  "mai-image-2.6-flash": {input: 280, image_input: 400, output: 3040},
+};
+for (const [modelId, expected] of Object.entries(expectedMaiImageTokenPrices)) {
+  const model = findModel(modelId);
+  const properties = model?.input_schema?.properties ?? {};
+  if (
+    model?.tool_name !== `poyo_${modelId.replace(/[.-]/g, "_")}`
+    || model.input_schema?.additionalProperties !== false
+    || model.billing?.type !== "token"
+    || !equal(model.billing?.token_credits_per_1m, expected)
+    || !equal(properties.resolution?.enum, ["1K", "2K"])
+    || properties.image_urls?.maxItems !== 5
+    || properties.enable_web_search?.default !== false
+  ) {
+    throw new Error(`MAI Image 2.6 capability is out of sync: ${modelId}`);
+  }
+}
+
+const seedance25Flash = findModel("seedance-2.5-flash");
+const seedance25FlashProperties = seedance25Flash?.input_schema?.properties ?? {};
+if (
+  seedance25Flash?.tool_name !== "poyo_seedance_2_5_flash"
+  || seedance25Flash.input_schema?.additionalProperties !== false
+  || !equal(seedance25Flash.billing?.credit_rules, {
+    "480p": {with_video: 11.5, without_video: 18.5},
+    "720p": {with_video: 25.5, without_video: 41},
+  })
+  || !equal(seedance25FlashProperties.resolution?.enum, ["480p", "720p"])
+  || seedance25FlashProperties.duration?.minimum !== 4
+  || seedance25FlashProperties.duration?.maximum !== 30
+  || seedance25FlashProperties.image_urls?.maxItems !== 2
+  || seedance25FlashProperties.reference_image_urls?.maxItems !== 10
+  || seedance25FlashProperties.reference_video_urls?.maxItems !== 5
+  || seedance25FlashProperties.reference_audio_urls?.maxItems !== 5
+) {
+  throw new Error("Seedance 2.5 Flash capability is out of sync");
+}
+
 if (catalogErrors.length) throw new Error(catalogErrors.join("\n"));
 process.stdout.write(`Validated ${ids.size} PoYo model capabilities.\n`);
