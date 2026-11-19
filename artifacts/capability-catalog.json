@@ -19584,11 +19584,11 @@
         },
         "input_credits": null,
         "output_credits": null,
-        "reference_credits": 0.5,
+        "reference_credits": 1,
         "resolution_credits": {
-          "2K": 10,
-          "4K": 15,
-          "8K": 25
+          "2K": 13,
+          "4K": 19,
+          "8K": 32
         }
       },
       "status": "stable"
@@ -19762,25 +19762,25 @@
         },
         "page_credits": {
           "webpage": {
-            "1K": 88,
-            "2K": 95
+            "1K": 110,
+            "2K": 120
           },
           "ecommerce_long": {
-            "1K": 125,
-            "2K": 138
+            "1K": 157,
+            "2K": 173
           },
           "ecommerce_short": {
-            "1K": 38,
-            "2K": 45
+            "1K": 47,
+            "2K": 57
           },
           "ecommerce_medium": {
-            "1K": 75,
-            "2K": 88
+            "1K": 94,
+            "2K": 110
           }
         },
         "input_credits": null,
         "output_credits": null,
-        "reference_credits": 0.5
+        "reference_credits": 1
       },
       "status": "stable"
     },
@@ -20880,12 +20880,12 @@
           "output_format": "No extra charge."
         },
         "settlement": "Billed by tokens. A maximum based on size, prompt length, and reference images is reserved at submission; on success the charge is the lower of that amount and the actual tokens priced at token_credits_per_1m. Output tokens = output width x height / 1024. Failed tasks are not charged.",
-        "input_credits": 800,
-        "output_credits": 5440,
+        "input_credits": 1000,
+        "output_credits": 6800,
         "token_credits_per_1m": {
-          "input": 800,
-          "output": 5440,
-          "image_input": 1280
+          "input": 1000,
+          "output": 6800,
+          "image_input": 1600
         }
       },
       "status": "stable"
@@ -21049,12 +21049,12 @@
           "output_format": "No extra charge."
         },
         "settlement": "Billed by tokens. A maximum based on size, prompt length, and reference images is reserved at submission; on success the charge is the lower of that amount and the actual tokens priced at token_credits_per_1m. Output tokens = output width x height / 1024. Failed tasks are not charged.",
-        "input_credits": 280,
-        "output_credits": 1600,
+        "input_credits": 350,
+        "output_credits": 2000,
         "token_credits_per_1m": {
-          "input": 280,
-          "output": 1600,
-          "image_input": 400
+          "input": 350,
+          "output": 2000,
+          "image_input": 500
         }
       },
       "status": "stable"
@@ -37071,8 +37071,8 @@
         "input_credits": null,
         "output_credits": null,
         "resolution_credits_per_second": {
-          "2K": 23.2,
-          "1080p": 16
+          "2K": 29,
+          "1080p": 20
         }
       },
       "status": "stable"
@@ -37378,8 +37378,8 @@
         "input_credits": null,
         "output_credits": null,
         "resolution_credits_per_second": {
-          "2K": 14,
-          "1080p": 8
+          "2K": 18,
+          "1080p": 10
         }
       },
       "status": "stable"

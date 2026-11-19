@@ -412,8 +412,8 @@ if (
 }
 
 const expectedMaiImage27TokenPrices = {
-  "mai-image-2.7": {input: 800, image_input: 1280, output: 5440},
-  "mai-image-2.7-flash": {input: 280, image_input: 400, output: 1600},
+  "mai-image-2.7": {input: 1000, image_input: 1600, output: 6800},
+  "mai-image-2.7-flash": {input: 350, image_input: 500, output: 2000},
 };
 for (const [modelId, expected] of Object.entries(expectedMaiImage27TokenPrices)) {
   const model = findModel(modelId);
@@ -438,8 +438,8 @@ const kling40ImageProperties = kling40Image?.input_schema?.properties ?? {};
 if (
   kling40Image?.tool_name !== "poyo_kling_4_0_image"
   || kling40Image.input_schema?.additionalProperties !== false
-  || !equal(kling40Image.billing?.resolution_credits, {"2K": 10, "4K": 15, "8K": 25})
-  || kling40Image.billing?.reference_credits !== 0.5
+  || !equal(kling40Image.billing?.resolution_credits, {"2K": 13, "4K": 19, "8K": 32})
+  || kling40Image.billing?.reference_credits !== 1
   || !equal(kling40ImageProperties.resolution?.enum, ["2K", "4K", "8K"])
   || kling40ImageProperties.image_urls?.maxItems !== 10
   || kling40ImageProperties.kling_elements?.maxItems !== 7
@@ -455,12 +455,12 @@ if (
   kling40LongImage?.tool_name !== "poyo_kling_4_0_long_image"
   || kling40LongImage.input_schema?.additionalProperties !== false
   || !equal(kling40LongImage.billing?.page_credits, {
-    webpage: {"1K": 88, "2K": 95},
-    ecommerce_short: {"1K": 38, "2K": 45},
-    ecommerce_medium: {"1K": 75, "2K": 88},
-    ecommerce_long: {"1K": 125, "2K": 138},
+    webpage: {"1K": 110, "2K": 120},
+    ecommerce_short: {"1K": 47, "2K": 57},
+    ecommerce_medium: {"1K": 94, "2K": 110},
+    ecommerce_long: {"1K": 157, "2K": 173},
   })
-  || kling40LongImage.billing?.reference_credits !== 0.5
+  || kling40LongImage.billing?.reference_credits !== 1
   || !equal(kling40LongImageProperties.skill?.enum, ["webpage", "ecommerce"])
   || !equal(kling40LongImageProperties.length?.enum, ["short", "medium", "long"])
   || !equal(kling40LongImageProperties.resolution?.enum, ["1K", "2K"])
@@ -470,8 +470,8 @@ if (
 }
 
 const expectedHeygenAvatar6Rates = {
-  "heygen-avatar-6": {"1080p": 16, "2K": 23.2},
-  "heygen-avatar-6-turbo": {"1080p": 8, "2K": 14},
+  "heygen-avatar-6": {"1080p": 20, "2K": 29},
+  "heygen-avatar-6-turbo": {"1080p": 10, "2K": 18},
 };
 for (const [modelId, expected] of Object.entries(expectedHeygenAvatar6Rates)) {
   const model = findModel(modelId);

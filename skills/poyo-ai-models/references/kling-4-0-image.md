@@ -19,7 +19,7 @@ Omit `image_urls` for text-to-image. Pass 1–10 `image_urls` for image-to-image
 | `n` | With `enable_sequential` `false`: 1–9, default 1. With `true`: 2–10, default 4 |
 
 - `image_urls` and `kling_elements` together hold up to 10 items.
-- Billing per image: 10 credits at `2K`, 15 at `4K`, and 25 at `8K`, plus 0.5 credits per reference image or element per task. Credits follow the images actually returned.
+- Billing per image: 13 credits at `2K`, 19 at `4K`, and 32 at `8K`, plus 1 credit per reference image or element per task. Credits follow the images actually returned.
 - Typical time to `finished`: one 2K image about 45 seconds, one 8K image about 2.5 minutes, a 10-image 8K series about 30 minutes. Use `_wait_seconds: 0` or `poyo submit` for large requests and poll the task.
 
 ## kling-4.0-long-image
@@ -36,7 +36,7 @@ Designs a full webpage or ecommerce product detail page as one tall image.
 | `length` | `ecommerce` page length: `short`, `medium` (default), or `long` |
 | `resolution` | `1K` (1024 pixels wide, default) or `2K` (2048 pixels wide) |
 
-- Credits per page: `webpage` 88 at `1K` and 95 at `2K`; `ecommerce` `short` 38 / 45, `medium` 75 / 88, `long` 125 / 138; plus 0.5 credits per reference image.
+- Credits per page: `webpage` 110 at `1K` and 120 at `2K`; `ecommerce` `short` 47 / 57, `medium` 94 / 110, `long` 157 / 173; plus 1 credit per reference image.
 - A long image usually takes 2–4 minutes, and a `long` ecommerce page at `2K` up to about 12 minutes.
 
 ```bash

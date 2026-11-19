@@ -16,7 +16,7 @@ Describe the selected model before execution. Both models share the same inputs 
 - Custom `WIDTHxHEIGHT` needs both sides divisible by 16, each side at least 768, and at most 4,194,304 total pixels (for example `2048x2048` or `3072x1344`). A custom size sets the exact output size, so pair `resolution` only with aspect-ratio sizes.
 - In editing and composition, the output follows the aspect ratio of the first reference image at about 1 megapixel; pass `size` to choose another size. Reference images are used at up to about 1 megapixel.
 - Billing is by tokens. Output tokens are width × height / 1024; each reference image adds up to 1024 image input tokens; text tokens are the UTF-8 bytes of the prompt / 4. Submission reserves a maximum based on size, prompt length, and references; success charges the lower of that amount and the actual usage. Credits are charged only for successful tasks.
-- Token prices per million: MAI Image 2.7 charges 800 text input, 1280 image input, and 5440 output credits; Flash charges 280, 400, and 1600. A `1:1` image at `1K` costs about 5.58 credits on MAI Image 2.7 and about 1.64 on Flash; a `16:9` image at `2K` costs about 22.2 and 6.53. Confirm the live catalog before an expensive run and report the final task credits.
+- Token prices per million: MAI Image 2.7 charges 1000 text input, 1600 image input, and 6800 output credits; Flash charges 350, 500, and 2000. A `1:1` image at `1K` costs about 6.98 credits on MAI Image 2.7 and about 2.05 on Flash; a `16:9` image at `2K` costs about 27.8 and 8.16. Confirm the live catalog before an expensive run and report the final task credits.
 
 ```bash
 poyo describe mai-image-2.7

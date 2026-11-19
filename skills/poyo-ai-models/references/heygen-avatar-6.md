@@ -25,7 +25,7 @@ Every mode also accepts `prompt` and `resolution`. Use the inputs of one mode in
 | `resolution` | `1080p` (default) or `2K` |
 
 - Avatar and voice lists: https://docs.poyo.ai/api-manual/video-series/heygen-avatar-6-avatars and the downloadable `heygen-avatar-6-catalog.json` on that page.
-- Billing is per second of output. `heygen-avatar-6` charges 16 credits per second at `1080p` and 23.2 at `2K`; `heygen-avatar-6-turbo` charges 8 and 14.
+- Billing is per second of output. `heygen-avatar-6` charges 20 credits per second at `1080p` and 29 at `2K`; `heygen-avatar-6-turbo` charges 10 and 18.
 - With `audio_url`, submission charges the audio length rounded up to whole seconds. With `text`, submission needs credits for 1.5 times the estimated reading time, and the final charge follows the actual video length.
 - A short video usually finishes in about 2–3 minutes. Use `_wait_seconds: 0` or `poyo submit` and poll the task.
 
