@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execution.
+Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -24,11 +24,15 @@ Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execu
 | `ideogram-v4.5-edit` | generate |  | Edit exactly one primary image with references, optional masks, and precision controls. |
 | `ideogram-vector-1.0/image-to-vector` | generate |  | Convert one image into an SVG. |
 | `ideogram-vector-1.0/text-to-vector` | generate |  | Generate SVG vector graphics from a prompt, with up to five reference images. |
+| `kling-4.0-image` | generate |  | The Kling Image 4.0 API generates images from a prompt or edits up to 10 reference images. It supports elements for consistent subjects, coherent image series, and 2K, 4K, or 8K output. |
+| `kling-4.0-long-image` | generate |  | The Kling Image 4.0 Long Image API designs a full-length webpage or ecommerce product detail page as one tall image from a prompt, with optional product, style, and subject reference images. |
 | `kling-o1-image-edit` | generate |  | A high-consistency image generation model optimized for precise reference alignment and fine detail control, ideal for character and product-focused use cases |
 | `kling-o3-image` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
 | `kling-o3-image-edit` | generate |  | A high-expressiveness image generation model optimized for strong semantic understanding and scene composition, ideal for creative and narrative-driven visuals |
 | `mai-image-2.6` | generate |  | Microsoft MAI Image 2.6 text-to-image, single-image editing, and multi-image composition with up to 5 reference images and optional web search grounding. |
 | `mai-image-2.6-flash` | generate |  | Faster, lower-cost Microsoft MAI Image 2.6 Flash for text-to-image, image editing, and multi-image composition with up to 5 reference images and optional web search grounding. |
+| `mai-image-2.7` | generate |  | Microsoft MAI Image 2.7 text-to-image, single-image editing, and multi-image composition with up to 5 reference images, custom sizes up to about 4 megapixels, transparent backgrounds, and PNG, JPEG, or WebP output. |
+| `mai-image-2.7-flash` | generate |  | Faster, lower-cost Microsoft MAI Image 2.7 Flash text-to-image, single-image editing, and multi-image composition with up to 5 reference images, custom sizes up to about 4 megapixels, transparent backgrounds, and PNG, JPEG, or WebP output. |
 | `minimax-h3-image` | generate |  | The MiniMax H3 Image API generates an image from a prompt or edits up to 16 reference images. It supports 1K, 2K, and 4K output, ten aspect ratios, and custom sizes up to 20 megapixels. |
 | `nano-banana-2-lite` | generate |  | Nano Banana 2 Lite image generation and image editing API |
 | `nano-banana-2-lite-edit` | generate |  | Nano Banana 2 Lite image generation and image editing API |

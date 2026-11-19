@@ -1,6 +1,6 @@
 # chat
 
-Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execution.
+Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -41,6 +41,8 @@ Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execu
 | `gpt-6-sol` | chat | openai-chat, openai-responses | Run the PoYo gpt-6-sol model. |
 | `gpt-6.1-sol` | chat | openai-chat, openai-responses | Run the PoYo GPT-6.1 Sol model. |
 | `gpt-6.1-terra` | chat | openai-chat, openai-responses | Run the PoYo GPT-6.1 Terra model. |
+| `gpt-6.2-astra` | chat | openai-chat, openai-responses | Run the PoYo GPT-6.2 Astra model. |
+| `gpt-6.2-sol` | chat | openai-chat, openai-responses | Run the PoYo GPT-6.2 Sol model. |
 | `grok-4.6` | chat | openai-chat, openai-responses | Run the PoYo grok-4.6 model. |
 | `grok-4.7` | chat | openai-chat | Run the PoYo grok-4.7 model. |
 | `kimi-k3` | chat | openai-chat | Run the PoYo kimi-k3 model. |

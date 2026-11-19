@@ -55,6 +55,10 @@ For MiniMax H3 Image, read `references/minimax-h3-image.md` for `<Picture N>` re
 
 For MAI Image 2.6 or MAI Image 2.6 Flash, read `references/mai-image-2-6.md` for text-to-image sizes, reference-image editing at about 1 megapixel, web search grounding, and token billing.
 
+For MAI Image 2.7 or MAI Image 2.7 Flash, read `references/mai-image-2-7.md` for aspect-ratio and custom sizes up to 4,194,304 pixels, editing and composition with up to 5 references, transparent PNG or WebP backgrounds, and token billing.
+
+For Kling Image 4.0 or Kling Image 4.0 Long Image, read `references/kling-4-0-image.md`. `kling-4.0-image` generates or edits images at 2K, 4K, or 8K with up to 10 references and elements, and image series of 2–10 images; `kling-4.0-long-image` designs a full webpage or ecommerce detail page as one tall image. Send `kling_elements` through JSON or CLI `--input-file`.
+
 In CLI flags, pass several array values as one comma-separated argument, for example `--image-urls https://example.com/a.png,https://example.com/b.png`, or use `--input-file`.
 
 For Nano Banana 2.1, also read `references/nano-banana-2-1.md` for its shared image parameters and single model ID for generation and editing.
@@ -78,6 +82,8 @@ For Kling 4.0, read `references/kling-4-0.md` for automatic text, image, referen
 For Kling 4.0 Flash, read `references/kling-4-0-flash.md` for the same automatic mode selection at 720p with 3–20 second output, one starting frame, no `multi_prompt`, and editing that also accepts reference and subject videos. Submit only user-selected values and let the server probe video durations.
 
 For Seedance 2.5 Flash, read `references/seedance-2-5-flash.md` for automatic text, first/last-frame, or multimodal reference mode selection at 480p or 720p with 4–30 second output, `@Image1`/`@Video1`/`@Audio1` roles, and per-second billing that adds reference video seconds. Submit only user-selected values and let the server check reference durations.
+
+For HeyGen Avatar 6 or HeyGen Avatar 6 Turbo, read `references/heygen-avatar-6.md` for photo, reference video, and public avatar modes selected by the supplied inputs, audio or text speech with the 102 listed voices, and per-second billing. Submit only user-selected values and let the server check audio and video durations.
 
 ## Guardrails
 

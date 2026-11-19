@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-830dcf86fc0a",
+  "schema_version": "v1-c89a8585107f",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -14971,6 +14971,496 @@
       "status": "stable"
     },
     {
+      "model_id": "gpt-6.2-astra",
+      "tool_name": "poyo_gpt_6_2_astra",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gpt-6.2-astra",
+      "description": "Run the PoYo GPT-6.2 Astra model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "reasoning_effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "medium"
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "model": "gpt-6.2-astra",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Hello"
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 1280,
+        "output_credits": 6400
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "gpt-6.2-sol",
+      "tool_name": "poyo_gpt_6_2_sol",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gpt-6.2-sol",
+      "description": "Run the PoYo GPT-6.2 Sol model.",
+      "tags": [
+        "chat",
+        "openai-chat",
+        "openai-responses",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "reasoning_effort": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "type": "string",
+            "default": "medium"
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "model": "gpt-6.2-sol",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Hello"
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "openai-responses"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 320,
+        "output_credits": 1600
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "grok-4.6",
       "tool_name": "poyo_grok_4_6",
       "service_type": "chat",
@@ -18888,6 +19378,413 @@
       "status": "stable"
     },
     {
+      "model_id": "kling-4.0-image",
+      "tool_name": "poyo_kling_4_0_image",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Kling Image 4.0",
+      "description": "The Kling Image 4.0 API generates images from a prompt or edits up to 10 reference images. It supports elements for consistent subjects, coherent image series, and 2K, 4K, or 8K output.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "maximum": 10,
+            "minimum": 1,
+            "description": "Number of images. When enable_sequential is false: 1–9, default 1. When enable_sequential is true: 2–10, default 4."
+          },
+          "size": {
+            "enum": [
+              "auto",
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "21:9"
+            ],
+            "type": "string",
+            "default": "auto",
+            "description": "Aspect ratio of the output. auto picks an aspect ratio from the prompt and reference images."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 50000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit. Must contain non-whitespace text. In image-to-image mode, refer to reference images as @Image1, @Image2, and so on, and to elements as @Element1, @Element2, and so on."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/living-room.png"
+            ],
+            "maxItems": 10,
+            "minItems": 1,
+            "description": "Optional 1–10 reference image URLs. Passing this field selects image-to-image mode. Must be an array, even for one image. Images are numbered by their order in the array: the first URL is @Image1, the second is @Image2, and so on. Each URL must be a publicly accessible HTTP or HTTPS URL pointing to an image of up to 30 MB, at least 300 pixels wide and high, with an aspect ratio (width / height) between 0.4 and 2.5. The number of image_urls plus the number of kling_elements is at most 10."
+          },
+          "resolution": {
+            "enum": [
+              "2K",
+              "4K",
+              "8K"
+            ],
+            "type": "string",
+            "default": "2K",
+            "description": "Output resolution. For example, 2K is 2048x2048 at 1:1, 4K is 5440x3072 at 16:9, and 8K is 8192x8192 at 1:1."
+          },
+          "kling_elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "element_input_urls"
+              ],
+              "properties": {
+                "element_input_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "maxItems": 4,
+                  "minItems": 2,
+                  "description": "2–4 publicly accessible HTTP or HTTPS images of this element: the frontal view first, followed by 1–3 views from other angles. Each image has the same size limits as image_urls."
+                }
+              },
+              "description": "One element: a character or object.",
+              "additionalProperties": false
+            },
+            "maxItems": 7,
+            "minItems": 1,
+            "description": "Optional elements for image-to-image mode (used together with image_urls), up to 7. Each element is one character or object shown from several angles, referenced in the prompt by position as @Element1, @Element2, and so on. The number of image_urls plus the number of elements is at most 10."
+          },
+          "enable_sequential": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, generate a coherent image series: n related images with consistent subjects and style, returned in order. When false, generate n independent images."
+          }
+        },
+        "description": "Generate images from a prompt. With image_urls, edit or combine the reference images.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200,
+              400,
+              401,
+              402,
+              403,
+              404,
+              408,
+              429,
+              500,
+              502,
+              503
+            ],
+            "type": "integer",
+            "example": 200,
+            "description": "Business status code. `200` means success; any other value means the request failed. Always check this field: some validation errors return HTTP 200 with `code: 400` in the body.\n\n- `200`: Success\n- `400`: Invalid request parameters\n- `401`: Missing or invalid API key\n- `402`: Insufficient credits\n- `403`: Permission denied\n- `404`: Resource not found\n- `408`: Request timeout\n- `429`: Rate limit exceeded\n- `500`: Internal server error\n- `502`: Upstream service error\n- `503`: Service unavailable\n\nSee [Error Codes](/api-manual/error-codes) for details."
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Task status. Always `not_started` right after submission. Use [Query Task Status](/api-manual/task-management/status) or `callback_url` to get later states.\n\n- `not_started`: Queued, waiting to be processed\n- `running`: Being generated\n- `finished`: Completed; results are in `files` or `output`\n- `failed`: Failed; details are in `error_message`"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1794470400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "High fashion model wearing a dress made of living moss, standing in an abandoned greenhouse, shafts of light, editorial photography",
+          "resolution": "4K"
+        },
+        {
+          "prompt": "Place @Element1 sitting on the sofa in @Image1, reading a book in warm evening light. Keep the room layout of @Image1 unchanged.",
+          "image_urls": [
+            "https://example.com/living-room.png"
+          ],
+          "resolution": "2K",
+          "kling_elements": [
+            {
+              "element_input_urls": [
+                "https://example.com/character-front.png",
+                "https://example.com/character-side.png",
+                "https://example.com/character-back.png"
+              ]
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "size": "3:2",
+          "prompt": "A four-panel story of a paper boat drifting from a rainy city gutter to a calm sunny lake, same boat in every panel, watercolor style",
+          "enable_sequential": true
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "n * resolution_credits[resolution] + reference_credits * (len(image_urls) + len(kling_elements))",
+        "parameters": {
+          "n": "Output count. 1-9 when enable_sequential is false (defaults to 1); 2-10 when true (defaults to 4).",
+          "image_urls": "Optional 1-10 reference images. Each adds reference_credits once per task.",
+          "resolution": "2K, 4K or 8K; defaults to 2K.",
+          "kling_elements": "Optional up to 7 elements with image_urls. Each element adds reference_credits once per task."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "reference_credits": 0.5,
+        "resolution_credits": {
+          "2K": 10,
+          "4K": 15,
+          "8K": 25
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "kling-4.0-long-image",
+      "tool_name": "poyo_kling_4_0_long_image",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Kling Image 4.0 Long Image",
+      "description": "The Kling Image 4.0 Long Image API designs a full-length webpage or ecommerce product detail page as one tall image from a prompt, with optional product, style, and subject reference images.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "skill": {
+            "enum": [
+              "webpage",
+              "ecommerce"
+            ],
+            "type": "string",
+            "default": "webpage",
+            "description": "Design type. webpage designs a website page; ecommerce designs a product detail page from 1–3 product images in image_urls."
+          },
+          "length": {
+            "enum": [
+              "short",
+              "medium",
+              "long"
+            ],
+            "type": "string",
+            "default": "medium",
+            "description": "Page length for skill ecommerce: short (about 2–5 sections), medium (about 6–10 sections), or long (about 11–18 sections)."
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 50000,
+            "minLength": 1,
+            "description": "Prompt describing the page and its sections. Must contain non-whitespace text. Refer to product images as @Image1, @Image2, and @Image3, to the style reference as @StyleImage, and to the subject reference as @SubjectImage."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/water-bottle.png"
+            ],
+            "maxItems": 3,
+            "minItems": 1,
+            "description": "Product image URLs for skill ecommerce, 1–3 images (required in that mode). Must be an array, even for one image. Images are numbered by their order: @Image1, @Image2, @Image3. Each URL must be a publicly accessible HTTP or HTTPS URL pointing to an image of up to 30 MB, at least 300 pixels wide and high, with an aspect ratio (width / height) between 0.4 and 2.5."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output width: 1K is 1024 pixels wide, 2K is 2048 pixels wide. The height follows the content."
+          },
+          "style_image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional style reference for skill webpage, referenced as @StyleImage. The design follows its visual and layout style. Publicly accessible HTTP or HTTPS image URL with the same limits as image_urls."
+          },
+          "subject_image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Optional subject reference for skill webpage, referenced as @SubjectImage. The design is built around the subject it shows. Publicly accessible HTTP or HTTPS image URL with the same limits as image_urls."
+          }
+        },
+        "description": "Generate one tall image: a webpage design (skill webpage) or an ecommerce product detail page built from 1–3 product images (skill ecommerce).",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200,
+              400,
+              401,
+              402,
+              403,
+              404,
+              408,
+              429,
+              500,
+              502,
+              503
+            ],
+            "type": "integer",
+            "example": 200,
+            "description": "Business status code. `200` means success; any other value means the request failed. Always check this field: some validation errors return HTTP 200 with `code: 400` in the body.\n\n- `200`: Success\n- `400`: Invalid request parameters\n- `401`: Missing or invalid API key\n- `402`: Insufficient credits\n- `403`: Permission denied\n- `404`: Resource not found\n- `408`: Request timeout\n- `429`: Rate limit exceeded\n- `500`: Internal server error\n- `502`: Upstream service error\n- `503`: Service unavailable\n\nSee [Error Codes](/api-manual/error-codes) for details."
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Task status. Always `not_started` right after submission. Use [Query Task Status](/api-manual/task-management/status) or `callback_url` to get later states.\n\n- `not_started`: Queued, waiting to be processed\n- `running`: Being generated\n- `finished`: Completed; results are in `files` or `output`\n- `failed`: Failed; details are in `error_message`"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1794470400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-12T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "skill": "webpage",
+          "prompt": "Design a long image for a specialty coffee brand's official website, including the hero section, product showcase, roasting philosophy, store information, and footer. Follow the visual style of @StyleImage.",
+          "resolution": "2K",
+          "style_image_url": "https://example.com/style-reference.png"
+        },
+        {
+          "skill": "ecommerce",
+          "length": "medium",
+          "prompt": "Design a product detail page for the insulated water bottle in @Image1: hero shot, key features, capacity and size, materials, and lifestyle scenes.",
+          "image_urls": [
+            "https://example.com/water-bottle.png"
+          ],
+          "resolution": "1K"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "page_credits[page][resolution] + reference_credits * reference_image_count",
+        "parameters": {
+          "page": "webpage when skill is webpage (default); ecommerce_<length> when skill is ecommerce (length defaults to medium).",
+          "resolution": "1K or 2K; defaults to 1K.",
+          "reference_image_count": "Number of image_urls plus style_image_url and subject_image_url when provided."
+        },
+        "page_credits": {
+          "webpage": {
+            "1K": 88,
+            "2K": 95
+          },
+          "ecommerce_long": {
+            "1K": 125,
+            "2K": 138
+          },
+          "ecommerce_short": {
+            "1K": 38,
+            "2K": 45
+          },
+          "ecommerce_medium": {
+            "1K": 75,
+            "2K": 88
+          }
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "reference_credits": 0.5
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "kling-o1-image-edit",
       "tool_name": "poyo_kling_o1_image_edit",
       "service_type": "generate",
@@ -19820,6 +20717,344 @@
             "16:9": 7,
             "9:16": 7
           }
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "mai-image-2.7",
+      "tool_name": "poyo_mai_image_2_7",
+      "service_type": "generate",
+      "category": "image",
+      "title": "MAI Image 2.7",
+      "description": "Microsoft MAI Image 2.7 text-to-image, single-image editing, and multi-image composition with up to 5 reference images, custom sizes up to about 4 megapixels, transparent backgrounds, and PNG, JPEG, or WebP output.",
+      "tags": [
+        "image",
+        "text-to-image",
+        "image-to-image",
+        "image-edit"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "example": "16:9",
+            "pattern": "^(?:1:1|4:3|3:4|3:2|2:3|16:9|9:16|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: 1:1, 4:3, 3:4, 3:2, 2:3, 16:9, 9:16, or WIDTHxHEIGHT. Text-to-image defaults to 1:1. Custom sizes need both sides divisible by 16, each side at least 768, and total pixels at most 4194304 (for example 2048x2048 or 3072x1344) and are used exactly as given. With image_urls and no size, the output follows the aspect ratio of the first reference image at about 1 megapixel."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit. Must contain non-whitespace text. Put exact on-image text in quotes."
+          },
+          "background": {
+            "enum": [
+              "opaque",
+              "transparent"
+            ],
+            "type": "string",
+            "default": "opaque",
+            "description": "Background type. transparent outputs an image with an alpha channel and requires output_format png or webp."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "description": "Optional 1–5 reference image URLs (JPEG, PNG, or WebP). Must be an array, even for one image. One image is edited; several images are combined. Without size, the output follows the aspect ratio of the first reference image at about 1 megapixel. Reference images are used at up to about 1 megapixel. Each URL must be a publicly accessible HTTP or HTTPS URL."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier for aspect-ratio sizes. 1K is about 1 megapixel (1:1 is 1024x1024); 2K is about 4 megapixels (16:9 is 2720x1536)."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
+          }
+        },
+        "description": "Generate one image. With image_urls, edit or combine the reference images.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-18T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A university campus poster at dusk with the title \"Open Day 2026\", photorealistic, cinematic light",
+          "resolution": "2K"
+        },
+        {
+          "prompt": "Change the bicycle to blue and add a small dog next to it",
+          "image_urls": [
+            "https://example.com/bicycle.png"
+          ]
+        },
+        {
+          "size": "3072x1344",
+          "prompt": "A wide panoramic banner of a mountain range at sunrise"
+        },
+        {
+          "prompt": "A flat vector logo of a red fox head, clean edges, no background",
+          "background": "transparent",
+          "output_format": "webp"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "formula": "(text_input_tokens * input + image_input_tokens * image_input + output_tokens * output) / 1000000",
+        "parameters": {
+          "size": "Output tokens = output width x height / 1024.",
+          "prompt": "Text input tokens = UTF-8 bytes of the prompt / 4, rounded up.",
+          "background": "No extra charge.",
+          "image_urls": "Each reference image adds sent width x height / 1024 image input tokens, up to 1024 per image.",
+          "resolution": "1K or 2K for aspect-ratio sizes.",
+          "output_format": "No extra charge."
+        },
+        "settlement": "Billed by tokens. A maximum based on size, prompt length, and reference images is reserved at submission; on success the charge is the lower of that amount and the actual tokens priced at token_credits_per_1m. Output tokens = output width x height / 1024. Failed tasks are not charged.",
+        "input_credits": 800,
+        "output_credits": 5440,
+        "token_credits_per_1m": {
+          "input": 800,
+          "output": 5440,
+          "image_input": 1280
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "mai-image-2.7-flash",
+      "tool_name": "poyo_mai_image_2_7_flash",
+      "service_type": "generate",
+      "category": "image",
+      "title": "MAI Image 2.7 Flash",
+      "description": "Faster, lower-cost Microsoft MAI Image 2.7 Flash text-to-image, single-image editing, and multi-image composition with up to 5 reference images, custom sizes up to about 4 megapixels, transparent backgrounds, and PNG, JPEG, or WebP output.",
+      "tags": [
+        "image",
+        "text-to-image",
+        "image-to-image",
+        "image-edit"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "type": "string",
+            "default": "1:1",
+            "example": "16:9",
+            "pattern": "^(?:1:1|4:3|3:4|3:2|2:3|16:9|9:16|\\s*\\d+\\s*[xX]\\s*\\d+\\s*)$",
+            "description": "Aspect ratio or custom WIDTHxHEIGHT. Supported values: 1:1, 4:3, 3:4, 3:2, 2:3, 16:9, 9:16, or WIDTHxHEIGHT. Text-to-image defaults to 1:1. Custom sizes need both sides divisible by 16, each side at least 768, and total pixels at most 4194304 (for example 2048x2048 or 3072x1344) and are used exactly as given. With image_urls and no size, the output follows the aspect ratio of the first reference image at about 1 megapixel."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 32000,
+            "minLength": 1,
+            "description": "Prompt describing the image or the requested edit. Must contain non-whitespace text. Put exact on-image text in quotes."
+          },
+          "background": {
+            "enum": [
+              "opaque",
+              "transparent"
+            ],
+            "type": "string",
+            "default": "opaque",
+            "description": "Background type. transparent outputs an image with an alpha channel and requires output_format png or webp."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 5,
+            "minItems": 1,
+            "description": "Optional 1–5 reference image URLs (JPEG, PNG, or WebP). Must be an array, even for one image. One image is edited; several images are combined. Without size, the output follows the aspect ratio of the first reference image at about 1 megapixel. Reference images are used at up to about 1 megapixel. Each URL must be a publicly accessible HTTP or HTTPS URL."
+          },
+          "resolution": {
+            "enum": [
+              "1K",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1K",
+            "description": "Output resolution tier for aspect-ratio sizes. 1K is about 1 megapixel (1:1 is 1024x1024); 2K is about 4 megapixels (16:9 is 2720x1536)."
+          },
+          "output_format": {
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ],
+            "type": "string",
+            "default": "png",
+            "description": "Output image format."
+          }
+        },
+        "description": "Generate one image. With image_urls, edit or combine the reference images.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200,
+            "description": "HTTP status code"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Initial task status"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-abcd1234",
+                "description": "Unique task identifier for status tracking"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-18T10:30:00",
+                "description": "ISO 8601 timestamp when the task was created"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "size": "16:9",
+          "prompt": "A university campus poster at dusk with the title \"Open Day 2026\", photorealistic, cinematic light",
+          "resolution": "2K"
+        },
+        {
+          "prompt": "Change the bicycle to blue and add a small dog next to it",
+          "image_urls": [
+            "https://example.com/bicycle.png"
+          ]
+        },
+        {
+          "size": "3072x1344",
+          "prompt": "A wide panoramic banner of a mountain range at sunrise"
+        },
+        {
+          "prompt": "A flat vector logo of a red fox head, clean edges, no background",
+          "background": "transparent",
+          "output_format": "webp"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "formula": "(text_input_tokens * input + image_input_tokens * image_input + output_tokens * output) / 1000000",
+        "parameters": {
+          "size": "Output tokens = output width x height / 1024.",
+          "prompt": "Text input tokens = UTF-8 bytes of the prompt / 4, rounded up.",
+          "background": "No extra charge.",
+          "image_urls": "Each reference image adds sent width x height / 1024 image input tokens, up to 1024 per image.",
+          "resolution": "1K or 2K for aspect-ratio sizes.",
+          "output_format": "No extra charge."
+        },
+        "settlement": "Billed by tokens. A maximum based on size, prompt length, and reference images is reserved at submission; on success the charge is the lower of that amount and the actual tokens priced at token_credits_per_1m. Output tokens = output width x height / 1024. Failed tasks are not charged.",
+        "input_credits": 280,
+        "output_credits": 1600,
+        "token_credits_per_1m": {
+          "input": 280,
+          "output": 1600,
+          "image_input": 400
         }
       },
       "status": "stable"
@@ -35531,6 +36766,620 @@
         "resolution_credits": {
           "720p": 22,
           "1080p": 28
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "heygen-avatar-6",
+      "tool_name": "poyo_heygen_avatar_6",
+      "service_type": "generate",
+      "category": "video",
+      "title": "HeyGen Avatar 6",
+      "description": "The HeyGen Avatar 6 API creates a lip-synced talking video at 1080p or 2K from a photo, a reference video of an animated character, or a HeyGen public avatar, driven by 2–60 seconds of audio or, for public avatars, by text.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "avatar"
+              ]
+            },
+            "else": {
+              "if": {
+                "required": [
+                  "video_url"
+                ]
+              },
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "text"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "voice"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "aspect_ratio"
+                    ]
+                  }
+                ]
+              },
+              "else": {
+                "required": [
+                  "image_urls"
+                ]
+              },
+              "then": {},
+              "required": [
+                "audio_url"
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "image_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "video_url"
+                    ]
+                  }
+                ]
+              },
+              "oneOf": [
+                {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "text"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "voice"
+                        ]
+                      }
+                    ]
+                  },
+                  "required": [
+                    "audio_url"
+                  ]
+                },
+                {
+                  "not": {
+                    "required": [
+                      "audio_url"
+                    ]
+                  },
+                  "required": [
+                    "text"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "Hello and welcome to this demonstration of HeyGen Avatar 6.",
+            "maxLength": 1000,
+            "minLength": 1,
+            "description": "Public avatar mode, in place of `audio_url`. The text the avatar reads aloud, up to 1,000 characters."
+          },
+          "voice": {
+            "type": "string",
+            "default": "Warm Pro Narrator",
+            "example": "Warm Pro Narrator",
+            "minLength": 1,
+            "description": "Public avatar mode with `text`. The HeyGen voice that reads the text: one of the 102 voices in [Avatars and Voices](/api-manual/video-series/heygen-avatar-6-avatars#voices). Names match regardless of letter case and extra spaces. Default: `Warm Pro Narrator`."
+          },
+          "avatar": {
+            "type": "string",
+            "example": "Abigail Sofa Front",
+            "minLength": 1,
+            "description": "Required in public avatar mode. The name of one of the 1,248 HeyGen public avatars listed in [Avatars and Voices](/api-manual/video-series/heygen-avatar-6-avatars), such as `Abigail Sofa Front`. Names match regardless of letter case and extra spaces."
+          },
+          "prompt": {
+            "type": "string",
+            "example": "Face the camera with a warm smile and use small, natural hand gestures.",
+            "maxLength": 1200,
+            "description": "Direction for the avatar's gestures, expression, and posture, up to 1,200 characters."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/speech.mp3",
+            "description": "Speech audio, 2–60 seconds long and up to 15 MB. Required in photo and reference video modes. In public avatar mode, send `audio_url` or `text`. The video runs the length of the audio. Publicly accessible HTTP or HTTPS URL."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/cartoon-character.mp4",
+            "description": "Required in reference video mode. A video of an animated or illustrated character, at least 2 seconds long and up to 50 MB. Publicly accessible HTTP or HTTPS URL."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/presenter.png"
+            ],
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one image. Required in photo mode: a photo of the person to animate. Optional in reference video mode: a reference photo of the same character. Publicly accessible HTTP or HTTPS URL; `image_urls[0]` is used."
+          },
+          "resolution": {
+            "enum": [
+              "1080p",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1080p",
+            "example": "1080p",
+            "description": "Output resolution. Default: `1080p`."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:5",
+              "5:4"
+            ],
+            "type": "string",
+            "default": "16:9",
+            "example": "16:9",
+            "description": "Public avatar mode. Output aspect ratio. Default: `16:9`. In photo and reference video modes, the video keeps the aspect ratio of the input photo or video."
+          }
+        },
+        "description": "The supplied inputs select the mode: `avatar` selects public avatar mode, otherwise `video_url` selects reference video mode, otherwise photo mode is used. Use the inputs of one mode in each request.",
+        "x-server-validation": {
+          "media": "Probe audio_url: 2-60 seconds and up to 15 MB. Probe video_url: at least 2 seconds and up to 50 MB.",
+          "voice": "Match exactly first, then ignoring case and extra spaces, against 102 listed names and send the listed name unchanged; when two names match loosely, prefer the one without extra spaces. Send unmatched names to HeyGen as given.",
+          "avatar": "Match one of 1,248 listed names ignoring case and extra spaces, then send the listed name unchanged (some contain trailing or repeated spaces). Reject unmatched names with the closest listed names.",
+          "mode_priority": [
+            "avatar",
+            "video_url",
+            "image_urls"
+          ],
+          "billing_duration": "With audio_url, bill ceil(audio_url duration) seconds at submission. With avatar + text, freeze ceil(estimated_seconds * 1.5) seconds of credits at submission (estimated_seconds = max(1, ceil(digits / 3 + CJK characters / 4.5 + other characters / 14))): the account balance must cover all unfinished avatar + text freezes of the same paying account (user or team) plus this one, checked atomically, and the API key quota is reserved for the same amount; then bill ceil(output duration) seconds after success with no cap; bill estimated_seconds when the output cannot be measured; release the freeze and the reservation on success or failure.",
+          "unsupported_fields": "Reject properties that the selected mode does not accept, and unknown properties. null, empty strings and empty arrays count as omitted."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200,
+              400,
+              401,
+              402,
+              403,
+              404,
+              408,
+              429,
+              500,
+              502,
+              503
+            ],
+            "type": "integer",
+            "example": 200,
+            "description": "Business status code. `200` means success; any other value means the request failed. Always check this field: some validation errors return HTTP 200 with `code: 400` in the body.\n\n- `200`: Success\n- `400`: Invalid request parameters\n- `401`: Missing or invalid API key\n- `402`: Insufficient credits\n- `403`: Permission denied\n- `404`: Resource not found\n- `408`: Request timeout\n- `429`: Rate limit exceeded\n- `500`: Internal server error\n- `502`: Upstream service error\n- `503`: Service unavailable\n\nSee [Error Codes](/api-manual/error-codes) for details."
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Task status. Always `not_started` right after submission. Use [Query Task Status](/api-manual/task-management/status) or `callback_url` to get later states.\n\n- `not_started`: Queued, waiting to be processed\n- `running`: Being generated\n- `finished`: Completed; results are in `files` or `output`\n- `failed`: Failed; details are in `error_message`"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-11-12T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "Face the camera with a warm smile and use small, natural hand gestures.",
+          "audio_url": "https://example.com/speech.mp3",
+          "image_urls": [
+            "https://example.com/presenter.png"
+          ],
+          "resolution": "1080p"
+        },
+        {
+          "audio_url": "https://example.com/speech.mp3",
+          "video_url": "https://example.com/cartoon-character.mp4",
+          "image_urls": [
+            "https://example.com/cartoon-character.png"
+          ],
+          "resolution": "2K"
+        },
+        {
+          "avatar": "Abigail Sofa Front",
+          "audio_url": "https://example.com/speech.mp3",
+          "aspect_ratio": "9:16"
+        },
+        {
+          "text": "Hello and welcome to this demonstration of HeyGen Avatar 6.",
+          "voice": "Warm Pro Narrator",
+          "avatar": "Abigail Office Front",
+          "prompt": "Speak with calm confidence and nod slightly at the end.",
+          "resolution": "1080p",
+          "aspect_ratio": "16:9"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "billable_seconds * resolution_credits_per_second[resolution]",
+        "parameters": {
+          "resolution": "1080p or 2K; defaults to 1080p.",
+          "audio_duration": "Server-probed duration of audio_url in seconds (2-60).",
+          "output_duration": "Server-probed duration of the generated video; when it cannot be measured, estimated_seconds is charged instead.",
+          "billable_seconds": "With audio_url: ceil(audio_duration), charged at submission. With avatar + text: ceil(output_duration) with no cap, charged after success; submission freezes ceil(estimated_seconds * 1.5) seconds of credits; the balance must cover all unfinished avatar + text freezes of the same paying account plus this one, and the API key quota is reserved for the same amount.",
+          "estimated_seconds": "max(1, ceil(digits / 3 + CJK characters / 4.5 + other characters / 14)) of text."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits_per_second": {
+          "2K": 23.2,
+          "1080p": 16
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "heygen-avatar-6-turbo",
+      "tool_name": "poyo_heygen_avatar_6_turbo",
+      "service_type": "generate",
+      "category": "video",
+      "title": "HeyGen Avatar 6 Turbo",
+      "description": "The HeyGen Avatar 6 API creates a lip-synced talking video at 1080p or 2K from a photo, a reference video of an animated character, or a HeyGen public avatar, driven by 2–60 seconds of audio or, for public avatars, by text.",
+      "tags": [
+        "video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "avatar"
+              ]
+            },
+            "else": {
+              "if": {
+                "required": [
+                  "video_url"
+                ]
+              },
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "text"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "voice"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "aspect_ratio"
+                    ]
+                  }
+                ]
+              },
+              "else": {
+                "required": [
+                  "image_urls"
+                ]
+              },
+              "then": {},
+              "required": [
+                "audio_url"
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "image_urls"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "video_url"
+                    ]
+                  }
+                ]
+              },
+              "oneOf": [
+                {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "text"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "voice"
+                        ]
+                      }
+                    ]
+                  },
+                  "required": [
+                    "audio_url"
+                  ]
+                },
+                {
+                  "not": {
+                    "required": [
+                      "audio_url"
+                    ]
+                  },
+                  "required": [
+                    "text"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "Hello and welcome to this demonstration of HeyGen Avatar 6.",
+            "maxLength": 1000,
+            "minLength": 1,
+            "description": "Public avatar mode, in place of `audio_url`. The text the avatar reads aloud, up to 1,000 characters."
+          },
+          "voice": {
+            "type": "string",
+            "default": "Warm Pro Narrator",
+            "example": "Warm Pro Narrator",
+            "minLength": 1,
+            "description": "Public avatar mode with `text`. The HeyGen voice that reads the text: one of the 102 voices in [Avatars and Voices](/api-manual/video-series/heygen-avatar-6-avatars#voices). Names match regardless of letter case and extra spaces. Default: `Warm Pro Narrator`."
+          },
+          "avatar": {
+            "type": "string",
+            "example": "Abigail Sofa Front",
+            "minLength": 1,
+            "description": "Required in public avatar mode. The name of one of the 1,248 HeyGen public avatars listed in [Avatars and Voices](/api-manual/video-series/heygen-avatar-6-avatars), such as `Abigail Sofa Front`. Names match regardless of letter case and extra spaces."
+          },
+          "prompt": {
+            "type": "string",
+            "example": "Face the camera with a warm smile and use small, natural hand gestures.",
+            "maxLength": 1200,
+            "description": "Direction for the avatar's gestures, expression, and posture, up to 1,200 characters."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/speech.mp3",
+            "description": "Speech audio, 2–60 seconds long and up to 15 MB. Required in photo and reference video modes. In public avatar mode, send `audio_url` or `text`. The video runs the length of the audio. Publicly accessible HTTP or HTTPS URL."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/cartoon-character.mp4",
+            "description": "Required in reference video mode. A video of an animated or illustrated character, at least 2 seconds long and up to 50 MB. Publicly accessible HTTP or HTTPS URL."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": [
+              "https://example.com/presenter.png"
+            ],
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one image. Required in photo mode: a photo of the person to animate. Optional in reference video mode: a reference photo of the same character. Publicly accessible HTTP or HTTPS URL; `image_urls[0]` is used."
+          },
+          "resolution": {
+            "enum": [
+              "1080p",
+              "2K"
+            ],
+            "type": "string",
+            "default": "1080p",
+            "example": "1080p",
+            "description": "Output resolution. Default: `1080p`."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:5",
+              "5:4"
+            ],
+            "type": "string",
+            "default": "16:9",
+            "example": "16:9",
+            "description": "Public avatar mode. Output aspect ratio. Default: `16:9`. In photo and reference video modes, the video keeps the aspect ratio of the input photo or video."
+          }
+        },
+        "description": "The supplied inputs select the mode: `avatar` selects public avatar mode, otherwise `video_url` selects reference video mode, otherwise photo mode is used. Use the inputs of one mode in each request.",
+        "x-server-validation": {
+          "media": "Probe audio_url: 2-60 seconds and up to 15 MB. Probe video_url: at least 2 seconds and up to 50 MB.",
+          "voice": "Match exactly first, then ignoring case and extra spaces, against 102 listed names and send the listed name unchanged; when two names match loosely, prefer the one without extra spaces. Send unmatched names to HeyGen as given.",
+          "avatar": "Match one of 1,248 listed names ignoring case and extra spaces, then send the listed name unchanged (some contain trailing or repeated spaces). Reject unmatched names with the closest listed names.",
+          "mode_priority": [
+            "avatar",
+            "video_url",
+            "image_urls"
+          ],
+          "billing_duration": "With audio_url, bill ceil(audio_url duration) seconds at submission. With avatar + text, freeze ceil(estimated_seconds * 1.5) seconds of credits at submission (estimated_seconds = max(1, ceil(digits / 3 + CJK characters / 4.5 + other characters / 14))): the account balance must cover all unfinished avatar + text freezes of the same paying account (user or team) plus this one, checked atomically, and the API key quota is reserved for the same amount; then bill ceil(output duration) seconds after success with no cap; bill estimated_seconds when the output cannot be measured; release the freeze and the reservation on success or failure.",
+          "unsupported_fields": "Reject properties that the selected mode does not accept, and unknown properties. null, empty strings and empty arrays count as omitted."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200,
+              400,
+              401,
+              402,
+              403,
+              404,
+              408,
+              429,
+              500,
+              502,
+              503
+            ],
+            "type": "integer",
+            "example": 200,
+            "description": "Business status code. `200` means success; any other value means the request failed. Always check this field: some validation errors return HTTP 200 with `code: 400` in the body.\n\n- `200`: Success\n- `400`: Invalid request parameters\n- `401`: Missing or invalid API key\n- `402`: Insufficient credits\n- `403`: Permission denied\n- `404`: Resource not found\n- `408`: Request timeout\n- `429`: Rate limit exceeded\n- `500`: Internal server error\n- `502`: Upstream service error\n- `503`: Service unavailable\n\nSee [Error Codes](/api-manual/error-codes) for details."
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started",
+                  "running",
+                  "finished",
+                  "failed"
+                ],
+                "type": "string",
+                "example": "not_started",
+                "description": "Task status. Always `not_started` right after submission. Use [Query Task Status](/api-manual/task-management/status) or `callback_url` to get later states.\n\n- `not_started`: Queued, waiting to be processed\n- `running`: Being generated\n- `finished`: Completed; results are in `files` or `output`\n- `failed`: Failed; details are in `error_message`"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1757165031-uyujaw3d"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-11-12T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "Face the camera with a warm smile and use small, natural hand gestures.",
+          "audio_url": "https://example.com/speech.mp3",
+          "image_urls": [
+            "https://example.com/presenter.png"
+          ],
+          "resolution": "1080p"
+        },
+        {
+          "audio_url": "https://example.com/speech.mp3",
+          "video_url": "https://example.com/cartoon-character.mp4",
+          "image_urls": [
+            "https://example.com/cartoon-character.png"
+          ],
+          "resolution": "2K"
+        },
+        {
+          "avatar": "Abigail Sofa Front",
+          "audio_url": "https://example.com/speech.mp3",
+          "aspect_ratio": "9:16"
+        },
+        {
+          "text": "Hello and welcome to this demonstration of HeyGen Avatar 6.",
+          "voice": "Warm Pro Narrator",
+          "avatar": "Abigail Office Front",
+          "prompt": "Speak with calm confidence and nod slightly at the end.",
+          "resolution": "1080p",
+          "aspect_ratio": "16:9"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "billable_seconds * resolution_credits_per_second[resolution]",
+        "parameters": {
+          "resolution": "1080p or 2K; defaults to 1080p.",
+          "audio_duration": "Server-probed duration of audio_url in seconds (2-60).",
+          "output_duration": "Server-probed duration of the generated video; when it cannot be measured, estimated_seconds is charged instead.",
+          "billable_seconds": "With audio_url: ceil(audio_duration), charged at submission. With avatar + text: ceil(output_duration) with no cap, charged after success; submission freezes ceil(estimated_seconds * 1.5) seconds of credits; the balance must cover all unfinished avatar + text freezes of the same paying account plus this one, and the API key quota is reserved for the same amount.",
+          "estimated_seconds": "max(1, ceil(digits / 3 + CJK characters / 4.5 + other characters / 14)) of text."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "resolution_credits_per_second": {
+          "2K": 14,
+          "1080p": 8
         }
       },
       "status": "stable"

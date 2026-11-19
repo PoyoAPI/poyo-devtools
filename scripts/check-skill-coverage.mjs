@@ -411,5 +411,86 @@ if (
   throw new Error("Seedance 2.5 Flash capability is out of sync");
 }
 
+const expectedMaiImage27TokenPrices = {
+  "mai-image-2.7": {input: 800, image_input: 1280, output: 5440},
+  "mai-image-2.7-flash": {input: 280, image_input: 400, output: 1600},
+};
+for (const [modelId, expected] of Object.entries(expectedMaiImage27TokenPrices)) {
+  const model = findModel(modelId);
+  const properties = model?.input_schema?.properties ?? {};
+  if (
+    model?.tool_name !== `poyo_${modelId.replace(/[.-]/g, "_")}`
+    || model.input_schema?.additionalProperties !== false
+    || model.billing?.type !== "token"
+    || !equal(model.billing?.token_credits_per_1m, expected)
+    || !equal(properties.resolution?.enum, ["1K", "2K"])
+    || !equal(properties.background?.enum, ["opaque", "transparent"])
+    || !equal(properties.output_format?.enum, ["png", "jpeg", "webp"])
+    || properties.image_urls?.maxItems !== 5
+    || properties.prompt?.maxLength !== 32000
+  ) {
+    throw new Error(`MAI Image 2.7 capability is out of sync: ${modelId}`);
+  }
+}
+
+const kling40Image = findModel("kling-4.0-image");
+const kling40ImageProperties = kling40Image?.input_schema?.properties ?? {};
+if (
+  kling40Image?.tool_name !== "poyo_kling_4_0_image"
+  || kling40Image.input_schema?.additionalProperties !== false
+  || !equal(kling40Image.billing?.resolution_credits, {"2K": 10, "4K": 15, "8K": 25})
+  || kling40Image.billing?.reference_credits !== 0.5
+  || !equal(kling40ImageProperties.resolution?.enum, ["2K", "4K", "8K"])
+  || kling40ImageProperties.image_urls?.maxItems !== 10
+  || kling40ImageProperties.kling_elements?.maxItems !== 7
+  || kling40ImageProperties.n?.maximum !== 10
+  || kling40ImageProperties.enable_sequential?.default !== false
+) {
+  throw new Error("Kling Image 4.0 capability is out of sync");
+}
+
+const kling40LongImage = findModel("kling-4.0-long-image");
+const kling40LongImageProperties = kling40LongImage?.input_schema?.properties ?? {};
+if (
+  kling40LongImage?.tool_name !== "poyo_kling_4_0_long_image"
+  || kling40LongImage.input_schema?.additionalProperties !== false
+  || !equal(kling40LongImage.billing?.page_credits, {
+    webpage: {"1K": 88, "2K": 95},
+    ecommerce_short: {"1K": 38, "2K": 45},
+    ecommerce_medium: {"1K": 75, "2K": 88},
+    ecommerce_long: {"1K": 125, "2K": 138},
+  })
+  || kling40LongImage.billing?.reference_credits !== 0.5
+  || !equal(kling40LongImageProperties.skill?.enum, ["webpage", "ecommerce"])
+  || !equal(kling40LongImageProperties.length?.enum, ["short", "medium", "long"])
+  || !equal(kling40LongImageProperties.resolution?.enum, ["1K", "2K"])
+  || kling40LongImageProperties.image_urls?.maxItems !== 3
+) {
+  throw new Error("Kling Image 4.0 Long Image capability is out of sync");
+}
+
+const expectedHeygenAvatar6Rates = {
+  "heygen-avatar-6": {"1080p": 16, "2K": 23.2},
+  "heygen-avatar-6-turbo": {"1080p": 8, "2K": 14},
+};
+for (const [modelId, expected] of Object.entries(expectedHeygenAvatar6Rates)) {
+  const model = findModel(modelId);
+  const properties = model?.input_schema?.properties ?? {};
+  if (
+    model?.tool_name !== `poyo_${modelId.replace(/[.-]/g, "_")}`
+    || model.input_schema?.additionalProperties !== false
+    || model.billing?.unit !== "second"
+    || !equal(model.billing?.resolution_credits_per_second, expected)
+    || !equal(properties.resolution?.enum, ["1080p", "2K"])
+    || !equal(properties.aspect_ratio?.enum, ["16:9", "9:16", "1:1", "4:5", "5:4"])
+    || properties.image_urls?.maxItems !== 1
+    || properties.text?.maxLength !== 1000
+    || properties.prompt?.maxLength !== 1200
+    || properties.voice?.default !== "Warm Pro Narrator"
+  ) {
+    throw new Error(`HeyGen Avatar 6 capability is out of sync: ${modelId}`);
+  }
+}
+
 if (catalogErrors.length) throw new Error(catalogErrors.join("\n"));
 process.stdout.write(`Validated ${ids.size} PoYo model capabilities.\n`);

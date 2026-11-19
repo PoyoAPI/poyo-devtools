@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execution.
+Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -21,6 +21,8 @@ Generated from PoYo Catalog `v1-830dcf86fc0a`. Always call describe before execu
 | `hailuo-2.3` | generate |  | Text-to-video and optional first-frame guided generation |
 | `happy-horse` | generate |  | Alibaba Happy Horse text-to-video, image-to-video, reference-to-video, and video-edit workflows |
 | `happy-horse-1.1` | generate |  | Happy Horse 1.1 text-to-video, image-to-video, and reference-to-video modes |
+| `heygen-avatar-6` | generate |  | The HeyGen Avatar 6 API creates a lip-synced talking video at 1080p or 2K from a photo, a reference video of an animated character, or a HeyGen public avatar, driven by 2–60 seconds of audio or, for public avatars, by text. |
+| `heygen-avatar-6-turbo` | generate |  | The HeyGen Avatar 6 API creates a lip-synced talking video at 1080p or 2K from a photo, a reference video of an animated character, or a HeyGen public avatar, driven by 2–60 seconds of audio or, for public avatars, by text. |
 | `kling-1.6/pro` | generate |  | Kling 1.6 Standard and Pro video generation through the PoYo API |
 | `kling-1.6/standard` | generate |  | Kling 1.6 Standard and Pro video generation through the PoYo API |
 | `kling-2.1/pro` | generate |  | Standard and Pro image-to-video generation |
