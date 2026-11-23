@@ -1,6 +1,6 @@
 # image
 
-Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execution.
+Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -22,6 +22,8 @@ Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execu
 | `grok-imagine-image-quality` | generate |  | High-quality Grok Imagine Image generation with text-to-image and image editing support |
 | `ideogram-v4.5` | generate |  | Generate images from a prompt with quality and size controls. |
 | `ideogram-v4.5-edit` | generate |  | Edit exactly one primary image with references, optional masks, and precision controls. |
+| `ideogram-v4.6` | generate |  | Generate images from a prompt with accurate text rendering, quality tiers up to 4K output, and optional transparent backgrounds. |
+| `ideogram-v4.6-edit` | generate |  | Edit one source image with a prompt, an optional mask and up to four reference images, using regular or high-precision editing. |
 | `ideogram-vector-1.0/image-to-vector` | generate |  | Convert one image into an SVG. |
 | `ideogram-vector-1.0/text-to-vector` | generate |  | Generate SVG vector graphics from a prompt, with up to five reference images. |
 | `kling-4.0-image` | generate |  | The Kling Image 4.0 API generates images from a prompt or edits up to 10 reference images. It supports elements for consistent subjects, coherent image series, and 2K, 4K, or 8K output. |
@@ -43,6 +45,11 @@ Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execu
 | `qwen-image-2.1` | generate |  | Text-to-image, multi-reference generation, transparent backgrounds, and mask editing with Qwen Image 2.1 |
 | `qwen-image-3` | generate |  | Unified text-to-image and reference-image generation with Qwen Image 3 |
 | `qwen-image-3-pro` | generate |  | Unified text-to-image and reference-image generation with Qwen Image 3 |
+| `recraft-v4.1` | generate |  | Design-focused Recraft V4.1 raster images from text for brand, editorial and marketing visuals. One image per request. |
+| `recraft-v4.1-flash` | generate |  | Fast Recraft V4.1 Flash raster images from text, with optional palette and background color. One image per request. |
+| `recraft-v4.1-pro` | generate |  | Recraft V4.1 Pro high-resolution raster images from text for hero imagery, campaigns and print. One image per request. |
+| `recraft-v4.1-pro-vector` | generate |  | Detailed, large-format SVG vector illustrations from text with Recraft V4.1 Pro for posters and brand assets. One SVG per request. |
+| `recraft-v4.1-vector` | generate |  | Editable SVG vector graphics from text with Recraft V4.1 for logos, icons and illustrations. One SVG per request. |
 | `seedream-4.5` | generate |  | Advanced image generation model with support for text-to-image, image-to-image, and multi-image reference capabilities |
 | `seedream-4.5-edit` | generate |  | Advanced image generation model with support for text-to-image, image-to-image, and multi-image reference capabilities |
 | `seedream-5.0-flash` | generate |  | Fast Seedream image generation and reference-image editing. |

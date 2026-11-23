@@ -1,6 +1,6 @@
 # video
 
-Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execution.
+Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -39,6 +39,8 @@ Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execu
 | `kling-o3/4K` | generate |  | Native 4K video generation with Kling O3/4K |
 | `kling-o3/pro` | generate |  | Next-generation video generation with Kling O3 standard and pro |
 | `kling-o3/standard` | generate |  | Next-generation video generation with Kling O3 standard and pro |
+| `ltx-2.5-fast` | generate |  | Lightricks LTX 2.5 Fast: generate 6-20 second videos with native audio from text or a start/end frame at 720p to 4K, or drive a 1080p video from 2-20 seconds of audio. |
+| `ltx-2.5-pro` | generate |  | Lightricks LTX 2.5 Pro: generate 6-10 second videos with native audio from text or a start/end frame at 720p or 1080p, or drive a 1080p video from 2-10 seconds of audio. |
 | `omni-flash` | generate |  | Text, image, and video input generation with Omni Flash |
 | `omnihuman-2.0` | generate |  | Animate one character image with a driving audio track. |
 | `pixverse-v6-max` | generate |  | Generate a 1-15 second video from text or one image, with optional native audio. |
@@ -50,6 +52,7 @@ Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execu
 | `seedance-2-mini` | generate |  | Fast video generation with Seedance 2 Mini |
 | `seedance-2.5` | generate |  | Generate videos with Seedance 2.5 from text, frames, or multimodal references |
 | `seedance-2.5-flash` | generate |  | Generate 4-30 second videos with Seedance 2.5 Flash from text, first and last frames, or image, video, and audio references at 480p or 720p, with synchronized audio. |
+| `sync-lipsync-3` | generate |  | Lip-sync an existing video to a new audio track, or turn one image and an audio clip into a talking video, with Sync.so sync-3. Billed per second of output video. |
 | `veo3.1-extend` | generate |  | Extend an existing video with Veo 3.1. |
 | `veo3.1-fast-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |
 | `veo3.1-lite-official` | generate |  | Official VEO 3.1 video generation with duration, audio control, and image-guided modes. |

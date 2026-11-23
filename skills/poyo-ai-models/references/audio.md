@@ -1,10 +1,11 @@
 # audio
 
-Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execution.
+Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
 | `elevenlabs-music` | generate |  | Generate studio-grade music from text inputs or structured composition plans using ElevenLabs Music. PoYo pricing is $0.64 per started minute, equal to 128 credits per started minute. |
+| `elevenlabs-scribe-v2` | generate |  | Transcribe speech in 99 languages to text with word-level timestamps, speaker diarization, audio event tags, and keyterm biasing. |
 | `elevenlabs-tts-turbo-2-5` | generate |  | Generate low-latency multilingual speech using ElevenLabs TTS Turbo v2.5. PoYo pricing is $0.04 per 1000 characters; Fal reference pricing is $0.05 per 1000 characters. |
 | `elevenlabs-v3-tts` | generate |  | Generate speech audio from text using ElevenLabs V3 |
 | `elevenlabs-v4-tts` | generate |  | Generate expressive speech with voice controls, 19 audio formats, and optional timestamps. |

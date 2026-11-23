@@ -1,6 +1,6 @@
 # chat
 
-Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execution.
+Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -30,6 +30,7 @@ Generated from PoYo Catalog `v1-c89a8585107f`. Always call describe before execu
 | `gemini-3.8-flash` | chat | openai-chat, gemini | Run the PoYo gemini-3.8-flash model. |
 | `gemini-4-argon` | chat | openai-chat, gemini | Run the PoYo gemini-4-argon model. |
 | `gemini-4-carbon` | chat | openai-chat, gemini | Run the PoYo gemini-4-carbon model. |
+| `gemini-4-neon` | chat | openai-chat, gemini | Run the PoYo gemini-4-neon model. |
 | `gpt-5` | chat | openai-chat, openai-responses | Run the PoYo gpt-5 model. |
 | `gpt-5-6-luna` | chat | openai-responses | Run the PoYo gpt-5-6-luna model. |
 | `gpt-5-6-sol` | chat | openai-responses | Run the PoYo gpt-5-6-sol model. |

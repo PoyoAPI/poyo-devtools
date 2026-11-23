@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-c89a8585107f",
+  "schema_version": "v1-3683455ddffe",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -2910,6 +2910,259 @@
         "input_credits": null,
         "output_credits": null,
         "credits_per_unit": 128
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "elevenlabs-scribe-v2",
+      "tool_name": "poyo_elevenlabs_scribe_v2",
+      "service_type": "generate",
+      "category": "audio",
+      "title": "ElevenLabs Scribe v2",
+      "description": "Transcribe speech in 99 languages to text with word-level timestamps, speaker diarization, audio event tags, and keyterm biasing.",
+      "tags": [
+        "audio",
+        "speech-to-text",
+        "transcription"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "audio_url"
+        ],
+        "properties": {
+          "diarize": {
+            "type": "boolean",
+            "default": true,
+            "description": "Identify who is speaking; each word gets a speaker_id such as speaker_0."
+          },
+          "keyterms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "\\S",
+              "maxLength": 50,
+              "minLength": 1
+            },
+            "default": [],
+            "maxItems": 100,
+            "description": "Up to 100 words or phrases (at most 50 characters each) to bias the transcription toward, such as names or product terms. A non-empty list bills at the keyterms rate (+30%)."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Public URL of the audio to transcribe: MP3, WAV, M4A, AAC, FLAC, OGG, or WebM, or an MP4/MOV/WebM video with an audio track. At most 100 MB and 120 minutes.",
+            "x-max-file-size-bytes": 104857600,
+            "x-audio-duration-seconds": {
+              "maximum": 7200
+            }
+          },
+          "language_code": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\s*([A-Za-z]{2,3})?\\s*$",
+            "description": "ISO 639-1 or ISO 639-3 language code of the audio, such as en or eng. Omit, null, or empty string to detect the language automatically."
+          },
+          "tag_audio_events": {
+            "type": "boolean",
+            "default": true,
+            "description": "Tag audio events such as (laughter) or (applause) in the transcript."
+          }
+        },
+        "description": "Transcribe one audio file, or a video with an audio track. The server downloads audio_url to measure its duration for billing.",
+        "x-server-validation": {
+          "empty_values": "null or an empty language_code means auto-detect; an empty keyterms array means no keyterms and the base rate.",
+          "audio_duration": "Download audio_url (public hosts only, at most 100 MB) and probe it with ffprobe; it must contain an audio stream and last at most 7200 seconds.",
+          "billing_duration": "Bill the probed duration rounded up to whole seconds, minimum 1 second.",
+          "unsupported_fields": "Reject unsupported top-level properties."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795600000-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T10:30:00"
+              }
+            }
+          }
+        },
+        "x-task-result": {
+          "files": [
+            {
+              "format": "json",
+              "file_url": "https://storage.poyo.ai/audios/task-unified-1795600000-example/transcript.json",
+              "file_name": "transcript.json",
+              "file_type": "other",
+              "content_type": "application/json"
+            }
+          ],
+          "output": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "Full transcript text; a prefix when text_truncated is true."
+              },
+              "language_code": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Detected or requested language code, such as eng."
+              },
+              "text_truncated": {
+                "type": "boolean",
+                "description": "true when the transcript was too long to inline; read the full text from transcript_url."
+              },
+              "transcript_url": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL of transcript.json (same as files[0].file_url)."
+              },
+              "language_probability": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "Confidence of the language detection, 0 to 1."
+              }
+            }
+          },
+          "description": "When GET /api/generate/status/{task_id} reports finished, files[0] is transcript.json and output carries the transcript text.",
+          "transcript_json": {
+            "type": "object",
+            "required": [
+              "text",
+              "language_code",
+              "language_probability",
+              "words"
+            ],
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "words": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "end": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "description": "End time in seconds."
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Word, whitespace, or audio event text."
+                    },
+                    "type": {
+                      "enum": [
+                        "word",
+                        "spacing",
+                        "audio_event"
+                      ],
+                      "type": "string"
+                    },
+                    "start": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "description": "Start time in seconds."
+                    },
+                    "speaker_id": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Speaker label such as speaker_0 when diarize is true."
+                    }
+                  }
+                }
+              },
+              "language_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "language_probability": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "audio_url": "https://example.com/interview.mp3"
+        },
+        {
+          "diarize": true,
+          "keyterms": [
+            "PoYo",
+            "Scribe v2"
+          ],
+          "audio_url": "https://example.com/podcast.mp3",
+          "language_code": "eng",
+          "tag_audio_events": false
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "minute",
+        "credits": null,
+        "formula": "billed_seconds * (keyterms ? credits_per_minute_with_keyterms : credits_per_minute) / 60",
+        "parameters": {
+          "keyterms": "a non-empty keyterms array applies credits_per_minute_with_keyterms",
+          "billed_seconds": "server-probed duration of audio_url rounded up to whole seconds, minimum 1"
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "credits_per_minute": 1.6,
+        "credits_per_minute_with_keyterms": 2.08
       },
       "status": "stable"
     },
@@ -12087,6 +12340,243 @@
       "status": "stable"
     },
     {
+      "model_id": "gemini-4-neon",
+      "tool_name": "poyo_gemini_4_neon",
+      "service_type": "chat",
+      "category": "chat",
+      "title": "gemini-4-neon",
+      "description": "Run the PoYo gemini-4-neon model.",
+      "tags": [
+        "chat",
+        "gemini",
+        "openai-chat",
+        "input:image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "example": 1,
+            "minimum": 1,
+            "description": "Number of completions to generate. Default: 1. Must be a plain number such as `1`; do not use quotes."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "\n\nHuman:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Stop sequences. Up to 4 sequences where generation will stop when encountered."
+          },
+          "top_p": {
+            "type": "number",
+            "example": 1,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Nucleus sampling parameter, range 0-1. Controls diversity of generated text. We recommend using either `top_p` or `temperature`, not both. Default: 1.0."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "content"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "type": "string",
+                  "default": "user",
+                  "example": "user",
+                  "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Explain vector databases in one sentence.",
+                  "description": "Message content, question, or instruction."
+                }
+              }
+            },
+            "description": "List of conversation messages. Each message contains a `role` and `content`. Use `system` to define model behavior, `user` for user input, and `assistant` for previous model responses in multi-turn conversations. Example: [{\"role\": \"user\", \"content\": \"Explain vector databases in one sentence.\"}]."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "example": 256,
+            "minimum": 1,
+            "description": "Maximum number of tokens to generate. Different models have different maximum limits."
+          },
+          "temperature": {
+            "type": "number",
+            "example": 1,
+            "maximum": 2,
+            "minimum": 0,
+            "description": "Controls output randomness, range 0-2. Lower values such as 0.2 make output more deterministic. Higher values such as 1.8 make output more random. Default: 1.0."
+          },
+          "presence_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Presence penalty, range -2.0 to 2.0. Positive values increase the likelihood of talking about new topics. Default: 0."
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "example": 0,
+            "maximum": 2,
+            "minimum": -2,
+            "description": "Frequency penalty, range -2.0 to 2.0. Positive values reduce the likelihood of repeating the same words. Default: 0."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "chatcmpl-9876543210",
+                "description": "Unique identifier for the response."
+              },
+              "model": {
+                "type": "string",
+                "example": "gpt-5.2",
+                "description": "The actual model name used."
+              },
+              "usage": {
+                "type": "object",
+                "properties": {
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 348,
+                    "description": "Total number of tokens."
+                  },
+                  "prompt_tokens": {
+                    "type": "integer",
+                    "example": 28,
+                    "description": "Number of tokens in the input messages."
+                  },
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 320,
+                    "description": "Number of tokens in the generated content."
+                  }
+                }
+              },
+              "object": {
+                "type": "string",
+                "example": "chat.completion",
+                "description": "Object type."
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "type": "string",
+                          "default": "user",
+                          "example": "user",
+                          "description": "Message role. `user` is user input, `assistant` is previous model output for multi-turn conversations, and `system` is the system prompt. Default is `user`."
+                        },
+                        "content": {
+                          "type": "string",
+                          "example": "Explain vector databases in one sentence.",
+                          "description": "Message content, question, or instruction."
+                        }
+                      }
+                    },
+                    "finish_reason": {
+                      "enum": [
+                        "stop",
+                        "length",
+                        "content_filter",
+                        "function_call"
+                      ],
+                      "type": "string",
+                      "example": "stop",
+                      "description": "Reason for completion."
+                    }
+                  }
+                }
+              },
+              "created": {
+                "type": "integer",
+                "example": 1677652288,
+                "description": "Creation timestamp."
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a structured output assistant. Reply with JSON only."
+            },
+            {
+              "role": "user",
+              "content": "Generate a paginated list response example with fields items, page, page_size, total and sample values."
+            }
+          ]
+        }
+      ],
+      "supported_protocols": [
+        "openai-chat",
+        "gemini"
+      ],
+      "execution_mode": "sync",
+      "supports_streaming": true,
+      "supports_callback": false,
+      "billing": {
+        "type": "token",
+        "unit": "token",
+        "credits": null,
+        "input_credits": 480,
+        "output_credits": 2400
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "gpt-5",
       "tool_name": "poyo_gpt_5",
       "service_type": "chat",
@@ -19113,6 +19603,441 @@
       "status": "stable"
     },
     {
+      "model_id": "ideogram-v4.6",
+      "tool_name": "poyo_ideogram_v4_6",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Ideogram V4.6",
+      "description": "Generate images from a prompt with accurate text rendering, quality tiers up to 4K output, and optional transparent backgrounds.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "default": 1,
+            "maximum": 8,
+            "minimum": 1,
+            "description": "Number of output images, 1-8. Defaults to 1."
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "description": "Optional random seed. Omit to pick one automatically."
+          },
+          "size": {
+            "type": "string",
+            "default": "auto",
+            "pattern": "^(auto|1:1|1:1 HD|4:3|3:4|16:9|9:16|[0-9]+x[0-9]+)$",
+            "description": "auto (the model picks about 2K), 1:1, 1:1 HD, 4:3, 3:4, 16:9, 9:16, or WIDTHxHEIGHT with sides of 256-4096 pixels, multiples of 32, and an aspect ratio within 1:6 and 6:1. Sizes above 4194304 pixels use the 4K price and do not support very_low. Defaults to auto."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Required. 1-10000 characters with non-whitespace text."
+          },
+          "quality": {
+            "enum": [
+              "very_low",
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string",
+            "default": "medium",
+            "description": "Output quality. Defaults to medium. very_low is only available for outputs up to 2048x2048 pixels in area (4,194,304 pixels)."
+          },
+          "background": {
+            "enum": [
+              "transparent",
+              "opaque"
+            ],
+            "type": "string",
+            "description": "Optional. transparent returns an image with an alpha channel; opaque forces a solid background. Omit for the model default."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A colorful storefront with a neon sign reading HELLO"
+        },
+        {
+          "n": 2,
+          "size": "2048x3072",
+          "prompt": "A minimalist poster titled SUMMER JAZZ NIGHTS, bold typography",
+          "quality": "high"
+        },
+        {
+          "seed": 42,
+          "size": "1:1 HD",
+          "prompt": "A flat sticker of a smiling coffee cup",
+          "quality": "low",
+          "background": "transparent"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "n * size_quality_credits[size_tier][quality]; size_tier is 2K when an output image is at most 4194304 pixels (2048x2048 in area), otherwise 4K",
+        "parameters": {
+          "n": "Integer 1-8; defaults to 1. Each delivered image is charged; undelivered images are refunded.",
+          "size": "auto and the ratio presets are always 2K. WIDTHxHEIGHT is 2K up to 4194304 pixels, otherwise 4K.",
+          "quality": "Defaults to medium. very_low only exists in the 2K tier."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "size_quality_credits": {
+          "2K": {
+            "low": 6,
+            "high": 20,
+            "medium": 12,
+            "very_low": 1.6
+          },
+          "4K": {
+            "low": 12,
+            "high": 40,
+            "medium": 24
+          }
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "ideogram-v4.6-edit",
+      "tool_name": "poyo_ideogram_v4_6_edit",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Ideogram V4.6 Edit",
+      "description": "Edit one source image with a prompt, an optional mask and up to four reference images, using regular or high-precision editing.",
+      "tags": [
+        "image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "mask_url"
+              ]
+            },
+            "then": {
+              "properties": {
+                "size": {
+                  "const": "auto"
+                },
+                "reference_image_urls": {
+                  "maxItems": 3
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "edit_precision"
+              ],
+              "properties": {
+                "edit_precision": {
+                  "const": "high"
+                }
+              }
+            },
+            "then": {
+              "not": {
+                "required": [
+                  "background"
+                ]
+              },
+              "properties": {
+                "size": {
+                  "const": "auto"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "context_window"
+              ],
+              "properties": {
+                "context_window": {
+                  "const": "auto"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "mask_url",
+                "edit_precision"
+              ],
+              "properties": {
+                "edit_precision": {
+                  "const": "high"
+                }
+              }
+            }
+          }
+        ],
+        "required": [
+          "prompt",
+          "image_urls"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "default": 1,
+            "maximum": 8,
+            "minimum": 1,
+            "description": "Number of output images, 1-8. Defaults to 1."
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "description": "Optional random seed. Omit to pick one automatically."
+          },
+          "size": {
+            "type": "string",
+            "default": "auto",
+            "pattern": "^(auto|1:1|1:1 HD|4:3|3:4|16:9|9:16|[0-9]+x[0-9]+)$",
+            "description": "auto keeps the source geometry. 1:1, 1:1 HD, 4:3, 3:4, 16:9, 9:16 or WIDTHxHEIGHT (sides of 256-4096 pixels, multiples of 32, aspect ratio within 1:6 and 6:1) are only allowed for regular edits without mask_url. Outputs above 4194304 pixels use the 4K price and do not support very_low. Defaults to auto."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Required. 1-10000 characters with non-whitespace text."
+          },
+          "quality": {
+            "enum": [
+              "very_low",
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string",
+            "default": "medium",
+            "description": "Output quality. Defaults to medium. very_low is only available for outputs up to 2048x2048 pixels in area (4,194,304 pixels)."
+          },
+          "mask_url": {
+            "type": "string",
+            "pattern": "^(https?://\\S+|data:image/[A-Za-z0-9.+-]+;base64,\\S+)$",
+            "description": "Optional mask with the same dimensions as the source. Black areas are edited, white areas are kept; it must contain both."
+          },
+          "background": {
+            "enum": [
+              "transparent",
+              "opaque"
+            ],
+            "type": "string",
+            "description": "Optional, regular edits only. transparent returns an image with an alpha channel; opaque forces a solid background."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(https?://\\S+|data:image/[A-Za-z0-9.+-]+;base64,\\S+)$",
+              "description": "Public HTTP(S) image URL or base64 image data URI."
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Required. Exactly one source image to edit."
+          },
+          "context_window": {
+            "enum": [
+              "none",
+              "auto"
+            ],
+            "type": "string",
+            "default": "none",
+            "description": "For edit_precision high. none edits the whole image and keeps its resolution. auto requires mask_url and edit_precision high, edits only the region around the mask and keeps the original resolution. Defaults to none."
+          },
+          "edit_precision": {
+            "enum": [
+              "regular",
+              "high"
+            ],
+            "type": "string",
+            "default": "regular",
+            "description": "regular regenerates the image; high uses precise editing and restores unchanged pixels. Defaults to regular."
+          },
+          "reference_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(https?://\\S+|data:image/[A-Za-z0-9.+-]+;base64,\\S+)$",
+              "description": "Public HTTP(S) image URL or base64 image data URI."
+            },
+            "maxItems": 4,
+            "description": "Optional reference images: up to 4, or up to 3 when mask_url is set."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "Replace the background with a blue photo studio",
+          "image_urls": [
+            "https://example.com/source.png"
+          ]
+        },
+        {
+          "prompt": "Change the sign text to OPEN LATE",
+          "quality": "high",
+          "mask_url": "https://example.com/sign-mask.png",
+          "image_urls": [
+            "https://example.com/storefront.png"
+          ],
+          "context_window": "auto",
+          "edit_precision": "high"
+        },
+        {
+          "n": 2,
+          "size": "2048x2048",
+          "prompt": "Restyle the product shot to match the reference",
+          "quality": "low",
+          "image_urls": [
+            "https://example.com/product.png"
+          ],
+          "reference_image_urls": [
+            "https://example.com/style.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "image",
+        "credits": null,
+        "formula": "n * size_quality_credits[size_tier][quality]; size_tier is 2K when an output image is at most 4194304 pixels (2048x2048 in area), otherwise 4K; settled on the delivered images, never above the quote",
+        "parameters": {
+          "n": "Integer 1-8; defaults to 1. Each delivered image is charged; undelivered images are refunded.",
+          "size": "WIDTHxHEIGHT is 2K up to 4194304 pixels, otherwise 4K; ratio presets are 2K. With auto, very_low is always 2K; other auto edits (including edit_precision high) keep the source resolution and are quoted from the source image area (4K if it cannot be read), then settled from the delivered image sizes.",
+          "quality": "Defaults to medium. very_low only exists in the 2K tier."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "size_quality_credits": {
+          "2K": {
+            "low": 6,
+            "high": 44,
+            "medium": 12,
+            "very_low": 1.6
+          },
+          "4K": {
+            "low": 12,
+            "high": 120,
+            "medium": 40
+          }
+        }
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "ideogram-vector-1.0/image-to-vector",
       "tool_name": "poyo_ideogram_vector_1_0_image_to_vector",
       "service_type": "generate",
@@ -22796,6 +23721,911 @@
           "2K": 12
         },
         "input_image_credits": 0.5
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "recraft-v4.1",
+      "tool_name": "poyo_recraft_v4_1",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Recraft V4.1",
+      "description": "Design-focused Recraft V4.1 raster images from text for brand, editorial and marketing visuals. One image per request.",
+      "tags": [
+        "image",
+        "text-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "1:1",
+            "description": "Aspect ratio. Defaults to 1:1. Maps to Recraft's square_hd, landscape_4_3, portrait_4_3, landscape_16_9 and portrait_16_9 presets."
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "r",
+                "g",
+                "b"
+              ],
+              "properties": {
+                "b": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "g": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "r": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 10,
+            "description": "Optional preferred palette, up to 10 RGB colors such as {\"r\": 255, \"g\": 87, \"b\": 51}. Each channel is an integer 0-255."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Required. Describe the image. 1-10000 characters with non-whitespace text."
+          },
+          "background_color": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "r",
+                  "g",
+                  "b"
+                ],
+                "properties": {
+                  "b": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "g": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "r": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional preferred background color as an RGB object, or null."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "Minimal poster for a jazz festival, bold geometric shapes and clean typography"
+        },
+        {
+          "size": "16:9",
+          "prompt": "Product hero shot of a matte black water bottle on a pastel backdrop",
+          "background_color": {
+            "b": 220,
+            "g": 230,
+            "r": 245
+          }
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "image",
+        "credits": 7,
+        "formula": "credits per request; each request returns exactly one image",
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "recraft-v4.1-flash",
+      "tool_name": "poyo_recraft_v4_1_flash",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Recraft V4.1 Flash",
+      "description": "Fast Recraft V4.1 Flash raster images from text, with optional palette and background color. One image per request.",
+      "tags": [
+        "image",
+        "text-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "1:1",
+            "description": "Aspect ratio. Defaults to 1:1. Maps to Recraft's square_hd, landscape_4_3, portrait_4_3, landscape_16_9 and portrait_16_9 presets."
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "r",
+                "g",
+                "b"
+              ],
+              "properties": {
+                "b": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "g": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "r": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 10,
+            "description": "Optional preferred palette, up to 10 RGB colors such as {\"r\": 255, \"g\": 87, \"b\": 51}. Each channel is an integer 0-255."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Required. Describe the image. 1-10000 characters with non-whitespace text."
+          },
+          "background_color": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "r",
+                  "g",
+                  "b"
+                ],
+                "properties": {
+                  "b": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "g": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "r": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional preferred background color as an RGB object, or null."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "Tilt-shift miniature of a Portuguese fishing village at golden hour, colorful boats in the harbor"
+        },
+        {
+          "size": "3:4",
+          "colors": [
+            {
+              "b": 170,
+              "g": 196,
+              "r": 214
+            },
+            {
+              "b": 74,
+              "g": 82,
+              "r": 64
+            }
+          ],
+          "prompt": "Editorial still life of a ceramic vase with dried flowers, soft window light"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "image",
+        "credits": 1.4,
+        "formula": "credits per request; each request returns exactly one image",
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "recraft-v4.1-pro",
+      "tool_name": "poyo_recraft_v4_1_pro",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Recraft V4.1 Pro",
+      "description": "Recraft V4.1 Pro high-resolution raster images from text for hero imagery, campaigns and print. One image per request.",
+      "tags": [
+        "image",
+        "text-to-image"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "1:1",
+            "description": "Aspect ratio. Defaults to 1:1. Maps to Recraft's square_hd, landscape_4_3, portrait_4_3, landscape_16_9 and portrait_16_9 presets."
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "r",
+                "g",
+                "b"
+              ],
+              "properties": {
+                "b": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "g": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "r": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 10,
+            "description": "Optional preferred palette, up to 10 RGB colors such as {\"r\": 255, \"g\": 87, \"b\": 51}. Each channel is an integer 0-255."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Required. Describe the image. 1-10000 characters with non-whitespace text."
+          },
+          "background_color": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "r",
+                  "g",
+                  "b"
+                ],
+                "properties": {
+                  "b": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "g": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "r": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional preferred background color as an RGB object, or null."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "Kingfisher breaking the surface of a pond, water crown splash, pre-dawn blue light"
+        },
+        {
+          "size": "16:9",
+          "colors": [
+            {
+              "b": 66,
+              "g": 140,
+              "r": 255
+            },
+            {
+              "b": 92,
+              "g": 44,
+              "r": 40
+            }
+          ],
+          "prompt": "Panoramic campaign visual of a desert highway at dusk, cinematic color grade"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "image",
+        "credits": 42,
+        "formula": "credits per request; each request returns exactly one image",
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "recraft-v4.1-pro-vector",
+      "tool_name": "poyo_recraft_v4_1_pro_vector",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Recraft V4.1 Pro Vector",
+      "description": "Detailed, large-format SVG vector illustrations from text with Recraft V4.1 Pro for posters and brand assets. One SVG per request.",
+      "tags": [
+        "image",
+        "text-to-vector",
+        "svg"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "1:1",
+            "description": "Aspect ratio. Defaults to 1:1. Maps to Recraft's square_hd, landscape_4_3, portrait_4_3, landscape_16_9 and portrait_16_9 presets."
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "r",
+                "g",
+                "b"
+              ],
+              "properties": {
+                "b": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "g": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "r": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 10,
+            "description": "Optional preferred palette, up to 10 RGB colors such as {\"r\": 255, \"g\": 87, \"b\": 51}. Each channel is an integer 0-255."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Required. Describe the SVG. 1-10000 characters with non-whitespace text."
+          },
+          "background_color": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "r",
+                  "g",
+                  "b"
+                ],
+                "properties": {
+                  "b": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "g": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "r": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional preferred background color as an RGB object, or null."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A cute panda character with cool clothes, 3d flat color, design"
+        },
+        {
+          "size": "3:4",
+          "colors": [
+            {
+              "b": 77,
+              "g": 183,
+              "r": 255
+            },
+            {
+              "b": 83,
+              "g": 70,
+              "r": 38
+            },
+            {
+              "b": 106,
+              "g": 196,
+              "r": 233
+            }
+          ],
+          "prompt": "Detailed vector poster of a mountain lake at sunrise with layered hills"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "image",
+        "credits": 60,
+        "formula": "credits per request; each request returns exactly one SVG",
+        "input_credits": null,
+        "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "recraft-v4.1-vector",
+      "tool_name": "poyo_recraft_v4_1_vector",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Recraft V4.1 Vector",
+      "description": "Editable SVG vector graphics from text with Recraft V4.1 for logos, icons and illustrations. One SVG per request.",
+      "tags": [
+        "image",
+        "text-to-vector",
+        "svg"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "enum": [
+              "1:1",
+              "4:3",
+              "3:4",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "default": "1:1",
+            "description": "Aspect ratio. Defaults to 1:1. Maps to Recraft's square_hd, landscape_4_3, portrait_4_3, landscape_16_9 and portrait_16_9 presets."
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "r",
+                "g",
+                "b"
+              ],
+              "properties": {
+                "b": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "g": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "r": {
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 10,
+            "description": "Optional preferred palette, up to 10 RGB colors such as {\"r\": 255, \"g\": 87, \"b\": 51}. Each channel is an integer 0-255."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Required. Describe the SVG. 1-10000 characters with non-whitespace text."
+          },
+          "background_color": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "r",
+                  "g",
+                  "b"
+                ],
+                "properties": {
+                  "b": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "g": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  },
+                  "r": {
+                    "type": "integer",
+                    "maximum": 255,
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional preferred background color as an RGB object, or null."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A cute fox character with cool clothes, flat color, vector design"
+        },
+        {
+          "size": "1:1",
+          "colors": [
+            {
+              "b": 33,
+              "g": 33,
+              "r": 33
+            }
+          ],
+          "prompt": "Line icon set style coffee cup logo with steam",
+          "background_color": {
+            "b": 255,
+            "g": 255,
+            "r": 255
+          }
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "image",
+        "credits": 16,
+        "formula": "credits per request; each request returns exactly one SVG",
+        "input_credits": null,
+        "output_credits": null
       },
       "status": "stable"
     },
@@ -40734,6 +42564,621 @@
       "status": "stable"
     },
     {
+      "model_id": "ltx-2.5-fast",
+      "tool_name": "poyo_ltx_2_5_fast",
+      "service_type": "generate",
+      "category": "video",
+      "title": "LTX 2.5 Fast",
+      "description": "Lightricks LTX 2.5 Fast: generate 6-20 second videos with native audio from text or a start/end frame at 720p to 4K, or drive a 1080p video from 2-20 seconds of audio.",
+      "tags": [
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "audio-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "not": {
+                "required": [
+                  "audio_url"
+                ]
+              }
+            },
+            "then": {
+              "required": [
+                "prompt"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "audio_url"
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "duration"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "resolution"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "fps"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "generate_audio"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "camera_motion"
+                    ]
+                  }
+                ]
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "prompt"
+                  ]
+                },
+                {
+                  "required": [
+                    "image_urls"
+                  ]
+                }
+              ],
+              "properties": {
+                "image_urls": {
+                  "maxItems": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "resolution"
+              ],
+              "properties": {
+                "resolution": {
+                  "enum": [
+                    "1440p",
+                    "4k"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "duration": {
+                  "maximum": 10
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "fps"
+              ],
+              "properties": {
+                "fps": {
+                  "enum": [
+                    48,
+                    50
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "duration": {
+                  "maximum": 10
+                }
+              }
+            }
+          }
+        ],
+        "required": [],
+        "properties": {
+          "fps": {
+            "enum": [
+              24,
+              25,
+              48,
+              50
+            ],
+            "type": "integer",
+            "default": 25,
+            "description": "Frames per second. Does not change the price. Not accepted with audio_url."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 5000,
+            "minLength": 1,
+            "description": "Text prompt describing the video. Required for text-to-video and image-to-video; for audio-to-video it is required only when image_urls is not provided."
+          },
+          "duration": {
+            "enum": [
+              6,
+              8,
+              10,
+              12,
+              14,
+              16,
+              18,
+              20
+            ],
+            "type": "integer",
+            "default": 6,
+            "description": "Output duration in seconds. At most 10 at 1440p or 4k, or at 48/50 fps. Not accepted with audio_url."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Audio that drives the video (audio-to-video). Must be 2-20 seconds long; the server measures it and bills the length rounded up to whole seconds. Output is 1080p and follows the audio length. Only prompt, image_urls and aspect_ratio can be combined with it.",
+            "x-audio-duration-seconds": {
+              "maximum": 20,
+              "minimum": 2
+            }
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 2,
+            "minItems": 1,
+            "description": "Start frame and optional end frame, in order (image-to-video). With audio_url, at most 1 image, used as the first frame."
+          },
+          "resolution": {
+            "enum": [
+              "720p",
+              "1080p",
+              "1440p",
+              "4k"
+            ],
+            "type": "string",
+            "default": "1080p",
+            "description": "Output resolution (4k = 2160p). Not accepted with audio_url (audio-to-video is always 1080p)."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "description": "Output aspect ratio. Defaults to 16:9 for text-to-video (where auto also means 16:9) and to auto (follow the input image) for image-to-video and audio-to-video."
+          },
+          "camera_motion": {
+            "enum": [
+              "dolly_in",
+              "dolly_out",
+              "dolly_left",
+              "dolly_right",
+              "jib_up",
+              "jib_down",
+              "static",
+              "focus_shift"
+            ],
+            "type": "string",
+            "description": "Optional camera motion. Not accepted with audio_url."
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Generate a native audio track. Does not change the price. Not accepted with audio_url."
+          }
+        },
+        "description": "Text-to-video, image-to-video (start frame + optional end frame) or audio-to-video, chosen from the inputs. Mode priority is audio_url, then image_urls, then text. Native audio is generated by default.",
+        "x-server-validation": {
+          "empty_values": "Null, empty arrays and empty strings are treated as omitted.",
+          "mode_priority": [
+            "audio_url",
+            "image_urls",
+            "text"
+          ],
+          "audio_duration": "Probe audio_url; it must be 2-20 real seconds.",
+          "billing_duration": "Text and image modes bill the requested duration (default 6). Audio mode bills the ceiling of the probed audio_url duration.",
+          "unsupported_fields": "Reject unsupported top-level properties and fields that do not apply to the selected mode."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795600000-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A drone shot gliding over a misty pine forest at sunrise, birds calling in the distance.",
+          "duration": 6,
+          "resolution": "1080p",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "fps": 50,
+          "prompt": "Ocean waves crashing on black volcanic rocks, slow motion.",
+          "duration": 10,
+          "resolution": "4k",
+          "generate_audio": true
+        },
+        {
+          "prompt": "The character turns toward the camera and smiles as the wind moves her hair.",
+          "duration": 8,
+          "image_urls": [
+            "https://example.com/first-frame.png",
+            "https://example.com/last-frame.png"
+          ],
+          "resolution": "720p",
+          "camera_motion": "dolly_in"
+        },
+        {
+          "prompt": "A singer performs on a neon-lit stage, lips synced to the music.",
+          "audio_url": "https://example.com/song.mp3",
+          "image_urls": [
+            "https://example.com/singer.png"
+          ],
+          "aspect_ratio": "9:16"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "text/image: duration * resolution_credits_per_second[resolution]; audio: ceil(audio_url seconds) * audio_credits_per_second",
+        "parameters": {
+          "duration": "Requested output seconds for text-to-video and image-to-video; defaults to 6.",
+          "audio_url": "Audio-to-video bills the server-probed input audio length rounded up to whole seconds at 26 credits per second (1080p output).",
+          "resolution": "Defaults to 1080p. Credits per output second: 720p 18, 1080p 26, 1440p 38, 4k 60."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "audio_credits_per_second": 26,
+        "resolution_credits_per_second": {
+          "4k": 60,
+          "720p": 18,
+          "1080p": 26,
+          "1440p": 38
+        }
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "ltx-2.5-pro",
+      "tool_name": "poyo_ltx_2_5_pro",
+      "service_type": "generate",
+      "category": "video",
+      "title": "LTX 2.5 Pro",
+      "description": "Lightricks LTX 2.5 Pro: generate 6-10 second videos with native audio from text or a start/end frame at 720p or 1080p, or drive a 1080p video from 2-10 seconds of audio.",
+      "tags": [
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "audio-to-video"
+      ],
+      "input_schema": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "not": {
+                "required": [
+                  "audio_url"
+                ]
+              }
+            },
+            "then": {
+              "required": [
+                "prompt"
+              ]
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "audio_url"
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "duration"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "resolution"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "fps"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "generate_audio"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "camera_motion"
+                    ]
+                  }
+                ]
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "prompt"
+                  ]
+                },
+                {
+                  "required": [
+                    "image_urls"
+                  ]
+                }
+              ],
+              "properties": {
+                "image_urls": {
+                  "maxItems": 1
+                }
+              }
+            }
+          }
+        ],
+        "required": [],
+        "properties": {
+          "fps": {
+            "enum": [
+              24,
+              25,
+              50
+            ],
+            "type": "integer",
+            "default": 25,
+            "description": "Frames per second. Does not change the price. Not accepted with audio_url."
+          },
+          "prompt": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 5000,
+            "minLength": 1,
+            "description": "Text prompt describing the video. Required for text-to-video and image-to-video; for audio-to-video it is required only when image_urls is not provided."
+          },
+          "duration": {
+            "enum": [
+              6,
+              8,
+              10
+            ],
+            "type": "integer",
+            "default": 6,
+            "description": "Output duration in seconds. Not accepted with audio_url."
+          },
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Audio that drives the video (audio-to-video). Must be 2-10 seconds long; the server measures it and bills the length rounded up to whole seconds. Output is 1080p and follows the audio length. Only prompt, image_urls and aspect_ratio can be combined with it.",
+            "x-audio-duration-seconds": {
+              "maximum": 10,
+              "minimum": 2
+            }
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "maxItems": 2,
+            "minItems": 1,
+            "description": "Start frame and optional end frame, in order (image-to-video). With audio_url, at most 1 image, used as the first frame."
+          },
+          "resolution": {
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "type": "string",
+            "default": "1080p",
+            "description": "Output resolution. Not accepted with audio_url (audio-to-video is always 1080p)."
+          },
+          "aspect_ratio": {
+            "enum": [
+              "auto",
+              "16:9",
+              "9:16"
+            ],
+            "type": "string",
+            "description": "Output aspect ratio. Defaults to 16:9 for text-to-video (where auto also means 16:9) and to auto (follow the input image) for image-to-video and audio-to-video."
+          },
+          "camera_motion": {
+            "enum": [
+              "dolly_in",
+              "dolly_out",
+              "dolly_left",
+              "dolly_right",
+              "jib_up",
+              "jib_down",
+              "static",
+              "focus_shift"
+            ],
+            "type": "string",
+            "description": "Optional camera motion. Not accepted with audio_url."
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "default": true,
+            "description": "Generate a native audio track. Does not change the price. Not accepted with audio_url."
+          }
+        },
+        "description": "Text-to-video, image-to-video (start frame + optional end frame) or audio-to-video, chosen from the inputs. Mode priority is audio_url, then image_urls, then text. Native audio is generated by default.",
+        "x-server-validation": {
+          "empty_values": "Null, empty arrays and empty strings are treated as omitted.",
+          "mode_priority": [
+            "audio_url",
+            "image_urls",
+            "text"
+          ],
+          "audio_duration": "Probe audio_url; it must be 2-10 real seconds.",
+          "billing_duration": "Text and image modes bill the requested duration (default 6). Audio mode bills the ceiling of the probed audio_url duration.",
+          "unsupported_fields": "Reject unsupported top-level properties and fields that do not apply to the selected mode."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795600000-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "prompt": "A drone shot gliding over a misty pine forest at sunrise, birds calling in the distance.",
+          "duration": 6,
+          "resolution": "1080p",
+          "aspect_ratio": "16:9"
+        },
+        {
+          "prompt": "The character turns toward the camera and smiles as the wind moves her hair.",
+          "duration": 8,
+          "image_urls": [
+            "https://example.com/first-frame.png",
+            "https://example.com/last-frame.png"
+          ],
+          "resolution": "720p",
+          "camera_motion": "dolly_in"
+        },
+        {
+          "prompt": "A singer performs on a neon-lit stage, lips synced to the music.",
+          "audio_url": "https://example.com/song.mp3",
+          "image_urls": [
+            "https://example.com/singer.png"
+          ],
+          "aspect_ratio": "9:16"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "text/image: duration * resolution_credits_per_second[resolution]; audio: ceil(audio_url seconds) * audio_credits_per_second",
+        "parameters": {
+          "duration": "Requested output seconds for text-to-video and image-to-video; defaults to 6.",
+          "audio_url": "Audio-to-video bills the server-probed input audio length rounded up to whole seconds at 34 credits per second (1080p output).",
+          "resolution": "Defaults to 1080p. Credits per output second: 720p 24, 1080p 34."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "audio_credits_per_second": 34,
+        "resolution_credits_per_second": {
+          "720p": 24,
+          "1080p": 34
+        }
+      },
+      "status": "stable"
+    },
+    {
       "model_id": "omni-flash",
       "tool_name": "poyo_omni_flash",
       "service_type": "generate",
@@ -42466,6 +44911,189 @@
         },
         "input_credits": null,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "sync-lipsync-3",
+      "tool_name": "poyo_sync_lipsync_3",
+      "service_type": "generate",
+      "category": "video",
+      "title": "Sync Lipsync 3",
+      "description": "Lip-sync an existing video to a new audio track, or turn one image and an audio clip into a talking video, with Sync.so sync-3. Billed per second of output video.",
+      "tags": [
+        "video",
+        "lip-sync",
+        "video-to-video",
+        "image-to-video",
+        "talking-avatar"
+      ],
+      "input_schema": {
+        "type": "object",
+        "oneOf": [
+          {
+            "not": {
+              "required": [
+                "image_urls"
+              ]
+            },
+            "required": [
+              "video_url"
+            ]
+          },
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "video_url"
+                  ]
+                },
+                {
+                  "required": [
+                    "sync_mode"
+                  ]
+                }
+              ]
+            },
+            "required": [
+              "image_urls"
+            ]
+          }
+        ],
+        "required": [
+          "audio_url"
+        ],
+        "properties": {
+          "audio_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Speech or song to lip-sync. At most 300 seconds and 50MB.",
+            "x-audio-duration-seconds": {
+              "maximum": 300
+            }
+          },
+          "sync_mode": {
+            "enum": [
+              "cut_off",
+              "loop",
+              "bounce",
+              "silence",
+              "remap"
+            ],
+            "type": "string",
+            "default": "cut_off",
+            "description": "Video mode only. How to handle a length mismatch between video and audio: cut_off trims to the shorter input; loop loops the shorter input; bounce plays the video forward and backward; silence pads the audio with silence; remap retimes the video to the audio length."
+          },
+          "video_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://",
+            "description": "Source video whose lips are re-synced to audio_url. Selects video mode. At most 300 seconds and 200MB.",
+            "x-video-duration-seconds": {
+              "maximum": 300
+            }
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Exactly one image (JPEG, PNG or WebP) containing the face to animate. Selects image mode; the output video matches the audio length. A public URL or a base64 data URI."
+          }
+        },
+        "description": "Provide video_url to lip-sync a video (video mode), or image_urls to animate a face in one image (image mode). Exactly one of video_url or image_urls is required. Input durations are measured by the server before the task starts.",
+        "x-server-validation": {
+          "empty_values": "Empty arrays and empty strings are treated as omitted.",
+          "mode_priority": [
+            "video_url",
+            "image_urls"
+          ],
+          "media_duration": "Probe audio_url (and video_url in video mode); each must be at most 300 real seconds. audio_url at most 50MB, video_url at most 200MB.",
+          "billing_duration": "Image mode bills ceil(audio seconds). Video mode bills ceil(expected output seconds): cut_off = min(video, audio); remap = audio; loop, bounce and silence = max(video, audio). Minimum 1 second.",
+          "unsupported_fields": "Reject unsupported top-level properties."
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795046400-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-19T10:30:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "audio_url": "https://example.com/new-voice.mp3",
+          "video_url": "https://example.com/speaker.mp4"
+        },
+        {
+          "audio_url": "https://example.com/long-voice.wav",
+          "sync_mode": "loop",
+          "video_url": "https://example.com/speaker.mp4"
+        },
+        {
+          "audio_url": "https://example.com/voice.mp3",
+          "image_urls": [
+            "https://example.com/portrait.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "tiered",
+        "unit": "second",
+        "credits": null,
+        "formula": "billed_seconds * mode_credits_per_minute[mode] / 60",
+        "parameters": {
+          "mode": "video-to-video when video_url is provided, otherwise image-to-video",
+          "billed_seconds": "ceil of the expected output duration, at least 1. Image mode: audio_url duration. Video mode by sync_mode: cut_off min(video_url, audio_url); remap audio_url; loop, bounce, silence max(video_url, audio_url)."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "mode_credits_per_minute": {
+          "image-to-video": 1599.6,
+          "video-to-video": 1600
+        }
       },
       "status": "stable"
     },
