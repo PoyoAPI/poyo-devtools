@@ -1,0 +1,30 @@
+{
+  "name": "poyo",
+  "description": "PoYo AI models for Claude Code: the hosted PoYo MCP server plus the poyo-ai-models skill for discovering, pricing, and running video, image, audio, and chat models.",
+  "author": {
+    "name": "PoYo",
+    "url": "https://poyo.ai/"
+  },
+  "homepage": "https://poyo.ai/mcp",
+  "repository": "https://github.com/PoyoAPI/poyo-devtools",
+  "license": "MIT",
+  "privacyPolicyUrl": "https://poyo.ai/privacy",
+  "keywords": [
+    "poyo",
+    "mcp",
+    "ai-models",
+    "video-generation",
+    "image-generation",
+    "audio",
+    "llm"
+  ],
+  "mcpServers": {
+    "poyo": {
+      "type": "http",
+      "url": "https://api.poyo.ai/mcp",
+      "headers": {
+        "Authorization": "Bearer ${POYO_API_KEY}"
+      }
+    }
+  }
+}
