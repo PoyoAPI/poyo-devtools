@@ -1,5 +1,5 @@
 {
-  "schema_version": "v1-3683455ddffe",
+  "schema_version": "v1-6f54a97c3c63",
   "items": [
     {
       "model_id": "hunyuan-3d/v3.1/pro/image-to-3d",
@@ -4860,6 +4860,847 @@
         "credits": 20,
         "input_credits": null,
         "output_credits": null
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "seed-tts-3.0",
+      "tool_name": "poyo_seed_tts_3_0",
+      "service_type": "generate",
+      "category": "audio",
+      "title": "Seed TTS 3.0",
+      "description": "Convert up to 10,000 characters of text into multilingual speech with 520 preset voices, 119 language and dialect codes, style instructions, audio tags such as `[laughs]`, and speed, volume, and pitch controls.",
+      "tags": [
+        "audio",
+        "text-to-speech",
+        "tts"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "pattern": "\\S",
+            "maxLength": 10000,
+            "minLength": 1,
+            "description": "Text to convert to speech. 1-10000 characters after leading and trailing whitespace is trimmed. Add audio tags in square brackets, such as `[laughs]` or `[sighs]`, for non-verbal sounds; tag characters count toward billed characters."
+          },
+          "pitch": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": 0,
+            "maximum": 12,
+            "minimum": -12,
+            "description": "Pitch shift in semitones from -12 to 12. `0` is normal pitch, `-12` is one octave lower, and `12` is one octave higher. Default: `0`."
+          },
+          "speed": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": 1,
+            "maximum": 2,
+            "minimum": 0.5,
+            "description": "Speech speed multiplier from 0.5 to 2. `1` is normal speed. Default: `1`."
+          },
+          "voice": {
+            "enum": [
+              "owen_en",
+              "mason_en",
+              "zendaya_en",
+              "dylan_en",
+              "kayla_en",
+              "megan_en",
+              "valentino_en",
+              "skye_en",
+              "simba_en",
+              "sharron_en",
+              "ryan_en",
+              "blair_en",
+              "sunny_en",
+              "myra_en",
+              "rory_en",
+              "marcus_en",
+              "elliot_en",
+              "stokie_en",
+              "nora_en",
+              "clark_en",
+              "tom_en",
+              "tim_en",
+              "scarlet_en",
+              "sarah_en",
+              "russell_en",
+              "ronald_en",
+              "rachel_en",
+              "elaine_en",
+              "gavin_en",
+              "colin_en",
+              "natasha_en",
+              "michael_kevin_en",
+              "chip_en",
+              "hank_en",
+              "mel_en",
+              "ivy_en",
+              "lynn_en",
+              "knightley_en",
+              "kevin_en",
+              "kate_en",
+              "josiah_en",
+              "josh_en",
+              "joker_en",
+              "joanne_en",
+              "jimmy_en",
+              "blaze_en",
+              "jenny_en",
+              "jane_en",
+              "jamie_en",
+              "jama_en",
+              "wesley_en",
+              "hayley_en",
+              "beau_en",
+              "gollum_en",
+              "godfather_en",
+              "theo_en",
+              "levi_en",
+              "desmond_en",
+              "felix_en",
+              "holly_en",
+              "alfred_en",
+              "jasper_en",
+              "harrison_en",
+              "lisa_en",
+              "grace_en",
+              "roman_en",
+              "simon_en",
+              "dean_en",
+              "peter_en",
+              "grant_en",
+              "spencer_en",
+              "doris_en",
+              "julian_en",
+              "orion_en",
+              "david_en",
+              "dacey_en",
+              "alfie_en",
+              "callum_en",
+              "john_en",
+              "bob_en",
+              "leo_en",
+              "adrian_en",
+              "zoe_en",
+              "brittney_en",
+              "brad_pitt_en",
+              "bill_en",
+              "jones_en",
+              "margaret_en",
+              "charlotte_en",
+              "reagan_en",
+              "mpho_en",
+              "naomi_en",
+              "allison_en",
+              "alex_en",
+              "alberto_en",
+              "rowan_en",
+              "alice_en",
+              "shannon_en",
+              "daphne_en",
+              "imogen_en",
+              "rupert_en",
+              "nigel_en",
+              "wayne_en",
+              "selina_en",
+              "barnaby_en",
+              "tobias_en",
+              "harriet_en",
+              "elspeth_en",
+              "alistair_en",
+              "declan_en",
+              "pigsy_zh",
+              "zhuang_zhou_zh",
+              "lin_zhiya_zh",
+              "tina_zh",
+              "xiao_xue_zh",
+              "he_xiaoyu_zh",
+              "wu_zetian_zh",
+              "xiao_ya_zh",
+              "chen_wen_zh",
+              "su_wan_zh",
+              "chen_rou_zh",
+              "ah_hu_zh",
+              "maomao_zh",
+              "vivi_xi_zh",
+              "chan_ka_zh",
+              "tuanzi_zh",
+              "lin_zhixin_zh",
+              "yueyue_zh",
+              "xiao_yuan_zh",
+              "taozi_zh",
+              "gu_tian_zh",
+              "xiao_tian_zh",
+              "tang_sanzang_zh",
+              "sun_wukong_zh",
+              "sophie_zh",
+              "shi_lang_zh",
+              "sisi_zh",
+              "ye_an_zh",
+              "zi_xin_zh",
+              "lin_tong_zh",
+              "lin_jiaojiao_zh",
+              "yi_chen_zh",
+              "wen_yu_zh",
+              "su_rou_zh",
+              "chen_qing_zh",
+              "lin_qingxin_zh",
+              "nan_da_zh",
+              "zizi_zh",
+              "qing_cang_zh",
+              "qiao_ling_zh",
+              "granny_chen_zh",
+              "peppa_pig_zh",
+              "jane_foster_zh",
+              "meng_bao_zh",
+              "mizai_zh",
+              "meng_ya_zh",
+              "mei_lin_zh",
+              "yun_zhou_zh",
+              "luban_seven_zh",
+              "liu_fei_zh",
+              "liu_chang_zh",
+              "lin_xiao_zh",
+              "lin_xiaomei_zh",
+              "lin_xiaojun_zh",
+              "lingling_zh",
+              "liang_zai_zh",
+              "mianbao_zh",
+              "xiao_dong_zh",
+              "nuan_yang_zh",
+              "kai_yang_zh",
+              "kai_xin_zh",
+              "kai_le_zh",
+              "ji_xin_zh",
+              "ji_mei_zh",
+              "xiao_ming_zh",
+              "jiao_yin_zh",
+              "li_huo_zh",
+              "gu_jie_zh",
+              "su_yu_zh",
+              "gu_yan_zh",
+              "gao_leng_zh",
+              "chen_jing_zh",
+              "yin_jie_zh",
+              "da_yi_zh",
+              "cancan_zh",
+              "xiao_man_zh",
+              "ling_ling_zh",
+              "wan_jun_zh",
+              "xiao_nan_zh",
+              "ayu_id",
+              "bayu_id",
+              "citra_id",
+              "dewi_id",
+              "rizky_id",
+              "prisma_id",
+              "phulia_id",
+              "kyle_id",
+              "adi_id",
+              "arif_id",
+              "ikbal_id",
+              "han_id",
+              "chloe_id",
+              "lestari_id",
+              "bima_id",
+              "gita_id",
+              "nabila_id",
+              "fajar_id",
+              "hendra_id",
+              "kirana_id",
+              "yudi_id",
+              "sri_id",
+              "sabila_id",
+              "melati_id",
+              "siti_id",
+              "stefani_id",
+              "ratna_id",
+              "mega_id",
+              "annisa_id",
+              "bella_id",
+              "sari_id",
+              "indah_id",
+              "dhara_id",
+              "aditya_id",
+              "hindun_id",
+              "putri_id",
+              "riris_id",
+              "rini_id",
+              "umar_id",
+              "safina_id",
+              "shabrina_id",
+              "shindy_id",
+              "sigit_id",
+              "oca_id",
+              "nia_id",
+              "cesna_id",
+              "ronan_id",
+              "elian_id",
+              "crew_id",
+              "celeste_id",
+              "sylvia_id",
+              "clara_id",
+              "hugo_id",
+              "jude_id",
+              "rocco_id",
+              "tita_id",
+              "vina_id",
+              "vio_id",
+              "yuni_id",
+              "zahra_id",
+              "ilham_id",
+              "andre_id",
+              "lia_id",
+              "farida_id",
+              "wulan_id",
+              "yuli_id",
+              "rosida_id",
+              "fera_id",
+              "krisna_id",
+              "cahaya_id",
+              "wahyuni_id",
+              "kezia_id",
+              "etta_id",
+              "wahyu_id",
+              "kenta_ja",
+              "yusuke_ja",
+              "takumi_ja",
+              "oka_ja",
+              "saki_ja",
+              "keikotagawa_ja",
+              "maika_ja",
+              "erikoh_ja",
+              "nanase_ja",
+              "maeda_ja",
+              "nao_ja",
+              "hiro_ja",
+              "emi_ja",
+              "mana_ja",
+              "keita_ja",
+              "haruka_ja",
+              "shota_ja",
+              "kaori_ja",
+              "mayu_ja",
+              "natsuki_ja",
+              "rina_ja",
+              "yuto_ja",
+              "chiaki_ja",
+              "nana_ja",
+              "moe_ja",
+              "kanon_ja",
+              "yuka_ja",
+              "ryota_ja",
+              "kaito_ja",
+              "yosuke_ja",
+              "sakura_ja",
+              "ami_ja",
+              "hinata_ja",
+              "mei_ja",
+              "nanami_ja",
+              "tomomi_ja",
+              "yuko_ja",
+              "reiko_ja",
+              "miharu_ja",
+              "shirou_ja",
+              "minimi_ja",
+              "ken_ja",
+              "lily_ja",
+              "hana_ja",
+              "aoi_ja",
+              "poppy_ja",
+              "bonnie_ja",
+              "ayumi_ja",
+              "nanri_ja",
+              "jiwoo_ko",
+              "soyeon_ko",
+              "eunji_ko",
+              "minji_ko",
+              "shane_ko",
+              "hyunwoo_ko",
+              "jaeho_ko",
+              "minho_ko",
+              "lim_ko",
+              "kyoung_ko",
+              "kangyoo_ko",
+              "seojin_ko",
+              "jinwoo_ko",
+              "momo_ko",
+              "jay_ko",
+              "in_hwan_ko",
+              "haneul_ko",
+              "nari_ko",
+              "yeonhee_ko",
+              "miae_ko",
+              "amir_ms",
+              "qis_ms",
+              "haziq_ms",
+              "naim_ms",
+              "farah_ms",
+              "nurul_ms",
+              "izzah_ms",
+              "aisyah_ms",
+              "hazeem_ms",
+              "hashim_ms",
+              "ham_ms",
+              "syahira_ms",
+              "aiman_ms",
+              "suraya_ms",
+              "syafiq_ms",
+              "nadia_ms",
+              "imran_ms",
+              "wani_ms",
+              "asira_ms",
+              "shiilla_ms",
+              "hasrul_ms",
+              "malay_ms",
+              "chatri_th",
+              "tess_th",
+              "paran_th",
+              "nopparat_th",
+              "natcha_th",
+              "misa_th",
+              "pim_th",
+              "kanya_th",
+              "elle_th",
+              "duang_th",
+              "csbusaba_th",
+              "cake_th",
+              "phoebe_th",
+              "lydia_th",
+              "mildred_th",
+              "valentina_th",
+              "zara_th",
+              "iris_th",
+              "valeria_th",
+              "angpao_th",
+              "jonathan_fil",
+              "hervie_fil",
+              "ed_fil",
+              "jeamafely_fil",
+              "annika_fil",
+              "wumg_vi",
+              "wu_vi",
+              "ruan_vi",
+              "phuong_vi",
+              "partner_vi",
+              "huy_vi",
+              "linh_vi",
+              "ling_vi",
+              "khanh_vi",
+              "hong_vi",
+              "trang_vi",
+              "ngoc_vi",
+              "duc_vi",
+              "khoa_vi",
+              "sana_ur",
+              "yilmaz_tr",
+              "ananya_te",
+              "kiran_te",
+              "aditi_mr",
+              "hetal_gu",
+              "meera_gu",
+              "sven_de",
+              "sammy_de",
+              "stella_de",
+              "anke_de",
+              "ingrid_de",
+              "annie_de",
+              "jessica_de",
+              "alvaro_es",
+              "romina_es",
+              "nico_es",
+              "mateo_es",
+              "javier_es",
+              "rafa_es",
+              "lucia_es",
+              "mariano_es",
+              "paula_es",
+              "marisol_es",
+              "guillem_es",
+              "francisc_es",
+              "emilio_es",
+              "andres_es",
+              "dani_es",
+              "tomas_es",
+              "gracie_es",
+              "pablo_es",
+              "ignacio_es",
+              "angel_es",
+              "carmen_es",
+              "beatriz_es",
+              "gabriel_es",
+              "rocio_es",
+              "pilar_es",
+              "usseau_fr",
+              "mathieu_fr",
+              "elodie_fr",
+              "antoine_fr",
+              "julien_fr",
+              "maurice_fr",
+              "camille_fr",
+              "simone_fr",
+              "laurent_fr",
+              "remi_fr",
+              "cedric_fr",
+              "luca_it",
+              "matteo_it",
+              "enzo_it",
+              "lorenzo_it",
+              "ksenia_ru",
+              "silas_ru",
+              "pavel_ru",
+              "dmitri_ru",
+              "irinae_ru",
+              "oksana_ru",
+              "yuri_ru",
+              "alina_ru",
+              "irina_ru",
+              "ben_ru",
+              "tamer_ru",
+              "svetlana_ru",
+              "amelia_ru",
+              "grigori_ru",
+              "vadim_ru",
+              "vera_ru",
+              "anton_ru",
+              "amani_sw",
+              "zuri_sw",
+              "neema_sw",
+              "zawadi_sw",
+              "migu_es_mx",
+              "marcelo_es_mx",
+              "leslie_es_mx",
+              "derek_es_mx",
+              "gomez_es_mx",
+              "felipe_es_mx",
+              "renata_es_mx",
+              "freya_es_mx",
+              "rosa_es_mx",
+              "lucy_es_mx",
+              "marcos_es_mx",
+              "diego_es_mx",
+              "irene_es_mx",
+              "cstania_es_mx",
+              "leon_es_mx",
+              "mariana_es_mx",
+              "gustavo_es_mx",
+              "cesar_es_mx",
+              "joaquin_es_mx",
+              "itzel_es_mx",
+              "rosario_es_mx",
+              "samuel_es_mx",
+              "karen_es_mx",
+              "kimberly_es_mx",
+              "mary_es_mx",
+              "nancy_es_mx",
+              "rael_pt_br",
+              "toby_pt_br",
+              "camila_pt_br",
+              "mari_pt_br",
+              "arthur_pt_br",
+              "sofia_pt_br",
+              "emma_pt_br",
+              "lola_pt_br",
+              "elena_pt_br",
+              "diana_pt_br",
+              "miles_pt_br",
+              "vincent_pt_br",
+              "walter_pt_br",
+              "sam_pt_br",
+              "ana_pt_br",
+              "bruna_pt_br",
+              "rafael_pt_br",
+              "thiago_pt_br",
+              "malena_es_ar",
+              "youssef_ar",
+              "rmya_ar",
+              "fatma_ar",
+              "dina_ar",
+              "karim_ar",
+              "yasmin_ar",
+              "rania_ar",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": "stokie_en",
+            "description": "Preset voice. The suffix is the voice's primary language, for example `stokie_en` or `lin_zhiya_zh`. Default: `stokie_en`."
+          },
+          "volume": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": 1,
+            "maximum": 2,
+            "minimum": 0.5,
+            "description": "Volume multiplier from 0.5 to 2. `1` is normal volume. Default: `1`."
+          },
+          "language_code": {
+            "enum": [
+              "auto",
+              "af",
+              "am",
+              "ar",
+              "as",
+              "ast",
+              "az",
+              "be",
+              "bg",
+              "bn",
+              "bs",
+              "ca",
+              "ceb",
+              "ckb",
+              "cs",
+              "cy",
+              "da",
+              "de",
+              "el",
+              "en",
+              "en-GB",
+              "es",
+              "es-MX",
+              "et",
+              "fa",
+              "fi",
+              "fil",
+              "fr",
+              "fuv",
+              "gl",
+              "gu",
+              "ha",
+              "he",
+              "hi",
+              "hr",
+              "hu",
+              "hy",
+              "id",
+              "ig",
+              "is",
+              "it",
+              "ja",
+              "jv",
+              "ka",
+              "kam",
+              "kea",
+              "kk",
+              "km",
+              "kn",
+              "ko",
+              "ky",
+              "lb",
+              "lg",
+              "ln",
+              "lo",
+              "lt",
+              "luo",
+              "lv",
+              "mi",
+              "mk",
+              "ml",
+              "mn",
+              "mr",
+              "ms",
+              "mt",
+              "my",
+              "ne",
+              "nl",
+              "no",
+              "nso",
+              "ny",
+              "oc",
+              "ory",
+              "pa",
+              "pl",
+              "ps",
+              "pt",
+              "pt-BR",
+              "ro",
+              "ru",
+              "sd",
+              "sk",
+              "sl",
+              "sn",
+              "sq",
+              "sr",
+              "sv",
+              "sw",
+              "ta",
+              "te",
+              "tg",
+              "th",
+              "tr",
+              "uk",
+              "umb",
+              "ur",
+              "uz",
+              "vi",
+              "wo",
+              "xh",
+              "yo",
+              "yue",
+              "zh",
+              "zh-CN-x-beijing",
+              "zh-CN-x-changsha",
+              "zh-CN-x-dongbei",
+              "zh-CN-x-henan",
+              "zh-CN-x-hubei",
+              "zh-CN-x-kejia",
+              "zh-CN-x-minnan",
+              "zh-CN-x-nanchang",
+              "zh-CN-x-nanjing",
+              "zh-CN-x-shaanxi",
+              "zh-CN-x-shandong",
+              "zh-CN-x-shanghai",
+              "zh-CN-x-sichuan",
+              "zh-CN-x-taiwan",
+              "zh-CN-x-tangshan",
+              "zh-CN-x-tianjin",
+              "zu",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": "auto",
+            "description": "Language or dialect to read the text in. `auto` detects the language from the text. A dialect code such as `zh-CN-x-sichuan` also selects the accent. Default: `auto`."
+          },
+          "output_format": {
+            "enum": [
+              "mp3",
+              "ogg_opus",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": "mp3",
+            "description": "Audio format: `mp3` (MP3, 24 kHz) or `ogg_opus` (Opus in an Ogg container, 48 kHz). Default: `mp3`."
+          },
+          "style_instructions": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Natural-language direction for tone, emotion, and pace, for example `Warm and natural`. It sets the tone, emotion and pace of the delivery, while the spoken words come from `text`. Up to 1000 characters."
+          }
+        },
+        "description": "Convert text into speech with a preset voice. Billing counts the characters of text after leading and trailing whitespace is trimmed.",
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795600000-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-24T10:30:00"
+              }
+            }
+          }
+        },
+        "x-task-result": {
+          "files": [
+            {
+              "file_url": "https://storage.poyo.ai/audios/task-unified-1795600000-example/task-unified-1795600000-example.mp3",
+              "file_type": "audio"
+            }
+          ],
+          "description": "When GET /api/generate/status/{task_id} reports finished, files[0] is the generated speech: MP3 (24 kHz) for output_format mp3, or Opus in an Ogg container (48 kHz) for ogg_opus."
+        }
+      },
+      "examples": [
+        {
+          "text": "The lighthouse keeper climbed the last step, set his lantern on the sill, and listened. Somewhere below the cliffs, the tide was whispering a name he had not heard in forty years.",
+          "voice": "owen_en",
+          "language_code": "en",
+          "style_instructions": "Slow, hushed storytelling, like reading a ghost story by candlelight."
+        },
+        {
+          "text": "I can’t believe you remembered. Nobody has ever done this for me before.",
+          "pitch": 0,
+          "speed": 1,
+          "voice": "zendaya_en",
+          "volume": 1,
+          "language_code": "auto",
+          "output_format": "mp3",
+          "style_instructions": "Overjoyed and moved, voice trembling with happy tears."
+        },
+        {
+          "text": "老板，来碗担担面，多放点花椒，莫放香菜，要辣得巴适！",
+          "voice": "lin_zhiya_zh",
+          "language_code": "zh-CN-x-sichuan"
+        },
+        {
+          "text": "今日落雨，不如我哋留喺屋企煲剧，叫个外卖算啦。",
+          "voice": "lin_zhiya_zh",
+          "language_code": "yue",
+          "output_format": "ogg_opus"
+        },
+        {
+          "text": "[laughs] No way, you ate the whole cake? [sighs] I was saving that for tomorrow.",
+          "voice": "stokie_en"
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "parameterized",
+        "unit": "1000_characters",
+        "credits": null,
+        "formula": "billable_characters * credits_per_1000_characters / 1000",
+        "parameters": {
+          "billable_characters": "Characters of text after leading and trailing whitespace is trimmed; style_instructions are not billed."
+        },
+        "input_credits": null,
+        "output_credits": null,
+        "credits_per_1000_characters": 4
       },
       "status": "stable"
     },
@@ -16526,6 +17367,116 @@
         "credits": null,
         "input_credits": 456,
         "output_credits": 2280
+      },
+      "status": "stable"
+    },
+    {
+      "model_id": "bria-rmbg-3.0",
+      "tool_name": "poyo_bria_rmbg_3_0",
+      "service_type": "generate",
+      "category": "image",
+      "title": "Bria RMBG 3.0",
+      "description": "Remove the background from one image and return a transparent PNG at the input size. An optional plain-language prompt chooses what to keep.",
+      "tags": [
+        "image",
+        "background-removal"
+      ],
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "image_urls"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Optional. What to keep, in plain words, up to 2000 characters: add something to the main subject, leave something out, or keep only one item. Omitted or empty keeps the most prominent subject."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^https?://\\S+$",
+              "description": "Public HTTP(S) image URL: JPEG, PNG, WebP, GIF, AVIF, HEIC, or HEIF."
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "description": "Required. Exactly one image to cut out."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "required": [
+          "code",
+          "data"
+        ],
+        "properties": {
+          "code": {
+            "enum": [
+              200
+            ],
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "status",
+              "created_time"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_started"
+                ],
+                "type": "string",
+                "example": "not_started"
+              },
+              "task_id": {
+                "type": "string",
+                "example": "task-unified-1795564800-example"
+              },
+              "created_time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-11-24T06:00:00"
+              }
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "image_urls": [
+            "https://storage.poyo.ai/models/bria-rmbg-3-0/examples/rmbg3-input-dandelion-3dfee980c4a6.png"
+          ]
+        },
+        {
+          "prompt": "only the crochet cardigan",
+          "image_urls": [
+            "https://storage.poyo.ai/models/bria-rmbg-3-0/examples/rmbg3-input-crochet-da4fe2ab38df.png"
+          ]
+        },
+        {
+          "image_urls": [
+            "https://storage.poyo.ai/models/bria-rmbg-3-0/examples/rmbg3-input-scarf-5b87af427ae2.png"
+          ]
+        }
+      ],
+      "supported_protocols": [],
+      "execution_mode": "async",
+      "supports_streaming": false,
+      "supports_callback": true,
+      "billing": {
+        "type": "fixed",
+        "unit": "image",
+        "credits": 3.6,
+        "formula": "credits per request; each request returns exactly one transparent PNG; the prompt does not change the price",
+        "input_credits": null,
+        "output_credits": null
       },
       "status": "stable"
     },
@@ -40837,6 +41788,31 @@
                 }
               }
             }
+          },
+          {
+            "if": {
+              "required": [
+                "dynamic_range"
+              ],
+              "properties": {
+                "dynamic_range": {
+                  "const": "hdr"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "resolution"
+              ],
+              "properties": {
+                "resolution": {
+                  "enum": [
+                    "1080p",
+                    "4k"
+                  ]
+                }
+              }
+            }
           }
         ],
         "properties": {
@@ -40877,7 +41853,8 @@
           "resolution": {
             "enum": [
               "720p",
-              "1080p"
+              "1080p",
+              "4k"
             ],
             "type": "string",
             "default": "720p",
@@ -40921,6 +41898,15 @@
             },
             "minItems": 1,
             "description": "Generation shot prompts. Shot durations sum to 3-30 seconds; an explicit top-level duration must match the sum. Mutually exclusive with prompt and unsupported for editing."
+          },
+          "dynamic_range": {
+            "enum": [
+              "sdr",
+              "hdr"
+            ],
+            "type": "string",
+            "default": "sdr",
+            "description": "Output dynamic range. hdr returns 10-bit HDR video at 1080p or 4k and adds a per-second surcharge on the output duration."
           },
           "kling_elements": {
             "type": "array",
@@ -41018,6 +42004,7 @@
         "x-server-validation": {
           "image_count": "First frame and reference_image_urls together must total at most 10 images.",
           "multi_prompt": "Sum effective shot durations (default 5 per shot); require 3-30 seconds and equality with an explicit duration.",
+          "dynamic_range": "Case-insensitive sdr or hdr; hdr requires resolution 1080p or 4k (resolution defaults to 720p).",
           "mode_priority": [
             "video_url",
             "reference_image_urls/reference_video_urls/kling_elements",
@@ -41147,16 +42134,21 @@
         "type": "parameterized",
         "unit": "second",
         "credits": null,
-        "formula": "billed_seconds * credit_rules[resolution][video_input_mode]",
+        "formula": "billed_seconds * credit_rules[resolution][video_input_mode] + (dynamic_range == 'hdr' ? duration * hdr_credit_rules[resolution] : 0)",
         "parameters": {
           "duration": "Explicit output duration, otherwise the sum of multi_prompt shot durations or 5 for generation. For editing without duration, use the ceiling of the server-probed source video duration for billing only; omit duration in the upstream request.",
           "resolution": "Defaults to 720p.",
           "validation": "Validate each video at 3-30 real seconds and reference plus subject videos at 30 real seconds in total before billing rounding.",
+          "dynamic_range": "sdr by default. hdr adds hdr_credit_rules[resolution] per output second (duration only, not billed_seconds) and is available at 1080p and 4k.",
           "billed_seconds": "duration without video input; otherwise max(2 * duration, input_video_duration + duration)",
           "video_input_mode": "with_video when video_url, reference_video_urls, or kling_elements[].element_input_video_urls supplies video input; otherwise without_video",
           "input_video_duration": "Ceiling of the sum of server-probed durations from video_url, reference_video_urls, and kling_elements[].element_input_video_urls; round up only after summing all input videos. Editing accepts only its source video; reference generation sums reference and subject videos."
         },
         "credit_rules": {
+          "4k": {
+            "with_video": 59,
+            "without_video": 99
+          },
           "720p": {
             "with_video": 17,
             "without_video": 28.5
@@ -41167,7 +42159,11 @@
           }
         },
         "input_credits": null,
-        "output_credits": null
+        "output_credits": null,
+        "hdr_credit_rules": {
+          "4k": 14,
+          "1080p": 8.5
+        }
       },
       "status": "stable"
     },
@@ -44582,7 +45578,8 @@
             "enum": [
               "480p",
               "720p",
-              "1080p"
+              "1080p",
+              "4k"
             ],
             "type": "string"
           },
@@ -44675,6 +45672,10 @@
           "video_input_mode": "with_video when reference_video_urls is non-empty; otherwise without_video"
         },
         "credit_rules": {
+          "4k": {
+            "with_video": 155,
+            "without_video": 251
+          },
           "480p": {
             "with_video": 17,
             "without_video": 28

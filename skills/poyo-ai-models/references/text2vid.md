@@ -1,6 +1,6 @@
 # text2vid
 
-Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execution.
+Generated from PoYo Catalog `v1-6f54a97c3c63`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|

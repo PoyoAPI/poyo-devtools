@@ -1,6 +1,6 @@
 # audio
 
-Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execution.
+Generated from PoYo Catalog `v1-6f54a97c3c63`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
@@ -14,4 +14,5 @@ Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execu
 | `gemini-3.8-flash-lite-tts` | generate |  | Generate native WAV speech from a transcript or a two-speaker dialogue. |
 | `gemini-3.8-flash-tts` | generate |  | Generate native WAV speech from a transcript or a two-speaker dialogue with style guidance. |
 | `minimax-music-2.6` | generate |  | Generate complete music tracks from a style prompt, lyrics, or instrumental instructions |
+| `seed-tts-3.0` | generate |  | Convert up to 10,000 characters of text into multilingual speech with 520 preset voices, 119 language and dialect codes, style instructions, audio tags such as `[laughs]`, and speed, volume, and pitch controls. |
 | `xai-tts-1` | generate |  | Generate low-latency expressive multilingual speech using xAI TTS 1 |

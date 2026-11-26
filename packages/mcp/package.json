@@ -1,7 +1,7 @@
 {
   "name": "@poyoapi/mcp",
   "mcpName": "ai.poyo/mcp",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "stdio bridge for the hosted PoYo MCP server",
   "license": "MIT",
   "repository": {

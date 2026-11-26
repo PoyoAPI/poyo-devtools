@@ -1,9 +1,10 @@
 # image
 
-Generated from PoYo Catalog `v1-3683455ddffe`. Always call describe before execution.
+Generated from PoYo Catalog `v1-6f54a97c3c63`. Always call describe before execution.
 
 | Model | Type | Protocols | Description |
 |---|---|---|---|
+| `bria-rmbg-3.0` | generate |  | Remove the background from one image and return a transparent PNG at the input size. An optional plain-language prompt chooses what to keep. |
 | `flux-3-klein` | generate |  | Generate 1-4 images from text with 1K, 2K, or 4K output. |
 | `flux-3-klein-edit` | generate |  | Edit or compose 1-10 reference images with 1K, 2K, or 4K output. |
 | `flux-dev` | generate |  | Flux Dev image generation and single-image editing API |
