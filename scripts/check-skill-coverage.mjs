@@ -50,6 +50,7 @@ const expectedSeedanceRates = {
     "480p": {with_video: 17, without_video: 28},
     "720p": {with_video: 38, without_video: 63},
     "1080p": {with_video: 68.5, without_video: 114},
+    "4k": {with_video: 155, without_video: 251},
   },
   "seedance-2-fast": {
     "480p": {with_video: 9, without_video: 14},
@@ -68,7 +69,7 @@ for (const [modelId, expected] of Object.entries(expectedSeedanceRates)) {
 }
 
 const seedance25 = catalog.items.find((item) => item.model_id === "seedance-2.5");
-if (!equal(seedance25?.input_schema?.properties?.resolution?.enum, ["480p", "720p", "1080p"])) {
+if (!equal(seedance25?.input_schema?.properties?.resolution?.enum, ["480p", "720p", "1080p", "4k"])) {
   throw new Error("Seedance 2.5 resolution enum is out of sync");
 }
 
