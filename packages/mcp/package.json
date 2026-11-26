@@ -1,5 +1,6 @@
 {
   "name": "@poyoapi/mcp",
+  "mcpName": "ai.poyo/mcp",
   "version": "0.1.23",
   "description": "stdio bridge for the hosted PoYo MCP server",
   "license": "MIT",
@@ -8,7 +9,7 @@
     "url": "git+https://github.com/PoyoAPI/poyo-devtools.git",
     "directory": "packages/mcp"
   },
-  "homepage": "https://poyo.ai/",
+  "homepage": "https://poyo.ai/mcp",
   "bugs": {
     "url": "https://github.com/PoyoAPI/poyo-devtools/issues"
   },

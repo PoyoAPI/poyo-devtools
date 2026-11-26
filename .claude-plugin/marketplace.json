@@ -1,0 +1,17 @@
+{
+  "name": "poyo-devtools",
+  "owner": {
+    "name": "PoYo"
+  },
+  "metadata": {
+    "description": "Official PoYo plugin for Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "poyo",
+      "source": "./",
+      "description": "Hosted PoYo MCP server and the poyo-ai-models skill.",
+      "homepage": "https://poyo.ai/mcp"
+    }
+  ]
+}
